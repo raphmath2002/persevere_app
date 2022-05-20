@@ -10,8 +10,20 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   plugins: [createPersistedState()],
-  state: {},
-  mutations: {},
+  state: {
+    user: null,
+    logged: false,
+    show_interface: false
+  },
+  mutations: {
+    SHOW_INTERFACE(state, mode: boolean) {
+      state.show_interface = mode;
+    },
+
+    LOGGED(state, mode: boolean) {
+      state.logged = mode;
+    }
+  },
   actions: {},
   modules: {
   },
