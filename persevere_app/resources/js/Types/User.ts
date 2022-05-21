@@ -1,60 +1,93 @@
+import { HorseInterface } from "./Horse";
+import { OptionInterface } from "./Options";
+import { PensionInterface } from "./Pension";
+
 export interface UserInterface {
     id?: number;
 
     name: string;
-    surname: string;
-    mail: string;
+    firstname: string;
+    email: string;
     phone: string;
     postal_code: string;
     postal_address: string;
     city: string;
+    country: string;
     birth_date: string;
-    birth_country: string;
-    avatar_path: string;
+    storage_path: string;
     auth_level: string;
-    profession?: string;
-    
-    created_at?: number;
-    updated_at?: number;
+
+    password?: string;
+    horses?: HorseInterface[];
+    options?: OptionInterface[];
+    pensions?: PensionInterface[];
+    api_token?: string;
+    created_at?: string;
+    updated_at?: string;
 }
 
 export default class User implements UserInterface {
     id?: number;
 
     name: string;
-    surname: string;
-    mail: string;
+    firstname: string;
+    email: string;
     phone: string;
     postal_code: string;
     postal_address: string;
     city: string;
+    country: string;
     birth_date: string;
-    birth_country: string;
-    avatar_path: string;
+    storage_path: string;
     auth_level: string;
-    profession?: string;
 
-    created_at?: number;
-    updated_at?: number;
+    password?: string;
+    horses?: HorseInterface[];
+    options?: OptionInterface[];
+    pensions?: PensionInterface[];
+    api_token?: string;
+    created_at?: string;
+    updated_at?: string;
 
     constructor(user: UserInterface) {
         this.id = user.id;
 
         this.name = user.name;
-        this.surname = user.surname;
-        this.mail = user.mail;
+        this.firstname = user.firstname;
+        this.email = user.email;
         this.phone = user.phone;
         this.postal_code = user.postal_code;
         this.postal_address = user.postal_address;
         this.city = user.city;
         this.birth_date = user.birth_date;
-        this.birth_country = user.birth_country;
-        this.avatar_path = user.avatar_path;
+        this.storage_path = user.storage_path;
         this.auth_level = user.auth_level;
-        this.profession = user.profession;
+        this.horses = user.horses;
+        this.password = user.password;
 
+        
+        this.options = user.options;
+        this.pensions = user.pensions;
+        this.api_token = user.api_token;
         this.created_at = user.created_at;
         this.updated_at = user.updated_at;
+    }
+
+    static emptyUser(): UserInterface {
+        return {
+            name: "",
+            firstname: "",
+            email: "",
+            phone: "",
+            postal_code: "",
+            postal_address: "",
+            city: "",
+            country: "",
+            birth_date: "",
+            storage_path: "",
+            auth_level: "",
+            password: ""
+        }
     }
 }
 

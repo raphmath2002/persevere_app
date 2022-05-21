@@ -3,8 +3,8 @@ export interface FacilityInterface {
     name: string;
     description: string;
     max_customer_allowed: number;
-    created_at?: number;
-    updated_at?: number;
+    created_at?: string;
+    updated_at?: string;
 }
 
 export default class Facility implements FacilityInterface {
@@ -12,8 +12,8 @@ export default class Facility implements FacilityInterface {
     name: string;
     description: string;
     max_customer_allowed: number;
-    created_at?: number;
-    updated_at?: number;
+    created_at?: string;
+    updated_at?: string;
 
     constructor(facility: FacilityInterface) {
         this.id = facility.id;

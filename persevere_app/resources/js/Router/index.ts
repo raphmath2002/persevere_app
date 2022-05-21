@@ -3,6 +3,8 @@ import VueRouter, { RouteConfig } from 'vue-router'
 
 import Home from '../Pages/Home.vue'
 import Login from '../Pages/Login.vue'
+import Horses from '../Pages/Horses.vue'
+import Profile from '../Pages/Profile.vue'
 
 
 const routes: Array<RouteConfig> = [
@@ -16,7 +18,19 @@ const routes: Array<RouteConfig> = [
       path: '/login',
       name: 'login',
       component: Login
-  }
+    }, 
+
+    {
+      path: '/horses',
+      name: 'horses',
+      component: Horses
+    },
+
+    {
+      path: '/profile',
+      name: "profile",
+      component: Profile
+    }
 ]
 
 const router = new VueRouter({

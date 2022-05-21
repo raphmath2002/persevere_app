@@ -1,3 +1,5 @@
+import { HorseInterface } from "./Horse";
+
 export interface PensionInterface {
     id?: number;
 
@@ -5,8 +7,9 @@ export interface PensionInterface {
     price: number;
     description: string;
 
-    created_at?: number;
-    updated_at?: number;
+    horse?: HorseInterface;
+    created_at?: string;
+    updated_at?: string;
 }
 
 export default class Pension implements PensionInterface {
@@ -16,8 +19,9 @@ export default class Pension implements PensionInterface {
     price: number;
     description: string;
 
-    created_at?: number;
-    updated_at?: number;
+    horse?: HorseInterface;
+    created_at?: string;
+    updated_at?: string;
 
     constructor(pension: PensionInterface) {
         this.id = pension.id;
@@ -26,6 +30,7 @@ export default class Pension implements PensionInterface {
         this.description = pension.description;
         this.price = pension.price;
         
+        this.horse = pension.horse;
         this.created_at = pension.created_at;
         this.updated_at = pension.updated_at;
     }

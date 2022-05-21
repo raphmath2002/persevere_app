@@ -6,7 +6,11 @@ import store from './Store/index';
 import App from './App.vue';
 import vuetify from './Vuetify/index';
 
+import VCalendar from 'v-calendar';
+
+
 Vue.use(VueRouter);
+Vue.use(VCalendar)
 
 new Vue({
   router,

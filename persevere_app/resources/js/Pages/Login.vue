@@ -104,7 +104,7 @@
 
              <v-icon 
                 size="40px"
-                @click="step = 'verification'"
+                @click="step = 'login'"
             >mdi-arrow-left-circle</v-icon>
             <div class="head-container d-flex flex-column align-center">
                 <h1>Bienvenue Louis Deguitre</h1>

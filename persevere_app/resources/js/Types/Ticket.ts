@@ -3,8 +3,8 @@ export interface TicketInterface {
     title: string;
   
     user_id: number;
-    created_at?: number;
-    updated_at?: number;
+    created_at?: string;
+    updated_at?: string;
 }
 
 export default class Ticket implements TicketInterface {
@@ -12,8 +12,8 @@ export default class Ticket implements TicketInterface {
     title: string;
   
     user_id: number;
-    created_at?: number;
-    updated_at?: number;
+    created_at?: string;
+    updated_at?: string;
 
     constructor(ticket: TicketInterface) {
         this.id = ticket.id;

@@ -5,8 +5,8 @@ export interface MessageInterface {
     ticket_id: number;
     user_id: number;
 
-    created_at?: number;
-    updated_at?: number;
+    created_at?: string;
+    updated_at?: string;
 }
 
 export default class Message implements MessageInterface {
@@ -16,8 +16,8 @@ export default class Message implements MessageInterface {
     ticket_id: number;
     user_id: number;
     
-    created_at?: number;
-    updated_at?: number;
+    created_at?: string;
+    updated_at?: string;
 
     constructor(message: MessageInterface) {
         this.id = message.id;
