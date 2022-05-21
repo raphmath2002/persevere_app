@@ -1,0 +1,6 @@
+-- INSERT DATA INTO `options` TABLE --
+
+INSERT INTO `options` (`id`,`name`,`created_at`,`updated_at`) VALUES
+(1,'Option 1',CURRENT_TIMESTAMP(),CURRENT_TIMESTAMP()),
+(2,'Option 2',CURRENT_TIMESTAMP(),CURRENT_TIMESTAMP()),
+(3,'Option 3',CURRENT_TIMESTAMP(),CURRENT_TIMESTAMP());
