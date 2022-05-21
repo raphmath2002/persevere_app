@@ -11,4 +11,14 @@ use Illuminate\Database\Eloquent\Model;
 class Horse extends Model
 {
     use HasFactory;
+
+    /**
+     * Return pension instance
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function pension()
+    {
+        return $this->belongsTo(Pension::class);
+    }
 }

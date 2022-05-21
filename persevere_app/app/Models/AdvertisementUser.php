@@ -2,29 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Classe Message qui met en évidence ses relations
+ * Classe pour la table pivot AdvertisementUser mettant en évidence ses relations
  */
-class Message extends Model
+class AdvertisementUser extends Pivot
 {
-    use HasFactory;
-
     /**
-     * Return ticket instance
-     * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function ticket()
+    public function advertisement()
     {
-        return $this->belongsTo(Ticket::class);
+        return $this->belongsTo(Advertisement::class);
     }
 
     /**
-     * Return user instance
-     * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()

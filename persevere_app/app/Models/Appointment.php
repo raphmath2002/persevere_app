@@ -6,19 +6,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Classe Ticket qui met en évidence ses relations
+ * Classe Appointment qui met en évidence ses relations
  */
-class Ticket extends Model
+class Appointment extends Model
 {
     use HasFactory;
 
     /**
-     * Return user instance
+     * Return professional instance
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function professional()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Professional::class);
     }
 }

@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Classe Ticket qui met en évidence ses relations
+ * Classe Advertisement qui met en évidence ses relations
  */
-class Ticket extends Model
+class Advertisement extends Model
 {
     use HasFactory;
 
