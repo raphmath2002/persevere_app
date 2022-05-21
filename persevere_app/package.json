@@ -11,18 +11,21 @@
     },
     "devDependencies": {
         "@mdi/font": "^5.9.55",
+        "@popperjs/core": "^2.10.2",
         "axios": "^0.25",
+        "bootstrap": "^5.1.3",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
         "postcss": "^8.1.14",
-        "sass": "~1.32.12",
+        "resolve-url-loader": "^5.0.0",
+        "sass": "^1.32.11",
         "sass-loader": "^11.0.1",
         "typescript": "^3.9.9",
         "vue": "^2.6.14",
         "vue-class-component": "^6.3.2",
         "vue-loader": "^15.9.5",
         "vue-property-decorator": "^7.2.0",
-        "vue-router": "^3.5.1",
+        "vue-router": "^3.5.4",
         "vue-template-compiler": "^2.6.12",
         "vuex": "^3.6.2"
     },
@@ -30,7 +33,11 @@
         "@babel/plugin-proposal-decorators": "^7.17.12",
         "register-service-worker": "^1.7.2",
         "ts-loader": "^9.3.0",
+<<<<<<< HEAD
         "v-calendar": "^2.4.1",
+=======
+        "vue-axios": "^3.4.1",
+>>>>>>> origin/api
         "vue-simple-markdown": "^1.1.4",
         "vuetify": "^2.6.6",
         "vuex-persistedstate": "^4.0.0-beta.3"
