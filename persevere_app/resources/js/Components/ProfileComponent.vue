@@ -278,7 +278,7 @@ export default class ProfileComponent extends Vue {
                     'Authorization': 'Bearer' + this.user.api_token
                 }
             })
-            this.$store.commit('SET_USER', data as UserInterface);
+            this.$store.commit('SET_USER', data.res.data as UserInterface);
         }
 
         this.loading = false;
@@ -298,7 +298,7 @@ export default class ProfileComponent extends Vue {
                 }})
                
     
-                this.$store.commit('SET_USER', data as UserInterface)
+                this.$store.commit('SET_USER', data.res.data as UserInterface)
             }
         }
 
