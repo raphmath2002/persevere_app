@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\{Horse};
+use App\Http\Resources\{HorseResource};
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\URL;
+use Image;
 
 class HorseController extends Controller
 {
@@ -16,7 +21,11 @@ class HorseController extends Controller
     public function index()
     {
         $horses = Horse::all();
-        return response()->json($horses);
+
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => HorseResource::collection($horses)
+        ]]);
     }
 
     /**
@@ -27,30 +36,55 @@ class HorseController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'size' => 'required|numeric|max:255',
-            'weigth' => 'required|numeric|max:255',
-            'birth_date' => 'required|date|max:255',
+            'size' => 'required|numeric',
+            'weigth' => 'required|numeric',
+            'birth_date' => 'required|date',
             'sire_code' => 'required|string|max:255',
             'ueln_code' => 'required|string|max:255',
             'birth_country' => 'required|string|max:255',
-            'avatar_path' => 'required|string|max:255',
+            'sex' => 'required|string|max:255',
+            'storage_path' => 'required|string',
+            'pension_id' => 'required|integer',
         ]);
 
+        if($validator->fails()){
+            return response()->json(["res" => [
+                "code" => 400,
+                "error" => $validator->errors()
+            ]]);
+        }
+
         // Create new Horse instance
+        $inputs = $request->all();
+
         $horse = new Horse();
-        $horse->name = $validatedData['name'];
-        $horse->size = $validatedData['size'];
-        $horse->weigth = $validatedData['weigth'];
-        $horse->birth_date = $validatedData['birth_date'];
-        $horse->sire_code = $validatedData['sire_code'];
-        $horse->ueln_code = $validatedData['ueln_code'];
-        $horse->birth_country = $validatedData['birth_country'];
-        $horse->avatar_path = $validatedData['avatar_path'];
+        $horse->name = $inputs['name'];
+        $horse->size = $inputs['size'];
+        $horse->weigth = $inputs['weigth'];
+        $horse->birth_date = $inputs['birth_date'];
+        $horse->sire_code = $inputs['sire_code'];
+        $horse->ueln_code = $inputs['ueln_code'];
+        $horse->birth_country = $inputs['birth_country'];
+        $horse->sex = $inputs['sex'];
+        $horse->pension_id = $inputs['pension_id'];
+
+        // Photo storage
+        $make_image = Image::make($inputs['storage_path']);
+        $type = $make_image->mime();
+        $extension_path = explode("/", $type)[1];
+
+        $url = 'img_uploads/img_horses/'.trim($horse->name).'.'.$extension_path.'';
+        $make_image->save(public_path($url));
+        $horse->storage_path = URL::asset($url);
+
         $horse->save();
 
-        return response()->json('Cheval ajouté avec succès !');
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => new HorseResource($horse)
+        ]]);
     }
 
     /**
@@ -61,7 +95,10 @@ class HorseController extends Controller
      */
     public function edit(Horse $horse)
     {
-        return response()->json($horse);
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => new HorseResource($horse)
+        ]]);
     }
 
     /**
@@ -73,29 +110,86 @@ class HorseController extends Controller
      */
     public function update(Request $request, Horse $horse)
     {
-        $validatedData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'size' => 'required|numeric|max:255',
-            'weigth' => 'required|numeric|max:255',
-            'birth_date' => 'required|date|max:255',
+            'size' => 'required|numeric',
+            'weigth' => 'required|numeric',
+            'birth_date' => 'required|date',
             'sire_code' => 'required|string|max:255',
             'ueln_code' => 'required|string|max:255',
             'birth_country' => 'required|string|max:255',
-            'avatar_path' => 'required|string|max:255',
+            'sex' => 'required|string|max:255',
+            'pension_id' => 'nullable|integer',
         ]);
 
+        if($validator->fails()){
+            return response()->json(["res" => [
+                "code" => 400,
+                "error" => $validator->errors()
+            ]]);
+        }
+
         // Update Horse
-        $horse->name = $validatedData['name'];
-        $horse->size = $validatedData['size'];
-        $horse->weigth = $validatedData['weigth'];
-        $horse->birth_date = $validatedData['birth_date'];
-        $horse->sire_code = $validatedData['sire_code'];
-        $horse->ueln_code = $validatedData['ueln_code'];
-        $horse->birth_country = $validatedData['birth_country'];
-        $horse->avatar_path = $validatedData['avatar_path'];
+        $inputs = $request->all();
+        
+        $horse->name = $inputs['name'];
+        $horse->size = $inputs['size'];
+        $horse->weigth = $inputs['weigth'];
+        $horse->birth_date = $inputs['birth_date'];
+        $horse->sire_code = $inputs['sire_code'];
+        $horse->ueln_code = $inputs['ueln_code'];
+        $horse->birth_country = $inputs['birth_country'];
+        $horse->sex = $inputs['sex'];
+        $horse->pension_id = $inputs['pension_id'];
         $horse->update();
 
-        return response()->json('Cheval mis à jour avec succès !');
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => new HorseResource($horse)
+        ]]);
+    }
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Horse $horse
+     * @return \Illuminate\Http\Response
+     */
+    public function update_photo(Request $request, Horse $horse)
+    {
+        $validator = Validator::make($request->all(), [
+            'storage_path' => 'required|string',
+        ]);
+
+        if($validator->fails()){
+            return response()->json(["res" => [
+                "code" => 400,
+                "error" => $validator->errors()
+            ]]);
+        }
+
+        // Update photo
+        $inputs = $request->all();
+
+        $make_image = Image::make($inputs['storage_path']);
+        $type = $make_image->mime();
+        $extension_path = explode("/", $type)[1];
+
+        $url = 'img_uploads/img_horses/'.trim($horse->name).'.'.$extension_path.'';
+        $make_image->save(public_path($url));
+        $horse->storage_path = URL::asset($url);
+
+        // Delete old photo
+        if(file_exists($inputs['storage_path'])){
+            unlink($inputs['storage_path']);
+        }
+
+        $horse->update();
+
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => new HorseResource($horse)
+        ]]);
     }
 
     /**
@@ -108,6 +202,9 @@ class HorseController extends Controller
     {
         $horse->delete();
 
-        return response()->json('Cheval supprimé avec succès !');
+        return response()->json(["res" => [
+            "code" => 200,
+            "message" => "Cheval supprimé avec succès !"
+        ]]);
     }
 }

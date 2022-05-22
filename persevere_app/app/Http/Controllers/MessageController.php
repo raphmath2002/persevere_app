@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\{Message,Ticket};
+use App\Models\{Message};
+use App\Http\Resources\{MessageResource};
+use Illuminate\Support\Facades\Validator;
 use Auth;
 
 class MessageController extends Controller
@@ -17,7 +19,11 @@ class MessageController extends Controller
     public function index()
     {
         $messages = Message::all();
-        return response()->json($messages);
+
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => MessageResource::collection($messages)
+        ]]);
     }
 
     /**
@@ -26,20 +32,33 @@ class MessageController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Ticket $ticket)
+    public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'content' => 'required|string|max:2048',
+            'ticket_id' => 'required|integer',
         ]);
 
+        if($validator->fails()){
+            return response()->json(["res" => [
+                "code" => 400,
+                "error" => $validator->errors()
+            ]]);
+        }
+
         // Create new Message instance
+        $inputs = $request->all();
+
         $message = new Message();
-        $message->content = $validatedData['content'];
-        $message->ticket_id = $ticket->id;
+        $message->content = $inputs['content'];
+        $message->ticket_id = $inputs['ticket_id'];
         $message->user_id = Auth::user()->id;
         $message->save();
 
-        return response()->json('Message ajouté avec succès !');
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => new MessageResource($message)
+        ]]);
     }
 
     /**
@@ -50,7 +69,10 @@ class MessageController extends Controller
      */
     public function edit(Message $message)
     {
-        return response()->json($message);
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => new MessageResource($message)
+        ]]);
     }
 
     /**
@@ -62,15 +84,27 @@ class MessageController extends Controller
      */
     public function update(Request $request, Message $message)
     {
-        $validatedData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'content' => 'required|string|max:2048',
         ]);
 
+        if($validator->fails()){
+            return response()->json(["res" => [
+                "code" => 400,
+                "error" => $validator->errors()
+            ]]);
+        }
+
         // Update Message
-        $message->content = $validatedData['content'];
+        $inputs = $request->all();
+        
+        $message->content = $inputs['content'];
         $message->update();
 
-        return response()->json('Message mis à jour avec succès !');
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => new MessageResource($message)
+        ]]);
     }
 
     /**
@@ -83,6 +117,9 @@ class MessageController extends Controller
     {
         $message->delete();
 
-        return response()->json('Message supprimé avec succès !');
+        return response()->json(["res" => [
+            "code" => 200,
+            "message" => "Message supprimé avec succès !"
+        ]]);
     }
 }

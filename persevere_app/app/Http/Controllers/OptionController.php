@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\{Option};
+use App\Http\Resources\{OptionResource};
+use Illuminate\Support\Facades\Validator;
 
 class OptionController extends Controller
 {
@@ -16,7 +18,11 @@ class OptionController extends Controller
     public function index()
     {
         $options = Option::all();
-        return response()->json($options);
+
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => OptionResource::collection($options)
+        ]]);
     }
 
     /**
@@ -27,16 +33,32 @@ class OptionController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'description' => 'required|string|max:2048',
         ]);
 
+        if($validator->fails()){
+            return response()->json(["res" => [
+                "code" => 400,
+                "error" => $validator->errors()
+            ]]);
+        }
+
         // Create new Option instance
+        $inputs = $request->all();
+
         $option = new Option();
-        $option->name = $validatedData['name'];
+        $option->name = $inputs['name'];
+        $option->price = $inputs['price'];
+        $option->description = $inputs['description'];
         $option->save();
 
-        return response()->json('Option ajoutée avec succès !');
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => new OptionResource($option)
+        ]]);
     }
 
     /**
@@ -47,7 +69,10 @@ class OptionController extends Controller
      */
     public function edit(Option $option)
     {
-        return response()->json($option);
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => new OptionResource($option)
+        ]]);
     }
 
     /**
@@ -59,15 +84,31 @@ class OptionController extends Controller
      */
     public function update(Request $request, Option $option)
     {
-        $validatedData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'description' => 'required|string|max:2048',
         ]);
 
+        if($validator->fails()){
+            return response()->json(["res" => [
+                "code" => 400,
+                "error" => $validator->errors()
+            ]]);
+        }
+
         // Update Option
-        $option->name = $validatedData['name'];
+        $inputs = $request->all();
+        
+        $option->name = $inputs['name'];
+        $option->price = $inputs['price'];
+        $option->description = $inputs['description'];
         $option->update();
 
-        return response()->json('Option mise à jour avec succès !');
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => new OptionResource($option)
+        ]]);
     }
 
     /**
@@ -80,6 +121,9 @@ class OptionController extends Controller
     {
         $option->delete();
 
-        return response()->json('Option supprimée avec succès !');
+        return response()->json(["res" => [
+            "code" => 200,
+            "message" => "Option supprimée avec succès !"
+        ]]);
     }
 }

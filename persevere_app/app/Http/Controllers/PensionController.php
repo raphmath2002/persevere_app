@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\{Pension};
+use App\Http\Resources\{PensionResource};
+use Illuminate\Support\Facades\Validator;
 
 class PensionController extends Controller
 {
@@ -16,7 +18,11 @@ class PensionController extends Controller
     public function index()
     {
         $pensions = Pension::all();
-        return response()->json($pensions);
+
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => PensionResource::collection($pensions)
+        ]]);
     }
 
     /**
@@ -27,20 +33,32 @@ class PensionController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
             'description' => 'required|string|max:2048',
         ]);
 
+        if($validator->fails()){
+            return response()->json(["res" => [
+                "code" => 400,
+                "error" => $validator->errors()
+            ]]);
+        }
+
         // Create new Pension instance
+        $inputs = $request->all();
+
         $pension = new Pension();
-        $pension->name = $validatedData['name'];
-        $pension->price = $validatedData['price'];
-        $pension->description = $validatedData['description'];
+        $pension->name = $inputs['name'];
+        $pension->price = $inputs['price'];
+        $pension->description = $inputs['description'];
         $pension->save();
 
-        return response()->json('Pension ajoutée avec succès !');
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => new PensionResource($pension)
+        ]]);
     }
 
     /**
@@ -51,7 +69,10 @@ class PensionController extends Controller
      */
     public function edit(Pension $pension)
     {
-        return response()->json($pension);
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => new PensionResource($pension)
+        ]]);
     }
 
     /**
@@ -63,19 +84,31 @@ class PensionController extends Controller
      */
     public function update(Request $request, Pension $pension)
     {
-        $validatedData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
             'description' => 'required|string|max:2048',
         ]);
 
+        if($validator->fails()){
+            return response()->json(["res" => [
+                "code" => 400,
+                "error" => $validator->errors()
+            ]]);
+        }
+
         // Update Pension
-        $pension->name = $validatedData['name'];
-        $pension->price = $validatedData['price'];
-        $pension->description = $validatedData['description'];
+        $inputs = $request->all();
+        
+        $pension->name = $inputs['name'];
+        $pension->price = $inputs['price'];
+        $pension->description = $inputs['description'];
         $pension->update();
 
-        return response()->json('Pension mise à jour avec succès !');
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => new PensionResource($pension)
+        ]]);
     }
 
     /**
@@ -88,6 +121,9 @@ class PensionController extends Controller
     {
         $pension->delete();
 
-        return response()->json('Pension supprimée avec succès !');
+        return response()->json(["res" => [
+            "code" => 200,
+            "message" => "Pension supprimée avec succès !"
+        ]]);
     }
 }

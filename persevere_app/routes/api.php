@@ -53,6 +53,7 @@ Route::middleware('auth:api')->get('/horses', [HorseController::class, 'index'])
 Route::middleware('auth:api')->post('/horses/store', [HorseController::class, 'store']);
 Route::middleware('auth:api')->get('/horses/{horse}/edit', [HorseController::class, 'edit']);
 Route::middleware('auth:api')->put('/horses/{horse}/update', [HorseController::class, 'update']);
+Route::middleware('auth:api')->put('/horses/{horse}/update_photo', [HorseController::class, 'update_photo']);
 Route::middleware('auth:api')->delete('/horses/{horse}/destroy', [HorseController::class, 'destroy']);
 
 // Routes for messages

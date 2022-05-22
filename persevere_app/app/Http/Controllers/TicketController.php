@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\{Ticket};
+use App\Http\Resources\{TicketResource};
+use Illuminate\Support\Facades\Validator;
 use Auth;
 
 class TicketController extends Controller
@@ -17,7 +19,11 @@ class TicketController extends Controller
     public function index()
     {
         $tickets = Ticket::all();
-        return response()->json($tickets);
+
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => TicketResource::collection($tickets)
+        ]]);
     }
 
     /**
@@ -28,19 +34,31 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'content' => 'required|string|max:2048',
         ]);
 
+        if($validator->fails()){
+            return response()->json(["res" => [
+                "code" => 400,
+                "error" => $validator->errors()
+            ]]);
+        }
+
         // Create new Ticket instance
+        $inputs = $request->all();
+
         $ticket = new Ticket();
-        $ticket->title = $validatedData['title'];
-        $ticket->content = $validatedData['content'];
+        $ticket->title = $inputs['title'];
+        $ticket->content = $inputs['content'];
         $ticket->user_id = Auth::user()->id;
         $ticket->save();
 
-        return response()->json('Ticket ajouté avec succès !');
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => new TicketResource($ticket)
+        ]]);
     }
 
     /**
@@ -51,7 +69,10 @@ class TicketController extends Controller
      */
     public function edit(Ticket $ticket)
     {
-        return response()->json($ticket);
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => new TicketResource($ticket)
+        ]]);
     }
 
     /**
@@ -63,17 +84,29 @@ class TicketController extends Controller
      */
     public function update(Request $request, Ticket $ticket)
     {
-        $validatedData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'content' => 'required|string|max:2048',
         ]);
 
+        if($validator->fails()){
+            return response()->json(["res" => [
+                "code" => 400,
+                "error" => $validator->errors()
+            ]]);
+        }
+
         // Update Ticket
-        $ticket->title = $validatedData['title'];
-        $ticket->content = $validatedData['content'];
+        $inputs = $request->all();
+        
+        $ticket->title = $inputs['title'];
+        $ticket->content = $inputs['content'];
         $ticket->update();
 
-        return response()->json('Ticket mis à jour avec succès !');
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => new TicketResource($ticket)
+        ]]);
     }
 
     /**
@@ -86,6 +119,9 @@ class TicketController extends Controller
     {
         $ticket->delete();
 
-        return response()->json('Ticket supprimé avec succès !');
+        return response()->json(["res" => [
+            "code" => 200,
+            "ticket" => "Ticket supprimé avec succès !"
+        ]]);
     }
 }
