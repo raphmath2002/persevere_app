@@ -14,6 +14,8 @@
 import {Vue, Component} from "vue-property-decorator"
 import Information, {InformationInterface} from "../Types/Information"
 import NotificationComponent from '../Components/NotificationComponent.vue'
+import axios from 'axios'
+import { UserInterface } from "../Types/User"
 
 @Component({
     components: {
@@ -22,14 +24,13 @@ import NotificationComponent from '../Components/NotificationComponent.vue'
 })
 export default class Notifications extends Vue {
 
-    private infos: InformationInterface[] = [
-        {id: 1, title: "Rénovation du garage", markdown: "# Yo\n* Salut\n * coucou\n[test](https://google.fr)"}
-    ]
+    private get infos(): InformationInterface[] {
+        return this.$store.state.notifs;
+    }
 
-    /*
-    private get infos(): InformationInterface {
-        return this.$store.state.informations;
-    }*/
+    private get user(): UserInterface{
+        return this.$store.state.user;
+    }
 }
 
 </script>

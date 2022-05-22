@@ -18,8 +18,6 @@ export interface UserInterface {
     auth_level: string;
 
     horses?: HorseInterface[];
-    options?: OptionInterface[];
-    pensions?: PensionInterface[];
     api_token?: string;
     created_at?: string;
     updated_at?: string;
@@ -41,8 +39,6 @@ export default class User implements UserInterface {
     auth_level: string;
 
     horses?: HorseInterface[];
-    options?: OptionInterface[];
-    pensions?: PensionInterface[];
     api_token?: string;
     created_at?: string;
     updated_at?: string;
@@ -62,8 +58,6 @@ export default class User implements UserInterface {
         this.auth_level = user.auth_level;
         this.horses = user.horses;
         
-        this.options = user.options;
-        this.pensions = user.pensions;
         this.api_token = user.api_token;
         this.created_at = user.created_at;
         this.updated_at = user.updated_at;

@@ -12,7 +12,7 @@
       </div>
 
       <nav class="middle-menu">
-        <ul>
+        <ul v-if="user.auth_level='customer'">
           <li @click="goToRoute('home')">
             <v-icon color="black" size="40px">mdi-home</v-icon>
             <span>Accueil</span>
@@ -33,6 +33,10 @@
             <span>Mon planning</span>
           </li>
         </ul>
+
+        <ul v-else>
+          
+        </ul>
       </nav>
 
       <div @click="goToRoute('profile')" class="bottom-menu">
@@ -47,11 +51,11 @@
 
     <div v-if="logged" class="mobile-burger">
       <div class="mobile-burger-btns d-flex justify-space-between align-center"> 
-          <div  class="mobile-burger-btn">
-            <v-icon @click="switchMobileMenu" size="50px">mdi-menu</v-icon>
+          <div @click="switchMobileMenu"  class="mobile-burger-btn">
+            <v-icon  size="50px">mdi-menu</v-icon>
           </div>
 
-          <div @click="goToRoute('notifications')" class="mobile-burger-btn notif">
+          <div @click="goToRoute('notifications', false)" class="mobile-burger-btn notif">
             <v-icon v-if="!haveNotif" size="40px">mdi-bell</v-icon>
             <v-icon v-else size="40px">mdi-bell-badge</v-icon>
           </div>
@@ -81,8 +85,8 @@ export default class App extends Vue {
     return this.$store.state.notifications;
   }
 
-  private goToRoute(route: string): void {
-    this.switchMobileMenu();
+  private goToRoute(route: string, switchMenu=true): void {
+    if(switchMenu) this.switchMobileMenu();
     this.$router.push({name: route});
   }
 
@@ -108,6 +112,10 @@ export default class App extends Vue {
 
   private get logged(): boolean {
     return this.$store.state.logged;
+  }
+
+  async mounted() {
+    await this.$store.dispatch('updateNotifs');
   }
 }
 </script>

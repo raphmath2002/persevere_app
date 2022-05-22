@@ -67,25 +67,13 @@
 
                    <v-card-text>
                         <div class="treatments">
-                            <div class="treatment">
-                                <span class="treatment-name">Vermifugation</span>
-                                <span class="treatment-date">Prodigué le 12/05/2020</span>
-                            </div>
-                        </div>
-
-                        
-                        <div class="treatments">
-                            <div class="treatment">
-                                <span class="treatment-name">Vermifugation</span>
-                                <span class="treatment-date">Prodigué le 12/05/2020</span>
-                            </div>
-                        </div>
-
-                        
-                        <div class="treatments">
-                            <div class="treatment">
-                                <span class="treatment-name">Vermifugation</span>
-                                <span class="treatment-date">Prodigué le 12/05/2020</span>
+                            <div
+                                v-for="treatment in past_treatments"
+                                :key="treatment.id" 
+                                class="treatment"
+                            >
+                                <span class="treatment-name">{{treatment.cares}}</span>
+                                <span class="treatment-date">Prodigué le {{treatment.end_date}}</span>
                             </div>
                         </div>
                    </v-card-text>
@@ -98,12 +86,20 @@
 
                    <v-card-text>
                        <ul>
-                           <li><span>SIRE :</span> 7878451515</li>
-                           <li><span>UELN :</span> 7878451515</li>
-                           <li><span>Né(e) le :</span> 19/03/2015</li>
-                           <li><span>Pays :</span> FRANCE</li>
+                           <li><span>SIRE :</span> {{horse.sire_code}}</li>
+                           <li><span>UELN :</span> {{horse.ueln_code}}</li>
+                           <li><span>Né(e) le :</span> {{horse.birth_date}}</li>
+                           <li><span>Pays :</span> {{horse.birth_country}}</li>
                        </ul>
                    </v-card-text>
+               </v-card>
+
+               <v-card class="card">
+                   <v-card-title>
+                       <span class="card-title">Souscriptions</span>
+                   </v-card-title>
+
+                   <SubscriptionComponent :horse="horse" />
                </v-card>
             </v-card-text>
         </v-card>
@@ -115,12 +111,20 @@
 import {Vue, Component, Prop} from "vue-property-decorator"
 
 import Horse, {HorseInterface} from '../Types/Horse'
+import SubscriptionComponent from "../Components/SubscriptionComponent.vue"
 
-@Component
+
+@Component({
+    components: {
+        SubscriptionComponent
+    }
+})
 export default class FacilityComponent extends Vue {
     @Prop({default: Horse.emptyHorse()}) readonly horse!: HorseInterface
 
     private horseDetailsDialog = false;
+
+    private past_treatments = [];
 
     private get sexIcon(): {icon: string, color: string} {
         if(this.horse) {
@@ -132,9 +136,6 @@ export default class FacilityComponent extends Vue {
             }
         } 
         return {icon: "mdi-gender-male", color: "blue"}
-    }
-    mounted() {
-        console.log(this.horse)
     }
 
 }

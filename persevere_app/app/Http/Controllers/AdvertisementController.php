@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\{Advertisement};
+use App\Models\{Advertisement, User, AdvertisementUser};
 use App\Http\Resources\{AdvertisementResource};
 use Illuminate\Support\Facades\Validator;
 use Auth;
@@ -123,5 +123,28 @@ class AdvertisementController extends Controller
             "code" => 200,
             "message" => "Annonce supprimée avec succès !"
         ]]);
+    }
+
+    public function getAdvertsByUser(User $user) {
+        $adverts = Advertisement::all();
+
+        $user_reads = $user->advertisement_user->pluck('pivot.advertisement_id')->all();
+
+        $non_reads = [];
+
+        foreach ($adverts as $advert) {
+            if(!in_array($advert->id, $user_reads)) array_push($non_reads, $advert);
+        }
+
+        return response()->json(["success" => AdvertisementResource::collection($non_reads)]);
+    }
+
+    public function markAdvertAsRead(User $user, Advertisement $advert) {
+        $advert_user = new AdvertisementUser();
+        $advert_user->user_id = $user->id;
+        $advert_user->advertisement_id = $advert->id;
+        $advert_user->save();
+
+        return response()->json(["success" => "Notification supprimée !"]);
     }
 }

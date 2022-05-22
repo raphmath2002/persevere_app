@@ -5,6 +5,7 @@ import axios from 'axios';
 import store from './index';
 import { HorseInterface } from '../Types/Horse';
 import { UserInterface } from '../Types/User';
+import { InformationInterface } from '../Types/Information';
 
 Vue.use(Vuex);
 
@@ -24,16 +25,31 @@ export default new Vuex.Store({
     SET_USER(state, user: UserInterface) {
       state.user = user
     },
+
     SHOW_INTERFACE(state, mode: boolean) {
       state.show_interface = mode;
     },
 
     LOGGED(state, logged: boolean) {
       state.logged = logged;
+    },
+
+    SET_NOTIFICATIONS(state, notifications: InformationInterface) {
+      state.notifs = notifications;
     }
   },
   actions: {
+    async updateNotifs({state, commit}) {
+      let {data} = await axios.get(`http://localhost:8000/api/users/${state.user?.id}/advertisements`, {
+          headers: {
+              'Authorization': 'Bearer ' + state.user?.api_token
+          }
+      })
 
+      if(data.success) {
+          commit('SET_NOTIFICATIONS', data.success)
+      }
+    }
   },
   modules: {},
   getters: {}

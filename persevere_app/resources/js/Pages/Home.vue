@@ -17,30 +17,13 @@
 
                         <div class="preview-container">
                             
-                            <v-img
+                            <v-img 
+                                v-for="horse in user.horses"
+                                :key="horse.id"
                                 class="horse"
                                 height="100"
-                                src="https://picsum.photos/200/300"
+                                :src="horse.storage_path"
                             ></v-img>
-
-                            <v-img
-                                class="horse"
-                                height="100"
-                                src="https://picsum.photos/200/300"
-                            ></v-img>
-
-                            <v-img
-                                class="horse"
-                                height="100"
-                                src="https://picsum.photos/200/300"
-                            ></v-img>
-
-                            <v-img
-                                class="horse"
-                                height="100"
-                                src="https://picsum.photos/200/300"
-                            ></v-img>
-
                         </div>
                     </div>
                 </v-container>
@@ -85,13 +68,23 @@
 
 import {Vue, Component} from "vue-property-decorator"
 import Horse, {HorseInterface} from '../Types/Horse'
+import { UserInterface } from "../Types/User";
 
 @Component
 export default class Home extends Vue {
-    async mounted() {
-        // TODO check user connecté
-        if(1!=1) this.$router.push({name: 'login'});
+    private get logged(): boolean{
+        return this.$store.state.logged;
     }
+
+    private get user(): UserInterface{
+        return this.$store.state.user;
+    }
+
+    async mounted() {
+        if(!this.logged) this.$router.push({name: 'login'});
+    }
+
+
 
     private horses: HorseInterface[]
 
@@ -126,8 +119,6 @@ export default class Home extends Vue {
         max-height: 100px;
 
         margin: 0 15px 0 15px;
-
-        border: solid blue 1px;
 
         border-radius: 50px;
     }
