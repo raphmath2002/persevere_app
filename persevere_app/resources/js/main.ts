@@ -7,8 +7,11 @@ import App from './App.vue';
 import vuetify from './Vuetify/index';
 
 import VCalendar from 'v-calendar';
+import VueSimpleMarkdown from 'vue-simple-markdown'
+import 'vue-simple-markdown/dist/vue-simple-markdown.css'
 
 
+Vue.use(VueSimpleMarkdown);
 Vue.use(VueRouter);
 Vue.use(VCalendar)
 

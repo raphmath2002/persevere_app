@@ -2,7 +2,6 @@
     <v-container>
         <div class="profile-component">
 
-        
         <div class="d-flex justify-space-between">
             <h1>Profil</h1>
             <v-progress-circular
@@ -33,7 +32,6 @@
 
                 <div class="informations-edit-container section">
                     <h2>Informations</h2>
-                    
                     <v-form>
                         <v-container>
                             <v-row>
@@ -146,6 +144,11 @@
                                 </ul>
                             </div>
                         </v-col>
+                        
+                        <v-col>
+                            <span v-if="!user.pensions || user.pensions.length == 0">Cet utilisateur n'a pas de pension</span>
+
+                        </v-col>
 
                     </v-row>
 
@@ -161,8 +164,11 @@
                             </div>
                         </v-col>
 
+                        <v-col>
+                            <span v-if="!user.options || user.options.length == 0">Cet utilisateur n'a pas d'option</span>
+                        </v-col>
+                        
                     </v-row>
-                    
                 </div>
 
                 <div class="bills-container">
@@ -199,7 +205,7 @@
                             @click:append="() => (hasPassword = !hasPassword)"
                             :type="hasPassword ? 'password' : 'text'"
                             :rules="rules.passwordRules"
-                            @input="_=>loginInfo.password=_"
+                            @input="_=>passwords.new_password=_"
                         ></v-text-field>
                         </v-col>
 
@@ -220,8 +226,27 @@
                 </v-form>
             </div>
         </v-container>
+
+         <v-snackbar
+            v-model="snackbar"
+            :timeout="3000"
+            color="red"
+        >
+            {{ error_text }}
+
+            <template v-slot:action="{ attrs }">
+                <v-btn
+                    color="black"
+                    text
+                    v-bind="attrs"
+                    @click="snackbar = false"
+                >
+                    <v-icon>mdi-close</v-icon>
+                </v-btn>
+            </template>
+        </v-snackbar>
         
-        <v-btn @click="save">Sauvegarder</v-btn>
+        <v-btn @click="save" v-if="selected_section != 'Souscription'">Sauvegarder</v-btn>
 
         </div>
     </v-container>
@@ -251,6 +276,14 @@ export default class ProfileComponent extends Vue {
         confirm_password: ""
     }
 
+    private displayError(message: string): void {
+        this.error_text = message;
+        this.snackbar = true;
+    }
+
+    private error_text = ""
+    private snackbar = false
+
     private hasPassword = true;
 
     private rules = {
@@ -271,6 +304,12 @@ export default class ProfileComponent extends Vue {
     }
 
     private async save() {
+
+        if(this.selected_section == 'Mot de passe') {
+            this.changePassword();
+            return
+        }
+
         this.loading = true;
         if(!this.create) {
             let {data} = await axios.put(`http://localhost:8000/api/users/${this.user?.id}/update`, this.new_user, {
@@ -278,7 +317,15 @@ export default class ProfileComponent extends Vue {
                     'Authorization': 'Bearer' + this.user.api_token
                 }
             })
-            this.$store.commit('SET_USER', data.res.data as UserInterface);
+
+            if(data.success) {
+                this.$store.commit('SET_USER', data.success as UserInterface);
+            } else if (data.error) {
+                this.displayError(data.error)
+            } else {
+                console.log(data)
+            }
+            
         }
 
         this.loading = false;
@@ -297,13 +344,34 @@ export default class ProfileComponent extends Vue {
                     "Authorization": 'Bearer ' + this.user?.api_token
                 }})
                
-    
-                this.$store.commit('SET_USER', data.res.data as UserInterface)
+                if(data.success) {
+                    this.$store.commit('SET_USER', data.success as UserInterface);
+                } else if (data.error) {
+                    this.displayError(data.error)
+                } else {
+                    console.log(data)
+                }
             }
         }
 
         await reader.readAsDataURL(event.target.files[0])
 
+        this.loading = false;
+    }
+
+    private async changePassword(): Promise<void> {
+        this.loading = true;
+        let {data} = await axios.put(`http://localhost:8000/api/users/${this.user?.id}/update_password`, this.passwords, {headers: {
+            "Authorization": 'Bearer ' + this.user?.api_token
+        }})
+
+        if(data.success) {
+            this.displayError(data.success)
+        } else if (data.error) {
+            this.displayError(data.error)
+        } else {
+            console.log(data)
+        }
         this.loading = false;
     }
     

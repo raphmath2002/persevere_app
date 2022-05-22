@@ -18,6 +18,7 @@ export default new Vuex.Store({
     show_interface: false,
     notifications: false,
     mobile: false,
+    notifs: null
   },
   mutations: {
     SET_USER(state, user: UserInterface) {
@@ -31,8 +32,9 @@ export default new Vuex.Store({
       state.logged = logged;
     }
   },
-  actions: {},
-  modules: {
+  actions: {
+
   },
+  modules: {},
   getters: {}
 })

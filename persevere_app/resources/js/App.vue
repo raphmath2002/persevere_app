@@ -47,11 +47,11 @@
 
     <div v-if="logged" class="mobile-burger">
       <div class="mobile-burger-btns d-flex justify-space-between align-center"> 
-          <div @click="switchMobileMenu" class="mobile-burger-btn">
-            <v-icon size="50px">mdi-menu</v-icon>
+          <div  class="mobile-burger-btn">
+            <v-icon @click="switchMobileMenu" size="50px">mdi-menu</v-icon>
           </div>
 
-          <div class="mobile-burger-btn notif">
+          <div @click="goToRoute('notifications')" class="mobile-burger-btn notif">
             <v-icon v-if="!haveNotif" size="40px">mdi-bell</v-icon>
             <v-icon v-else size="40px">mdi-bell-badge</v-icon>
           </div>

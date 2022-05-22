@@ -5,6 +5,7 @@ import Home from '../Pages/Home.vue'
 import Login from '../Pages/Login.vue'
 import Horses from '../Pages/Horses.vue'
 import Profile from '../Pages/Profile.vue'
+import Notifications from '../Pages/Notifications.vue'
 
 
 const routes: Array<RouteConfig> = [
@@ -12,6 +13,12 @@ const routes: Array<RouteConfig> = [
         path: '/',
         name: 'home',
         component: Home
+    },
+
+    {
+      path: '/notifications',
+      name: "notifications",
+      component: Notifications
     },
 
     {
@@ -30,7 +37,11 @@ const routes: Array<RouteConfig> = [
       path: '/profile',
       name: "profile",
       component: Profile
-    }
+    },
+
+    
+
+
 ]
 
 const router = new VueRouter({

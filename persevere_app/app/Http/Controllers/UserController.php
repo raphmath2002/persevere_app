@@ -24,10 +24,7 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => UserResource::collection($users)
-        ]]);
+        return response()->json(["success" => UserResource::collection($users)]);
     }
 
     /**
@@ -54,10 +51,7 @@ class UserController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Create new User instance
@@ -87,10 +81,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new UserResource($user)
-        ]]);
+        return response()->json(["success" => new UserResource($user)]);
     }
 
     /**
@@ -101,10 +92,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new UserResource($user)
-        ]]);
+        return response()->json(["success" => new UserResource($user)]);
     }
 
     /**
@@ -129,10 +117,7 @@ class UserController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_arror" => $validator->errors()]);
         }
 
         // Update User
@@ -149,10 +134,7 @@ class UserController extends Controller
         $user->country = $inputs['country'];
         $user->update();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new UserResource($user)
-        ]]);
+        return response()->json(["success" => new UserResource($user)]);
     }
 
     /**
@@ -169,10 +151,7 @@ class UserController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Update photo
@@ -193,10 +172,7 @@ class UserController extends Controller
 
         $user->update();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new UserResource($user)
-        ]]);
+        return response()->json(["success" => new UserResource($user)]);
     }
 
     /**
@@ -215,10 +191,7 @@ class UserController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Update password
@@ -232,21 +205,17 @@ class UserController extends Controller
             $user->password = $new_password;
             $user->update();
 
-            return response()->json(["res" => [
-                "code" => 200,
-                "message" => "Mot de passe changé !"
-            ]]);
+            return response()->json(["success" => new UserResource($user)]);
         }
 
         if(Hash::check($old_password, $user->password)){ // Compare old password
             $user->password = $new_password;
             $user->update();
+        } else {
+            return response()->json(["error" => "Identifiants invalide !"]);
         }
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new UserResource($user)
-        ]]);
+        return response()->json(["success" => "Mot de passe changé"]);
     }
 
     /**
@@ -259,9 +228,6 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => "Utilisateur supprimé avec succès !"
-        ]]);
+        return response()->json(["success" => "Utilisateur supprimé avec succès !"]);
     }
 }
