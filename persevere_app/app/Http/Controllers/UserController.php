@@ -22,7 +22,10 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        return response()->json(UserResource::collection($users));
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => UserResource::collection($users)
+        ]]);
     }
 
     /**
@@ -49,7 +52,10 @@ class UserController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json($validator->errors());
+            return response()->json(["res" => [
+                "code" => 400,
+                "error" => $validator->errors()
+            ]]);
         }
 
         // Create new User instance
@@ -79,7 +85,10 @@ class UserController extends Controller
 
         $user->save();
 
-        return response()->json(new UserResource($user));
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => new UserResource($user)
+        ]]);
     }
 
     /**
@@ -90,7 +99,10 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return response()->json(new UserResource($user));
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => new UserResource($user)
+        ]]);
     }
 
     /**
@@ -115,7 +127,10 @@ class UserController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json($validator->errors());
+            return response()->json(["res" => [
+                "code" => 400,
+                "error" => $validator->errors()
+            ]]);
         }
 
         // Update User
@@ -132,7 +147,10 @@ class UserController extends Controller
         $user->country = $inputs['country'];
         $user->update();
 
-        return response()->json(new UserResource($user));
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => new UserResource($user)
+        ]]);
     }
 
     /**
@@ -149,7 +167,10 @@ class UserController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json($validator->errors());
+            return response()->json(["res" => [
+                "code" => 400,
+                "error" => $validator->errors()
+            ]]);
         }
 
         // Update photo
@@ -170,7 +191,10 @@ class UserController extends Controller
 
         $user->update();
 
-        return response()->json(new UserResource($user));
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => new UserResource($user)
+        ]]);
     }
 
     /**
@@ -189,7 +213,10 @@ class UserController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json($validator->errors());
+            return response()->json(["res" => [
+                "code" => 400,
+                "error" => $validator->errors()
+            ]]);
         }
 
         // Update password
@@ -203,7 +230,10 @@ class UserController extends Controller
             $user->update();
         }
 
-        return response()->json(new UserResource($user));
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => new UserResource($user)
+        ]]);
     }
 
     /**
@@ -216,6 +246,9 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return response()->json('Utilisateur supprimé avec succès !');
+        return response()->json(["res" => [
+            "code" => 200,
+            "data" => "Utilisateur supprimé avec succès !"
+        ]]);
     }
 }

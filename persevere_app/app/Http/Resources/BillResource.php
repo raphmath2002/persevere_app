@@ -19,6 +19,7 @@ class BillResource extends JsonResource
             'reference' => $this->reference,
             'start_date' => $this->start_date,
             'pricing' => $this->pricing,
+            'user' => $this->user,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

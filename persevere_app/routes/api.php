@@ -48,6 +48,7 @@ Route::get('/horses', [HorseController::class, 'index']);
 Route::post('/horses/store', [HorseController::class, 'store']);
 Route::get('/horses/{horse}/edit', [HorseController::class, 'edit']);
 Route::put('/horses/{horse}/update', [HorseController::class, 'update']);
+Route::put('/horses/{horse}/update_photo', [HorseController::class, 'update_photo']);
 Route::delete('/horses/{horse}/destroy', [HorseController::class, 'destroy']);
 
 // Routes for messages
