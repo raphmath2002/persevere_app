@@ -11,4 +11,14 @@ use Illuminate\Database\Eloquent\Model;
 class FacilitiesImage extends Model
 {
     use HasFactory;
+
+    /**
+     * Return facility instance
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function facility()
+    {
+        return $this->hasOne(Facility::class);
+    }
 }

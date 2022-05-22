@@ -16,6 +16,7 @@ class AdvertisementResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'title' => $this->title,
             'markdown' => $this->markdown,
             'user' => $this->user,
             'created_at' => $this->created_at,

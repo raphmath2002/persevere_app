@@ -35,6 +35,7 @@ class AdvertisementController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
             'markdown' => 'required|string',
         ]);
 
@@ -49,6 +50,7 @@ class AdvertisementController extends Controller
         $inputs = $request->all();
 
         $advertisement = new Advertisement();
+        $advertisement->title = $inputs['title'];
         $advertisement->markdown = $inputs['markdown'];
         $advertisement->user_id = Auth::user()->id;
         $advertisement->save();
@@ -83,6 +85,7 @@ class AdvertisementController extends Controller
     public function update(Request $request, Advertisement $advertisement)
     {
         $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
             'markdown' => 'required|string',
         ]);
 
@@ -96,6 +99,7 @@ class AdvertisementController extends Controller
         // Update Advertisement
         $inputs = $request->all();
         
+        $advertisement->title = $inputs['title'];
         $advertisement->markdown = $inputs['markdown'];
         $advertisement->update();
 

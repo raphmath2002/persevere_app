@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('advertisements', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
             $table->text('markdown');
             $table->foreignId("user_id")->unsigned()->nullable()->onDelete('set null');
             $table->timestamps();

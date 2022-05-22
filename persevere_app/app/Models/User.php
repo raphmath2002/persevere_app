@@ -13,32 +13,64 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
+     * Renvoi les informations
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    public function advertisement_user()
+    {
+        return $this->belongsToMany(Advertisement::class)
+                    ->using(AdvertisementUser::class)
+                    ->withPivot("id","created_at","updated_at");
+    }
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
+     * Renvoi les factures
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    public function bills()
+    {
+        return $this->hasMany(Bill::class);
+    }
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
+     * Renvoi les informations
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function advertisements()
+    {
+        return $this->hasMany(Advertisement::class);
+    }
+
+    /**
+     * Renvoi les messages
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
+
+    /**
+     * Renvoi les tickets
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
+
+    /**
+     * Renvoi les chevaux
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function horses()
+    {
+        return $this->hasMany(Horse::class);
+    }
 }
