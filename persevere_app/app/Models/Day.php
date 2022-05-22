@@ -11,4 +11,16 @@ use Illuminate\Database\Eloquent\Model;
 class Day extends Model
 {
     use HasFactory;
+
+    /**
+     * Renvoi les installations
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function day_facility()
+    {
+        return $this->belongsToMany(Facility::class)
+                    ->using(DayFacility::class)
+                    ->withPivot("id","created_at","updated_at");
+    }
 }

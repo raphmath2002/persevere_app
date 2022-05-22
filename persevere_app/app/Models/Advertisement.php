@@ -21,4 +21,16 @@ class Advertisement extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Renvoi les membres
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function advertisement_user()
+    {
+        return $this->belongsToMany(User::class)
+                    ->using(AdvertisementUser::class)
+                    ->withPivot("id","created_at","updated");
+    }
 }

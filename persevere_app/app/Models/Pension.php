@@ -11,4 +11,14 @@ use Illuminate\Database\Eloquent\Model;
 class Pension extends Model
 {
     use HasFactory;
+
+    /**
+     * Renvoi les pensions
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function pensions()
+    {
+        return $this->hasMany(Pension::class);
+    }
 }

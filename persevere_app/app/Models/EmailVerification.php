@@ -7,8 +7,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class EmailVerification extends Model
 {
-
-    protected $table = "email_verification";
-
     use HasFactory;
+
+    /**
+     * Return user instance
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
 }

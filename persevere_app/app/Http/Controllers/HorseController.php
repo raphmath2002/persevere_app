@@ -47,6 +47,7 @@ class HorseController extends Controller
             'sex' => 'required|string|max:255',
             'storage_path' => 'required|string',
             'pension_id' => 'required|integer',
+            'user_id' => 'required|integer',
         ]);
 
         if($validator->fails()){
@@ -69,6 +70,7 @@ class HorseController extends Controller
         $horse->birth_country = $inputs['birth_country'];
         $horse->sex = $inputs['sex'];
         $horse->pension_id = $inputs['pension_id'];
+        $horse->user_id = $inputs['user_id'];
 
         // Photo storage
         $make_image = Image::make($inputs['storage_path']);
@@ -120,6 +122,7 @@ class HorseController extends Controller
             'birth_country' => 'required|string|max:255',
             'sex' => 'required|string|max:255',
             'pension_id' => 'nullable|integer',
+            'user_id' => 'nullable|integer',
         ]);
 
         if($validator->fails()){
@@ -141,6 +144,7 @@ class HorseController extends Controller
         $horse->birth_country = $inputs['birth_country'];
         $horse->sex = $inputs['sex'];
         $horse->pension_id = $inputs['pension_id'];
+        $horse->user_id = $inputs['user_id'];
         $horse->update();
 
         return response()->json(["res" => [

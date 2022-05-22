@@ -13,11 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('advertisements', function (Blueprint $table) {
+        Schema::create('appointement_horse', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('markdown');
-            $table->foreignId("user_id")->unsigned()->nullable()->onDelete('set null');
+            $table->text('description');
+            $table->string('status');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->text('cares')->nullable();
+            $table->text('observations')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('advertisements');
+        Schema::dropIfExists('appointement_horse');
     }
 };

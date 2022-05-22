@@ -15,10 +15,22 @@ class Appointment extends Model
     /**
      * Return professional instance
      * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function professional()
     {
-        return $this->belongsTo(Professional::class);
+        return $this->hasOne(Professional::class);
+    }
+
+    /**
+     * Renvoi les chevaux
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function appointement_horse()
+    {
+        return $this->belongsToMany(Horse::class)
+                    ->using(AppointmentHorse::class)
+                    ->withPivot("id","title","description","status","start_date","end_date","cares","observations","created_at","updated_at");
     }
 }

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('sex');
             $table->string('storage_path');
             $table->foreignId("pension_id")->unsigned()->nullable()->onDelete('set null');
+            $table->foreignId("user_id")->constrained()->onDelete("cascade");
             $table->timestamps();
         });
     }

@@ -2646,7 +2646,7 @@ function (_super) {
 
           case 1:
             data = _b.sent().data;
-            this.$store.commit('SET_USER', data);
+            this.$store.commit('SET_USER', data.res.data);
             _b.label = 2;
 
           case 2:
@@ -2695,7 +2695,7 @@ function (_super) {
 
                     case 1:
                       data = _c.sent().data;
-                      this.$store.commit('SET_USER', data);
+                      this.$store.commit('SET_USER', data.res.data);
                       _c.label = 2;
 
                     case 2:
