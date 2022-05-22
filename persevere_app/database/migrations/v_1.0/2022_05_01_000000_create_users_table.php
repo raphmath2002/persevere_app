@@ -19,15 +19,15 @@ return new class extends Migration
             $table->string('firstname');
             $table->date('birth_date');
             $table->string('email')->unique();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->string('phone');
             $table->string('postal_code');
             $table->string('postal_address');
             $table->string('city');
             $table->string('country');
             $table->text('storage_path');
-            $table->rememberToken()->nullable();
             $table->string('auth_level');
+            $table->string('api_token')->nullable();
             $table->timestamps();
         });
     }

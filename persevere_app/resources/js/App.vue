@@ -71,31 +71,6 @@ import { HorseInterface } from './Types/Horse';
 @Component
 export default class App extends Vue {
 
-  private horses: HorseInterface[] = [
-        {id: 1, name: "Choupinette", size: 245, weigth: 400, birth_date: '20/03/2002', sire_code: '50022215547', ueln_code: '484888566', birth_country: 'Cazan', storage_path: 'https://picsum.photos/200/300', sex: "male", user_id: 1, created_at: "20/03/2002"},
-        {id: 2, name: "Petit Tonerre", size: 245, weigth: 400, birth_date: '20/03/2002', sire_code: '50022215547', ueln_code: '484888566', birth_country: 'Cazan', storage_path: 'https://picsum.photos/200/300', sex: "female", user_id: 1, created_at: "20/03/2002"},
-        {id: 3, name: "Tomate", size: 245, weigth: 400, birth_date: '20/03/2002', sire_code: '50022215547', ueln_code: '484888566', birth_country: 'Cazan', storage_path: 'https://picsum.photos/200/300', sex: "male", user_id: 1, created_at: "20/03/2002"},
-        {id: 4, name: "Mathieu", size: 245, weigth: 400, birth_date: '20/03/2002', sire_code: '50022215547', ueln_code: '484888566', birth_country: 'Cazan', storage_path: 'https://picsum.photos/200/300', sex: "male", user_id: 1, created_at: "20/03/2002"}
-    ]
-    
-  private userr: UserInterface = {
-      name: "Louis",
-      firstname: "Deguitre",
-      email: "louis@deguitre.fr",
-      phone: "0652130592",
-      postal_code: "13100",
-      postal_address: "Rue des potiers",
-      city: "Aix",
-      country: "France",
-      birth_date: "20/03/2002",
-      storage_path: "https://picsum.photos/200/300",
-      auth_level: "customer",
-      id: 1,
-      horses: this.horses,
-      options: [{name: "Suck cock", price: 135, description: "Tu suck cock", horse: this.horses[1], id: 1}, {name: "Suck cock", price: 135, description: "Tu suck cock", horse: this.horses[3], id: 2}],
-      pensions: [{name: "Cheval +", price: 354, description: "Acces à tout", horse: this.horses[0], id: 1}]
-  }
-
   private isMobileMenuOpen = false;
 
   private get user(): UserInterface {
@@ -133,10 +108,6 @@ export default class App extends Vue {
 
   private get logged(): boolean {
     return this.$store.state.logged;
-  }
-
-  mounted() {
-    this.$store.commit("SET_USER", this.userr)
   }
 }
 </script>

@@ -89,7 +89,7 @@
                         <v-col class="d-flex justify-center">
                             <v-btn
                                 color="primary"
-                                @click="step = 'password'"
+                                @click="checkCode"
                             >
                                 Confirmer
                             </v-btn>
@@ -107,7 +107,7 @@
                 @click="step = 'login'"
             >mdi-arrow-left-circle</v-icon>
             <div class="head-container d-flex flex-column align-center">
-                <h1>Bienvenue Louis Deguitre</h1>
+                <h1>Bienvenue {{user.name}} {{user.surname}}</h1>
                 <span>Veuillez changer votre mot de passe</span>
             </div>
 
@@ -121,13 +121,13 @@
                         >
                         <v-text-field
                             autocomplete="current-password"
-                            v-model="passwords.password"
+                            v-model="passwords.new_password"
                             label="Mot de passe"
                             :append-icon="hasPassword ? 'mdi-eye' : 'mdi-eye-off'"
                             @click:append="() => (hasPassword = !hasPassword)"
                             :type="hasPassword ? 'password' : 'text'"
                             :rules="rules.passwordRules"
-                            @input="_=>loginInfo.password=_"
+                            @input="_=>loginInfo.new_password=_"
                         ></v-text-field>
                         </v-col>
 
@@ -137,7 +137,7 @@
                         >
                         <v-text-field
                             autocomplete="current-password"
-                            v-model="passwords.confirmation"
+                            v-model="passwords.confirm_password"
                             label="Confirmation"
                             :rules="rules.passwordVerifRules"
                             type="password"
@@ -187,9 +187,14 @@
 
 import {Vue, Component} from "vue-property-decorator"
 import axios from "axios";
+import { UserInterface } from "../Types/User";
 
 @Component
 export default class Login extends Vue {
+
+    private get user(): UserInterface {
+        return this.$store.state.user
+    }
 
     private step = "login"
 
@@ -201,9 +206,11 @@ export default class Login extends Vue {
         password: ""
     }
 
-    private passwords: {password: string, confirmation: string} = {
-        password: "",
-        confirmation: ""
+    private passwords: {old_password: string, new_password: string, confirm_password: string} = {
+        
+        old_password: "nopassword",
+        new_password: "",
+        confirm_password: ""
     }
 
     private verification_code = ""
@@ -231,13 +238,13 @@ export default class Login extends Vue {
 
         verificationRules: [
             (v: string) => !!v || 'Code de verification requis',
-            (v: string) => v.length > 5 || 'Code mal formé',
+            (v: string) => (v && v.length > 5) || 'Code mal formé',
             (v: string) => this.validate_code(v) || 'Code invalide'
         ],
 
         passwordVerifRules: [
             (v: string) => !!v || 'Mot de passe requis',
-            (v: string) => v == this.passwords.password || 'Les mots de passes doivent correspondre',
+            (v: string) => v == this.passwords.new_password || 'Les mots de passes doivent correspondre',
         ]
     }
 
@@ -247,26 +254,70 @@ export default class Login extends Vue {
     }
 
     private async login(): Promise<void> {
-        // TODO check identifiants user
+        
+        await axios.post("http://localhost:8000/api/login", this.loginInfo).then((res: any) => {
+            
+            if(res.data.res?.data?.id) {
+                let user: UserInterface = res.data.res.data;
+                this.$store.commit('SET_USER', user);
+                this.$store.commit('SHOW_INTERFACE', true);
+                this.$store.commit('LOGGED', true);
+                this.$router.push({name: 'home'})
+            }
 
-        this.$store.commit('SHOW_INTERFACE', true);
-        this.$store.commit('LOGGED', true);
-        this.$router.push({name: 'home'})
+            else if(res.data.res.error) {
+                this.displayError(res.data.res.error)
+            }
+        });
     }
 
     private async goToVerif(): Promise<void> {
-
         if(!/.+@.+/.test(this.loginInfo.email)) this.displayError("Merci de renseigner un email valide")
         else {
-            // TODO check user inscrit
-            //this.displayError("Vous n'etes pas inscrit !")
-            this.step = 'verification'
+            await axios.post("http://localhost:8000/api/login", {email: this.loginInfo.email, password: "nopassword"}).then((res: any) => {
+                console.log(res)
+                if(res.data.res?.error) {
+                    this.displayError(res.data.res.error)
+                }
+
+                else {
+                    this.verification_code = res.data.res.data
+                    this.step = "verification"
+                }
+
+            })
+
         }
-        
+    }
+
+    private async checkCode(): Promise<void> {
+        await axios.post("http://localhost:8000/api/login/verifCode", {code: this.verification_code, email: this.loginInfo.email}).then((res: any) => {
+                if(res.data.res.error) {
+                    this.displayError(res.data.res.error)
+                }
+
+                else {
+                   this.$store.commit('SET_USER', res.data.res.data)
+                   this.step = "password"
+                }
+
+        })
     }
 
     private async changePassword(): Promise<void> {
-
+        await axios.put(`http://localhost:8000/api/users/${this.user.id}/update_password`, this.passwords, {
+            headers: {
+                'Authorization': 'Bearer ' + this.user.api_token
+            }
+        }).then((res:any) => {
+            console.log(res)
+            if(res.data.res.data) {
+                this.$store.commit('SET_USER', res.data.res.data);
+                this.$store.commit('SHOW_INTERFACE', true);
+                this.$store.commit('LOGGED', true);
+                this.$router.push({name: 'home'})
+            }
+        })
     }
 
     mounted() {

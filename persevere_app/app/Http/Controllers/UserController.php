@@ -9,10 +9,12 @@ use App\Http\Resources\{UserResource};
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 use Image;
 
 class UserController extends Controller
 {
+
     /**
      * Show users.
      *
@@ -159,7 +161,7 @@ class UserController extends Controller
         $type = $make_image->mime();
         $extension_path = explode("/", $type)[1];
 
-        $url = 'img_uploads/img_users/'.trim($user->firstname).'_'.trim($user->name).'.'.$extension_path.'';
+        $url = 'img_uploads/img_users/'. Str::random(15) .'.'.$extension_path.'';
         $make_image->save(public_path($url));
         $user->storage_path = URL::asset($url);
 
@@ -197,6 +199,17 @@ class UserController extends Controller
 
         $old_password = $inputs['old_password'];
         $new_password = Hash::make($inputs['new_password']);
+
+        if(!isset($user->password))
+        {
+            $user->password = $new_password;
+            $user->update();
+
+            return response()->json(["res" => [
+                "code" => 200,
+                "message" => "Mot de passe changé !"
+            ]]);
+        }
 
         if(Hash::check($old_password, $user->password)){ // Compare old password
             $user->password = $new_password;

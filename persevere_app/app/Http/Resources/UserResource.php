@@ -27,7 +27,7 @@ class UserResource extends JsonResource
             'city' => $this->city,
             'country' => $this->country,
             'storage_path' => $this->storage_path,
-            'remember_token' => $this->remember_token,
+            'api_token' => $this->api_token,
             'auth_level' => $this->auth_level,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

@@ -17,7 +17,6 @@ export interface UserInterface {
     storage_path: string;
     auth_level: string;
 
-    password?: string;
     horses?: HorseInterface[];
     options?: OptionInterface[];
     pensions?: PensionInterface[];
@@ -41,7 +40,6 @@ export default class User implements UserInterface {
     storage_path: string;
     auth_level: string;
 
-    password?: string;
     horses?: HorseInterface[];
     options?: OptionInterface[];
     pensions?: PensionInterface[];
@@ -63,8 +61,6 @@ export default class User implements UserInterface {
         this.storage_path = user.storage_path;
         this.auth_level = user.auth_level;
         this.horses = user.horses;
-        this.password = user.password;
-
         
         this.options = user.options;
         this.pensions = user.pensions;
@@ -85,8 +81,7 @@ export default class User implements UserInterface {
             country: "",
             birth_date: "",
             storage_path: "",
-            auth_level: "",
-            password: ""
+            auth_level: ""
         }
     }
 }

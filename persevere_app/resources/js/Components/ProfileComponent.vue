@@ -3,7 +3,15 @@
         <div class="profile-component">
 
         
-        <h1>Profil</h1>
+        <div class="d-flex justify-space-between">
+            <h1>Profil</h1>
+            <v-progress-circular
+                v-if="loading"
+                indeterminate
+                color="red"
+            ></v-progress-circular>
+        </div>
+        
 
         <div class="profil-section-container">
             <v-select
@@ -19,7 +27,8 @@
 
                 <div class="avatar-edit-container">
                     <v-img class="user-avatar" :src="user.storage_path"></v-img>
-                    <v-btn>Modifier</v-btn>
+                    <v-btn @click="$refs.file.click()">Modifier</v-btn>
+                    <input ref="file" id="avatar-file" type="file" name="name" style="display: none;" v-on:change="saveAvatar" />
                 </div>
 
                 <div class="informations-edit-container section">
@@ -33,7 +42,7 @@
                                     md="4"
                                 >
                                     <v-text-field
-                                        v-model="user.email"
+                                        v-model="new_user.email"
                                         label="Adresse email"
                                     ></v-text-field>
                                 </v-col>
@@ -43,7 +52,7 @@
                                     md="4"
                                 >
                                     <v-text-field
-                                        v-model="user.firstname"
+                                        v-model="new_user.firstname"
                                         label="Prénom"
                                     ></v-text-field>
                                 </v-col>
@@ -53,7 +62,7 @@
                                     md="4"
                                 >
                                     <v-text-field
-                                        v-model="user.name"
+                                        v-model="new_user.name"
                                         label="Nom"
                                     ></v-text-field>
                                 </v-col>
@@ -63,7 +72,7 @@
                                     md="4"
                                 >
                                     <v-text-field
-                                        v-model="user.phone"
+                                        v-model="new_user.phone"
                                         label="Téléphone"
                                     ></v-text-field>
                                 </v-col>
@@ -84,7 +93,7 @@
                                 md="4"
                             >
                                 <v-text-field
-                                    v-model="user.postal_address"
+                                    v-model="new_user.postal_address"
                                     label="Adresse (numéro + voie)"
                                 ></v-text-field>
                             </v-col>
@@ -94,7 +103,7 @@
                                 md="4"
                             >
                                 <v-text-field
-                                    v-model="user.postal_code"
+                                    v-model="new_user.postal_code"
                                     label="Code postal"
                                 ></v-text-field>
                             </v-col>
@@ -104,7 +113,7 @@
                                 md="4"
                             >
                                 <v-text-field
-                                    v-model="user.city"
+                                    v-model="new_user.city"
                                     label="Ville"
                                 ></v-text-field>
                             </v-col>
@@ -114,7 +123,7 @@
                                 md="4"
                             >
                                 <v-text-field
-                                    v-model="user.country"
+                                    v-model="new_user.country"
                                     label="Pays"
                                 ></v-text-field>
                             </v-col>
@@ -127,7 +136,7 @@
                 <h2>Souscriptions</h2>
                 <div class="current-pensions">
                     <v-row class="d-flex flex-column">
-                        <v-col v-for="pension in user.pensions" :key="pension.id" >
+                        <v-col v-for="pension in new_user.pensions" :key="pension.id" >
                             <div class="pension">
                                 <ul>
                                     <li><span>Pension :</span> {{pension.name}}</li>
@@ -141,7 +150,7 @@
                     </v-row>
 
                     <v-row class="d-flex flex-column">
-                        <v-col v-for="option in user.options" :key="option.id" >
+                        <v-col v-for="option in new_user.options" :key="option.id" >
                             <div class="option">
                                 <ul>
                                     <li><span>Option :</span> {{option.name}}</li>
@@ -212,7 +221,7 @@
             </div>
         </v-container>
         
-        <v-btn>Sauvegarder</v-btn>
+        <v-btn @click="save">Sauvegarder</v-btn>
 
         </div>
     </v-container>
@@ -222,12 +231,16 @@
 
 import {Vue, Component, Prop} from "vue-property-decorator"
 import User, {UserInterface} from '../Types/User'
+import axios from 'axios'
 
 @Component
 export default class ProfileComponent extends Vue {
-    @Prop({default: User.emptyUser()}) user!: UserInterface
+    @Prop({default: User.emptyUser()}) readonly user!: UserInterface
     @Prop({default: false}) readonly mobile: boolean
     @Prop({default: false}) readonly create: boolean
+
+    private new_user = JSON.parse(JSON.stringify(this.user));
+    private loading = false;
 
     private sections: string[] = ["Informations", "Souscription", "Mot de passe"]
     private selected_section = "Informations"
@@ -255,6 +268,43 @@ export default class ProfileComponent extends Vue {
             (v: string) => !!v || 'Mot de passe requis',
             (v: string) => v == this.passwords.new_password || 'Les mots de passes doivent correspondre',
         ]
+    }
+
+    private async save() {
+        this.loading = true;
+        if(!this.create) {
+            let {data} = await axios.put(`http://localhost:8000/api/users/${this.user?.id}/update`, this.new_user, {
+                headers: {
+                    'Authorization': 'Bearer' + this.user.api_token
+                }
+            })
+            this.$store.commit('SET_USER', data as UserInterface);
+        }
+
+        this.loading = false;
+    }
+
+    private async saveAvatar(event: any){
+        this.loading = true;
+        let reader = new FileReader();
+
+        reader.onloadend = async (evt: any) => {
+            if(evt.target.readyState == FileReader.DONE) {
+                let {data} = await axios.put(`http://localhost:8000/api/users/${this.user?.id}/update_photo`,
+                {
+                    "storage_path": reader.result
+                }, {headers: {
+                    "Authorization": 'Bearer ' + this.user?.api_token
+                }})
+               
+    
+                this.$store.commit('SET_USER', data as UserInterface)
+            }
+        }
+
+        await reader.readAsDataURL(event.target.files[0])
+
+        this.loading = false;
     }
     
 }
