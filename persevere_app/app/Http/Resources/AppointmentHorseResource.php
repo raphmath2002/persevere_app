@@ -21,6 +21,7 @@ class AppointmentHorseResource extends JsonResource
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
             'cares' => $this->cares,
+            'price' => $this->price,
             'observations' => $this->observations,
             'appointment' => $this->appointment,
             'horse' => $this->horse,
