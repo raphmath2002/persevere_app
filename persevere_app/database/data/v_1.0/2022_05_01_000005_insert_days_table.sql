@@ -1,0 +1,11 @@
+-- INSERT DATA INTO `days` TABLE --
+
+INSERT INTO `days` (`id`,`name`,`created_at`,`updated_at`) VALUES
+(1,'Lundi',UTC_TIMESTAMP(),UTC_TIMESTAMP()),
+(2,'Mardi',UTC_TIMESTAMP(),UTC_TIMESTAMP()),
+(3,'Mercredi',UTC_TIMESTAMP(),UTC_TIMESTAMP()),
+(4,'Jeudi',UTC_TIMESTAMP(),UTC_TIMESTAMP()),
+(5,'Vendredi',UTC_TIMESTAMP(),UTC_TIMESTAMP()),
+(6,'Samedi',UTC_TIMESTAMP(),UTC_TIMESTAMP()),
+(7,'Dimanche',UTC_TIMESTAMP(),UTC_TIMESTAMP()),
+(8,'Férié',UTC_TIMESTAMP(),UTC_TIMESTAMP());

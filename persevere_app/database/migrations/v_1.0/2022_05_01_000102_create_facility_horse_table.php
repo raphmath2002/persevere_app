@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('facility_horse', function (Blueprint $table) {
             $table->id();
+            $table->foreignId("facility_id")->constrained()->onDelete("cascade"); 
             $table->foreignId("horse_id")->constrained()->onDelete("cascade"); 
-            $table->foreignId("option_id")->constrained()->onDelete("cascade"); 
             $table->timestamp('start_date')->default(\DB::raw('UTC_TIMESTAMP'));
             $table->timestamp('end_date')->default(\DB::raw('UTC_TIMESTAMP'));
             $table->timestamps();

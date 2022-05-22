@@ -65,6 +65,6 @@ class Horse extends Model
     {
         return $this->belongsToMany(Appointment::class)
                     ->using(AppointmentHorse::class)
-                    ->withPivot("id","title","description","status","start_date","end_date","cares","observations","created_at","updated_at");
+                    ->withPivot("id","title","description","status","price","start_date","end_date","cares","observations","created_at","updated_at");
     }
 }

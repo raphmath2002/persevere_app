@@ -17,7 +17,6 @@ class AppointmentResource extends JsonResource
         return [
             'id' => $this->id,
             'duration' => $this->duration,
-            'price' => $this->price,
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
             'max_appointments' => $this->max_appointments,

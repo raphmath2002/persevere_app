@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
             $table->integer('duration');
-            $table->float('price');
             $table->timestamp('start_date')->default(\DB::raw('UTC_TIMESTAMP'));
             $table->timestamp('end_date')->default(\DB::raw('UTC_TIMESTAMP'));
             $table->integer('max_appointments');

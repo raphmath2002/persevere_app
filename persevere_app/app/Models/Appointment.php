@@ -27,10 +27,10 @@ class Appointment extends Model
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function appointement_horse()
+    public function appointment_horse()
     {
         return $this->belongsToMany(Horse::class)
                     ->using(AppointmentHorse::class)
-                    ->withPivot("id","title","description","status","start_date","end_date","cares","observations","created_at","updated_at");
+                    ->withPivot("id","title","description","status","price","start_date","end_date","cares","observations","created_at","updated_at");
     }
 }

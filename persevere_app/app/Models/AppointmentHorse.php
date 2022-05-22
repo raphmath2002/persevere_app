@@ -6,16 +6,16 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Classe pour la table pivot AppointementHorse mettant en évidence ses relations
+ * Classe pour la table pivot AppointmentHorse mettant en évidence ses relations
  */
-class AppointementHorse extends Pivot
+class AppointmentHorse extends Pivot
 {
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function appointement()
+    public function appointment()
     {
-        return $this->belongsTo(Appointement::class);
+        return $this->belongsTo(Appointment::class);
     }
 
     /**
