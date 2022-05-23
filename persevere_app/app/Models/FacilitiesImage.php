@@ -15,10 +15,10 @@ class FacilitiesImage extends Model
     /**
      * Return facility instance
      * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function facility()
     {
-        return $this->hasOne(Facility::class);
+        return $this->belongsTo(Facility::class);
     }
 }

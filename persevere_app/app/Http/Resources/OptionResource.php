@@ -19,6 +19,7 @@ class OptionResource extends JsonResource
             'name' => $this->name,
             'price' => $this->price,
             'description' => $this->description,
+            'option_type' => $this->option_type,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

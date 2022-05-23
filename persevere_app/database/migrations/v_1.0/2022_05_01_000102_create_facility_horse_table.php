@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreignId("horse_id")->constrained()->onDelete("cascade"); 
             $table->timestamp('start_date')->default(\DB::raw('UTC_TIMESTAMP'));
             $table->timestamp('end_date')->default(\DB::raw('UTC_TIMESTAMP'));
+            $table->string('status');
+            $table->text('decline_reason')->nullable();
             $table->timestamps();
         });
     }

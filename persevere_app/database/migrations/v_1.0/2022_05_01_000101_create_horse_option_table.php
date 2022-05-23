@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId("horse_id")->constrained()->onDelete("cascade"); 
             $table->foreignId("option_id")->constrained()->onDelete("cascade"); 
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->timestamp('subscribe_date')->default(\DB::raw('UTC_TIMESTAMP'));
+            $table->timestamp('unsubscribe_date')->default(\DB::raw('UTC_TIMESTAMP'))->nullable();
             $table->timestamps();
         });
     }

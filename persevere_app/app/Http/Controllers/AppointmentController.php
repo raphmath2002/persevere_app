@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\{Appointment};
+use App\Models\{Appointment,AppointmentHorse};
 use App\Http\Resources\{AppointmentResource};
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class AppointmentController extends Controller
 {
@@ -32,17 +33,13 @@ class AppointmentController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'duration' => 'required|integer',
-            'price' => 'required|numeric',
             'start_date' => 'required|date',
             'max_appointments' => 'required|integer',
             'professional_id' => 'required|integer',
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Create new Appointment instance
@@ -50,16 +47,17 @@ class AppointmentController extends Controller
 
         $appointment = new Appointment();
         $appointment->duration = $inputs['duration'];
-        $appointment->price = $inputs['price'];
         $appointment->start_date = $inputs['start_date'];
         $appointment->max_appointments = $inputs['max_appointments'];
         $appointment->professional_id = $inputs['professional_id'];
+        $appointment->status = "waiting";
+
+        $end_date = Carbon::parse($inputs['start_date']);
+        $appointment->end_date = $end_date->addMinutes($inputs['duration'] * $inputs['max_appointments']);
+
         $appointment->save();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new AppointmentResource($appointment)
-        ]]);
+        return response()->json(["success" => new AppointmentResource($appointment)]);
     }
 
     /**
@@ -70,10 +68,7 @@ class AppointmentController extends Controller
      */
     public function edit(Appointment $appointment)
     {
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new AppointmentResource($appointment)
-        ]]);
+        return response()->json(["success" => new AppointmentResource($appointment)]);
     }
 
     /**
@@ -87,31 +82,36 @@ class AppointmentController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'duration' => 'required|integer',
-            'price' => 'required|numeric',
             'start_date' => 'required|date',
             'max_appointments' => 'required|integer',
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
-        // Update appointment
+        $appointment_horse = AppointmentHorse::where([['appointment_id', '=', $appointment->id],['status','=','waiting']])->orWhere([['appointment_id', '=', $appointment->id],['status','=','accepted']])->get();
+
+        // Cancel all appointment horse
         $inputs = $request->all();
-        
+
+        foreach($appointment_horse as $app_horse){
+            $app_horse->status = "canceled";
+            $app_horse->observations = "Mise à jour du rendez-vous, ce dernier ne correspond plus aux modalités de la prise de rendez-vous initiale.";
+            $app_horse->update();
+        }
+
+        // Update Appointment
         $appointment->duration = $inputs['duration'];
-        $appointment->price = $inputs['price'];
         $appointment->start_date = $inputs['start_date'];
         $appointment->max_appointments = $inputs['max_appointments'];
+
+        $end_date = Carbon::parse($inputs['start_date']);
+        $appointment->end_date = $end_date->addMinutes($inputs['duration'] * $inputs['max_appointments']);
+
         $appointment->update();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new AppointmentResource($appointment)
-        ]]);
+        return response()->json(["success" => new AppointmentResource($appointment)]);
     }
 
     /**
@@ -120,13 +120,32 @@ class AppointmentController extends Controller
      * @param  \App\Models\Appointment $appointment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Appointment $appointment)
+    public function destroy(Request $request, Appointment $appointment)
     {
-        $appointment->delete();
+        $validator = Validator::make($request->all(), [
+            'cancel_reason' => 'required|string|max:2048',
+        ]);
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "message" => "Visite supprimée avec succès !"
-        ]]);
+        if($validator->fails()){
+            return response()->json(["input_error" => $validator->errors()]);
+        }
+
+        $appointment_horse = AppointmentHorse::where([['appointment_id', '=', $appointment->id],['status','=','waiting']])->orWhere([['appointment_id', '=', $appointment->id],['status','=','accepted']])->get();
+
+        // Cancel all appointment horse
+        $inputs = $request->all();
+
+        foreach($appointment_horse as $app_horse){
+            $app_horse->status = "canceled";
+            $app_horse->observations = $inputs['cancel_reason'];
+            $app_horse->update();
+        }
+
+        // Update Appointment
+        $appointment->status = "canceled";
+        $appointment->cancel_reason = $inputs['cancel_reason'];
+        $appointment->update();
+
+        return response()->json(["success" => "Rendez-vous annulé avec succès"]);
     }
 }

@@ -21,6 +21,6 @@ class Day extends Model
     {
         return $this->belongsToMany(Facility::class)
                     ->using(DayFacility::class)
-                    ->withPivot("id","created_at","updated_at");
+                    ->withPivot("id","start_hour","start_minute","end_hour","end_minute","created_at","updated_at");
     }
 }

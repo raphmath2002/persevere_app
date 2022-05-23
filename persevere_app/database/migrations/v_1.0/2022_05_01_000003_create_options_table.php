@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->float('price');
             $table->text('description');
+            $table->string('option_type');
             $table->timestamps();
         });
     }

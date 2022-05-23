@@ -20,6 +20,8 @@ class AppointmentResource extends JsonResource
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
             'max_appointments' => $this->max_appointments,
+            'status' => $this->status,
+            'cancel_reason' => $this->cancel_reason,
             'professional' => $this->professional,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

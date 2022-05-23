@@ -102,4 +102,3 @@ Route::middleware('auth:api')->put('/users/{user}/update_password', [UserControl
 Route::middleware('auth:api')->delete('/users/{user}/destroy', [UserController::class, 'destroy']);
 Route::middleware('auth:api')->get('/users/{user}/advertisements', [AdvertisementController::class, 'getAdvertsByUser']);
 Route::middleware('auth:api')->get('/users/{user}/advertisements/{advert}/read', [AdvertisementController::class, 'markAdvertAsRead']);
-

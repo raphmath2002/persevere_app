@@ -16,8 +16,10 @@ class DayFacilityResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'start_date' => $this->start_date,
-            'end_date' => $this->end_date,
+            'start_hour' => $this->start_hour,
+            'start_minute' => $this->start_minute,
+            'end_hour' => $this->end_hour,
+            'end_minute' => $this->end_minute,
             'day' => $this->day,
             'facility' => $this->facility,
             'created_at' => $this->created_at,

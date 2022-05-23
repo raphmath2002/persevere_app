@@ -15,11 +15,11 @@ class Appointment extends Model
     /**
      * Return professional instance
      * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function professional()
     {
-        return $this->hasOne(Professional::class);
+        return $this->belongsTo(Professional::class);
     }
 
     /**

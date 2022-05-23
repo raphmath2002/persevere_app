@@ -25,7 +25,7 @@ class Horse extends Model
     /**
      * Return user instance
      * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
@@ -41,7 +41,7 @@ class Horse extends Model
     {
         return $this->belongsToMany(Facility::class)
                     ->using(FacilityHorse::class)
-                    ->withPivot("id","start_date","end_date","created_at","updated_at");
+                    ->withPivot("id","start_date","end_date","status","decline_reason","created_at","updated_at");
     }
 
     /**
@@ -53,7 +53,7 @@ class Horse extends Model
     {
         return $this->belongsToMany(Option::class)
                     ->using(HorseOption::class)
-                    ->withPivot("id","start_date","end_date","created_at","updated_at");
+                    ->withPivot("id","subscribe_date","unsubscribe_date","created_at","updated_at");
     }
 
     /**
@@ -66,5 +66,17 @@ class Horse extends Model
         return $this->belongsToMany(Appointment::class)
                     ->using(AppointmentHorse::class)
                     ->withPivot("id","title","description","status","price","start_date","end_date","cares","observations","created_at","updated_at");
+    }
+
+    /**
+     * Renvoi les chevaux
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function horse_pension()
+    {
+        return $this->belongsToMany(Pension::class)
+                    ->using(HorsePension::class)
+                    ->withPivot("id","subscribe_date","unsubscribe_date","created_at","updated_at");
     }
 }
