@@ -21,6 +21,6 @@ class Option extends Model
     {
         return $this->belongsToMany(Horse::class)
                     ->using(HorseOption::class)
-                    ->withPivot("id","start_date","end_date","created_at","updated_at");
+                    ->withPivot("id","subscribe_date","unsubscribe_date","created_at","updated_at");
     }
 }

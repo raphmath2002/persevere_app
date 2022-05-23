@@ -13,12 +13,14 @@ class Pension extends Model
     use HasFactory;
 
     /**
-     * Renvoi les pensions
+     * Renvoi les chevaux
      * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function pensions()
+    public function horse_pension()
     {
-        return $this->hasMany(Pension::class);
+        return $this->belongsToMany(Horse::class)
+                    ->using(HorsePension::class)
+                    ->withPivot("id","subscribe_date","unsubscribe_date","created_at","updated_at");
     }
 }

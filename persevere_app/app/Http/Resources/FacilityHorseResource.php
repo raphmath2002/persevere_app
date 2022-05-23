@@ -18,6 +18,8 @@ class FacilityHorseResource extends JsonResource
             'id' => $this->id,
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
+            'status' => $this->status,
+            'decline_reason' => $this->decline_reason,
             'facility' => $this->facility,
             'horse' => $this->horse,
             'created_at' => $this->created_at,

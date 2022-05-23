@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('options', function (Blueprint $table) {
+        Schema::create('minutes', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->float('price');
-            $table->text('description');
-            $table->string('option_type');
+            $table->integer('number');
+            $table->string('content');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('options');
+        Schema::dropIfExists('minutes');
     }
 };

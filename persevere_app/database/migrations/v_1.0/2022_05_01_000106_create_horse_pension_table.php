@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('options', function (Blueprint $table) {
+        Schema::create('horse_pension', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->float('price');
-            $table->text('description');
-            $table->string('option_type');
+            $table->foreignId("horse_id")->constrained()->onDelete("cascade"); 
+            $table->foreignId("pension_id")->constrained()->onDelete("cascade"); 
+            $table->timestamp('subscribe_date')->default(\DB::raw('UTC_TIMESTAMP'));
+            $table->timestamp('unsubscribe_date')->default(\DB::raw('UTC_TIMESTAMP'))->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('options');
+        Schema::dropIfExists('horse_pension');
     }
 };

@@ -21,7 +21,7 @@ class Facility extends Model
     {
         return $this->belongsToMany(Horse::class)
                     ->using(FacilityHorse::class)
-                    ->withPivot("id","start_date","end_date","created_at","updated_at");
+                    ->withPivot("id","start_date","end_date","status","decline_reason","created_at","updated_at");
     }
 
     /**
@@ -45,7 +45,7 @@ class Facility extends Model
     {
         return $this->belongsToMany(Day::class)
                     ->using(DayFacility::class)
-                    ->withPivot("id","start_date","end_date","created_at","updated_at");
+                    ->withPivot("id","start_hour","start_minute","end_hour","end_minute","created_at","updated_at");
     }
 
     /**
