@@ -41,12 +41,7 @@ export default class Admin implements AdminInterface {
     constructor(){}
 
     public async updateUsersData() {
-        let {data} = await axios.get('http://localhost:8000/api/users', {
-            headers: {
-                "Authorization": "Bearer " + this._apiToken
-            }
-        })
-        if(data.success) this.users = data.success;
+        
     }
 
     public async updateHorsesData() {

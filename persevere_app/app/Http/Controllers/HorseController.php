@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\{Horse};
+use App\Models\{Horse, HorseOption};
 use App\Http\Resources\{HorseResource};
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\URL;
 use Image;
+use Carbon\Carbon;
 
 class HorseController extends Controller
 {
@@ -48,10 +49,7 @@ class HorseController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["error" => $validator->errors()]);
         }
 
         // Create new Horse instance
@@ -69,6 +67,7 @@ class HorseController extends Controller
         $horse->pension_id = $inputs['pension_id'];
         $horse->user_id = $inputs['user_id'];
 
+
         // Photo storage
         $make_image = Image::make($inputs['storage_path']);
         $type = $make_image->mime();
@@ -80,24 +79,18 @@ class HorseController extends Controller
 
         $horse->save();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new HorseResource($horse)
-        ]]);
-    }
+        if(isset($inputs['options'])) {
+            foreach ($inputs['options'] as $option) {
+                $horse_option = new HorseOption();
+                $horse_option->horse_id = $horse->id;
+                $horse_option->option_id = $option;
+                $horse_option->start_date = Carbon::now();
+                $horse_option->end_date = Carbon::now();
+                $horse_option->save();
+            }
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Horse $horse
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Horse $horse)
-    {
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new HorseResource($horse)
-        ]]);
+        return response()->json(["success" => new HorseResource($horse)]);
     }
 
     /**
@@ -123,10 +116,7 @@ class HorseController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["error" => $validator->errors()]);
         }
 
         // Update Horse
@@ -144,10 +134,8 @@ class HorseController extends Controller
         $horse->user_id = $inputs['user_id'];
         $horse->update();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new HorseResource($horse)
-        ]]);
+        return response()->json(["success" => new HorseResource($horse)]);
+
     }
     /**
      * Update the specified resource in storage.
@@ -163,10 +151,7 @@ class HorseController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["error" => $validator->errors()]);
         }
 
         // Update photo
@@ -187,10 +172,8 @@ class HorseController extends Controller
 
         $horse->update();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new HorseResource($horse)
-        ]]);
+        return response()->json(["success" => new HorseResource($horse)]);
+
     }
 
     /**
@@ -203,9 +186,7 @@ class HorseController extends Controller
     {
         $horse->delete();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "message" => "Cheval supprimé avec succès !"
-        ]]);
+        return response()->json(["success" => "cheval supprimé"]);
+
     }
 }

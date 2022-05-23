@@ -9,6 +9,7 @@ import Notifications from '../Pages/Notifications.vue'
 
 import Dashboard from '../Pages/admin/Dashboard.vue'
 import Users from '../Pages/admin/Users.vue'
+import AdminHorses from '../Pages/admin/Horses.vue'
 
 
 
@@ -53,6 +54,12 @@ const routes: Array<RouteConfig> = [
       path: '/admin/users',
       name: "users",
       component: Users
+    },
+
+    {
+      path: '/admin/horses',
+      name: "api-horses",
+      component: AdminHorses
     }
 
     

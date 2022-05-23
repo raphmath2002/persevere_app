@@ -2,6 +2,8 @@ import { HorseInterface } from "./Horse";
 import { OptionInterface } from "./Options";
 import { PensionInterface } from "./Pension";
 
+import axios from 'axios'
+
 export interface UserInterface {
     id?: number;
 
@@ -79,5 +81,14 @@ export function emptyUser(): UserInterface {
         storage_path: "",
         auth_level: ""
     }
+}
+
+export async function updateUsers(): Promise<void> {
+    let {data} = await axios.get('http://localhost:8000/api/users', {
+            headers: {
+                "Authorization": "Bearer " + this._apiToken
+            }
+        })
+    if(data.success) this.users = data.success;
 }
 

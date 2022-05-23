@@ -16,7 +16,6 @@
                         >
                         <v-text-field
                             v-model="loginInfo.email"
-                            :rules="rules.emailRules"
                             label="E-mail"
                             required
                         ></v-text-field>
@@ -33,7 +32,6 @@
                             :append-icon="hasPassword ? 'mdi-eye' : 'mdi-eye-off'"
                             @click:append="() => (hasPassword = !hasPassword)"
                             :type="hasPassword ? 'password' : 'text'"
-                            :rules="rules.passwordRules"
                             @input="_=>loginInfo.password=_"
                         ></v-text-field>
                         </v-col>
@@ -279,9 +277,7 @@ export default class Login extends Vue {
                 await this.$store.dispatch('updateNotifs');
 
             } else {
-                const admin = new Admin();
-                await admin.updateAll().then(() => {
-                    this.$store.commit('SET_ADMIN_DATA', admin);
+                await this.$store.dispatch('update', 'all').then(() => {
                     this.$store.commit('SHOW_INTERFACE', true);
                     this.$store.commit('LOGGED', true);
                     this.$router.push({name: 'dashboard'})
@@ -344,9 +340,8 @@ export default class Login extends Vue {
                 this.$router.push({name: 'home'})
             } else {
                 
-                const admin = new Admin();
-                await admin.updateAll().then(() => {
-                    this.$store.commit('SET_ADMIN_DATA', admin);
+
+                await this.$store.dispatch('update', 'all').then(() => {
                     this.$store.commit('SHOW_INTERFACE', true);
                     this.$store.commit('LOGGED', true);
                     this.$router.push({name: 'dashboard'})
