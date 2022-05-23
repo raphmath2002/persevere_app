@@ -15,20 +15,20 @@ class Message extends Model
     /**
      * Return ticket instance
      * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function ticket()
     {
-        return $this->hasOne(Ticket::class);
+        return $this->belongsTo(Ticket::class);
     }
 
     /**
      * Return user instance
      * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 }

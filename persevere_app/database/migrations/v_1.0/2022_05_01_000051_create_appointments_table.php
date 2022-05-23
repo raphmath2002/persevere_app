@@ -20,6 +20,8 @@ return new class extends Migration
             $table->timestamp('end_date')->default(\DB::raw('UTC_TIMESTAMP'));
             $table->integer('max_appointments');
             $table->foreignId("professional_id")->constrained()->onDelete("cascade");
+            $table->string('status');
+            $table->text('cancel_reason')->nullable();
             $table->timestamps();
         });
     }
