@@ -19,8 +19,8 @@ return new class extends Migration
             $table->text('description');
             $table->string('status');
             $table->string('price')->nullable();
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->timestamp('start_date')->default(\DB::raw('UTC_TIMESTAMP'));
+            $table->timestamp('end_date')->default(\DB::raw('UTC_TIMESTAMP'));
             $table->text('cares')->nullable();
             $table->text('observations')->nullable();
             $table->foreignId("appointment_id")->constrained()->onDelete("cascade"); 

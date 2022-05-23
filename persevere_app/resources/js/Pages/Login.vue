@@ -163,9 +163,9 @@
         </div>
 
         <v-snackbar
-        v-model="snackbar"
-        :timeout="3000"
-        color="red"
+            v-model="snackbar"
+            :timeout="3000"
+            color="red"
         >
         {{ error_text }}
 
@@ -188,6 +188,7 @@
 import {Vue, Component} from "vue-property-decorator"
 import axios from "axios";
 import { UserInterface } from "../Types/User";
+import Admin from '../Types/Admin'
 
 @Component
 export default class Login extends Vue {
@@ -255,69 +256,107 @@ export default class Login extends Vue {
 
     private async login(): Promise<void> {
         
-        await axios.post("http://localhost:8000/api/login", this.loginInfo).then((res: any) => {
-            
-            if(res.data.res?.data?.id) {
-                let user: UserInterface = res.data.res.data;
-                this.$store.commit('SET_USER', user);
-                this.$store.commit('SHOW_INTERFACE', true);
-                this.$store.commit('LOGGED', true);
-                this.$router.push({name: 'home'})
+       let {data} =  await axios.post("http://localhost:8000/api/login", this.loginInfo)
+
+       if(data.success) {
+
+            if(!data.success.id) {
+                this.verification_code = data.success;
+                this.step = 'verification'
+                return
             }
 
-            else if(res.data.res.error) {
-                this.displayError(res.data.res.error)
+            
+            let user: UserInterface = data.success;
+            this.$store.commit('SET_USER', user);
+            
+
+
+            if(user.auth_level == 'customer') {
+                this.$router.push({name: 'home'})
+                this.$store.commit('SHOW_INTERFACE', true);
+                this.$store.commit('LOGGED', true);
+                await this.$store.dispatch('updateNotifs');
+
+            } else {
+                const admin = new Admin();
+                await admin.updateAll().then(() => {
+                    this.$store.commit('SET_ADMIN_DATA', admin);
+                    this.$store.commit('SHOW_INTERFACE', true);
+                    this.$store.commit('LOGGED', true);
+                    this.$router.push({name: 'dashboard'})
+                });
+                
             }
-        });
+        }
+
+        else if(data.error) {
+            this.displayError(data.error)
+        } else {
+            console.log(data)
+        }
     }
 
     private async goToVerif(): Promise<void> {
         if(!/.+@.+/.test(this.loginInfo.email)) this.displayError("Merci de renseigner un email valide")
         else {
-            await axios.post("http://localhost:8000/api/login", {email: this.loginInfo.email, password: "nopassword"}).then((res: any) => {
-                console.log(res)
-                if(res.data.res?.error) {
-                    this.displayError(res.data.res.error)
-                }
-
-                else {
-                    this.verification_code = res.data.res.data
-                    this.step = "verification"
-                }
-
-            })
-
+            let {data} = await axios.post("http://localhost:8000/api/login", {email: this.loginInfo.email, password: "nopassword"})
+            if(data.error) {
+                this.displayError(data.error)
+            }
+            else if (data.success) {
+                this.verification_code = data.success
+                this.step = "verification"
+            } else {
+                console.log(data)
+            }
         }
     }
 
     private async checkCode(): Promise<void> {
-        await axios.post("http://localhost:8000/api/login/verifCode", {code: this.verification_code, email: this.loginInfo.email}).then((res: any) => {
-                if(res.data.res.error) {
-                    this.displayError(res.data.res.error)
-                }
+        let {data} = await axios.post("http://localhost:8000/api/login/verifCode", {code: this.verification_code, email: this.loginInfo.email})
 
-                else {
-                   this.$store.commit('SET_USER', res.data.res.data)
-                   this.step = "password"
-                }
+        if(data.error) {
+            this.displayError(data.error)
+        }
 
-        })
+        else if(data.success){
+            this.$store.commit('SET_USER', data.success)
+            this.step = "password"
+        } else {
+            console.log(data)
+        }
     }
 
     private async changePassword(): Promise<void> {
-        await axios.put(`http://localhost:8000/api/users/${this.user.id}/update_password`, this.passwords, {
+        let {data} = await axios.put(`http://localhost:8000/api/users/${this.user.id}/update_password`, this.passwords, {
             headers: {
                 'Authorization': 'Bearer ' + this.user.api_token
             }
-        }).then((res:any) => {
-            console.log(res)
-            if(res.data.res.data) {
-                this.$store.commit('SET_USER', res.data.res.data);
+        })
+
+        if(data.success) {
+            
+            this.$store.commit('SET_USER', data.success);
+            if(data.success.auth_level == "customer") {
                 this.$store.commit('SHOW_INTERFACE', true);
                 this.$store.commit('LOGGED', true);
                 this.$router.push({name: 'home'})
+            } else {
+                
+                const admin = new Admin();
+                await admin.updateAll().then(() => {
+                    this.$store.commit('SET_ADMIN_DATA', admin);
+                    this.$store.commit('SHOW_INTERFACE', true);
+                    this.$store.commit('LOGGED', true);
+                    this.$router.push({name: 'dashboard'})
+                });
             }
-        })
+        } else if(data.error) {
+            this.displayError(data.error)
+        } else {
+            console.log(data)
+        }
     }
 
     mounted() {

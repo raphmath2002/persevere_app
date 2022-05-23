@@ -19,10 +19,7 @@ class PensionController extends Controller
     {
         $pensions = Pension::all();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => PensionResource::collection($pensions)
-        ]]);
+        return response()->json(["success" => PensionResource::collection($pensions)]);
     }
 
     /**

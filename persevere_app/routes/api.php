@@ -27,6 +27,7 @@ Route::middleware('auth:api')->get('/advertisements/{advertisement}/edit', [Adve
 Route::middleware('auth:api')->put('/advertisements/{advertisement}/update', [AdvertisementController::class, 'update']);
 Route::middleware('auth:api')->delete('/advertisements/{advertisement}/destroy', [AdvertisementController::class, 'destroy']); 
 
+
 // Routes for appointments
 Route::middleware('auth:api')->get('/appointments', [AppointmentController::class, 'index']);
 Route::middleware('auth:api')->post('/appointments/store', [AppointmentController::class, 'store']);
@@ -99,3 +100,6 @@ Route::middleware('auth:api')->put('/users/{user}/update', [UserController::clas
 Route::middleware('auth:api')->put('/users/{user}/update_photo', [UserController::class, 'update_photo']);
 Route::middleware('auth:api')->put('/users/{user}/update_password', [UserController::class, 'update_password']);
 Route::middleware('auth:api')->delete('/users/{user}/destroy', [UserController::class, 'destroy']);
+Route::middleware('auth:api')->get('/users/{user}/advertisements', [AdvertisementController::class, 'getAdvertsByUser']);
+Route::middleware('auth:api')->get('/users/{user}/advertisements/{advert}/read', [AdvertisementController::class, 'markAdvertAsRead']);
+

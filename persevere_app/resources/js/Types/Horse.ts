@@ -1,3 +1,6 @@
+import { OptionInterface } from "./Options";
+import { PensionInterface } from "./Pension";
+
 export interface HorseInterface {
     id?: number;
 
@@ -11,7 +14,10 @@ export interface HorseInterface {
     storage_path: string;
     sex: string;
 
+    pension?: PensionInterface;
+    options?: OptionInterface[];
     user_id: number;
+    appointments?: string;
     created_at?: string;
     updated_at?: string;
 }
@@ -29,7 +35,10 @@ export default class Horse implements HorseInterface {
     storage_path: string;
     sex: string;
 
+    options?: OptionInterface[];
+    pension?: PensionInterface;
     user_id: number;
+    appointments?: string;
     created_at?: string;
     updated_at?: string;
 
@@ -47,7 +56,10 @@ export default class Horse implements HorseInterface {
         this.birth_country = horse.birth_country;
         this.sex = horse.sex;
 
+        this.options = horse.options;
+        this.pension = horse.pension;
         this.user_id = horse.user_id;
+        this.appointments = horse.appointments;
         this.created_at = horse.created_at;
         this.updated_at = horse.updated_at;
     }

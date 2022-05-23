@@ -24,10 +24,7 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => UserResource::collection($users)
-        ]]);
+        return response()->json(["success" => UserResource::collection($users)]);
     }
 
     /**
@@ -43,7 +40,6 @@ class UserController extends Controller
             'firstname' => 'required|string|max:255',
             'birth_date' => 'required|date',
             'email' => 'required|string|max:255|unique:users,email',
-            'password' => 'required|string|regex:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&.])[A-Za-z\d@$!%*#?&.]{8,}$/', // 1 leter, 1 number, 1 special caracter, 8 caracters min
             'phone' => 'required|string|max:255',
             'postal_code' => 'required|string|max:255',
             'postal_address' => 'required|string|max:255',
@@ -54,10 +50,7 @@ class UserController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Create new User instance
@@ -68,7 +61,7 @@ class UserController extends Controller
         $user->firstname = $inputs['firstname'];
         $user->birth_date = $inputs['birth_date'];
         $user->email = $inputs['email'];
-        $user->password = Hash::make($inputs['password']);
+        $user->password = null;
         $user->phone = $inputs['phone'];
         $user->postal_code = $inputs['postal_code'];
         $user->postal_address = $inputs['postal_address'];
@@ -87,10 +80,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new UserResource($user)
-        ]]);
+        return response()->json(["success" => new UserResource($user)]);
     }
 
     /**
@@ -101,10 +91,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new UserResource($user)
-        ]]);
+        return response()->json(["success" => new UserResource($user)]);
     }
 
     /**
@@ -129,10 +116,7 @@ class UserController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_arror" => $validator->errors()]);
         }
 
         // Update User
@@ -149,10 +133,7 @@ class UserController extends Controller
         $user->country = $inputs['country'];
         $user->update();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new UserResource($user)
-        ]]);
+        return response()->json(["success" => new UserResource($user)]);
     }
 
     /**
@@ -169,10 +150,7 @@ class UserController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Update photo
@@ -193,10 +171,7 @@ class UserController extends Controller
 
         $user->update();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new UserResource($user)
-        ]]);
+        return response()->json(["success" => new UserResource($user)]);
     }
 
     /**
@@ -215,10 +190,7 @@ class UserController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Update password
@@ -232,21 +204,17 @@ class UserController extends Controller
             $user->password = $new_password;
             $user->update();
 
-            return response()->json(["res" => [
-                "code" => 200,
-                "message" => "Mot de passe changé !"
-            ]]);
+            return response()->json(["success" => new UserResource($user)]);
         }
 
         if(Hash::check($old_password, $user->password)){ // Compare old password
             $user->password = $new_password;
             $user->update();
+        } else {
+            return response()->json(["error" => "Identifiants invalide !"]);
         }
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new UserResource($user)
-        ]]);
+        return response()->json(["success" => "Mot de passe changé"]);
     }
 
     /**
@@ -259,9 +227,6 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => "Utilisateur supprimé avec succès !"
-        ]]);
+        return response()->json(["success" => "Utilisateur supprimé avec succès !"]);
     }
 }

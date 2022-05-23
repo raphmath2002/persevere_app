@@ -26,19 +26,13 @@ class LoginController extends Controller
         $code = EmailVerification::where('user_id', $user->id)->first();
 
         if(!isset($user) || !isset($code) || $code->code != $input['code']) {
-            return response()->json(["res" => [
-                "code" => 401,
-                "error" => "Code de vérification erroné"
-            ]]);
+            return response()->json(["error" => "Code de vérification erroné !"]);
         }
 
         $user->api_token = Str::random(50);
         $user->save();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new UserResource($user)
-        ]]);
+        return response()->json(["success" => new UserResource($user)]);
     }
 
     public function login(Request $request)
@@ -51,7 +45,7 @@ class LoginController extends Controller
 
         //SI validation échoue, on retournes les champs erronés
         if ($validator->fails()) {
-            return response()->json($validator->errors());
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         //On place tous les champs dans une variable input
@@ -61,10 +55,7 @@ class LoginController extends Controller
         $user = User::where('email', $input['email'])->first();
 
         //Si l'utilisateur n'existe pas
-        if (!isset($user)) return response()->json(["res" => [
-            "code" => 401,
-            "error" => "Identifiants incorrects"
-        ]]);
+        if (!isset($user)) return response()->json(["error" => "Identifiants incorrects"]);
         
 
         if(!isset($user->password)) {
@@ -81,11 +72,7 @@ class LoginController extends Controller
             $new_verif->user_id = $user->id;
             $new_verif->save();
 
-            return response()->json(["res" => [
-                "code" => 200,
-                "data" => $new_verif->code
-                // "message" => "email.sent"
-            ]]);
+            return response()->json(["success" => $new_verif->code]);
         }
 
         // On check la validité du mot de passe avec celui en base
@@ -98,13 +85,7 @@ class LoginController extends Controller
             $user->save();
 
             //On retourne l'user connecté
-            return response()->json(["res" => [
-                "code" => 200,
-                "data" => new UserResource($user)
-            ]]);
-        } else return response()->json(["res" => [
-            "code" => 401,
-            "message" => "identifiants incorrects"
-        ]]);
+            return response()->json(["success" => new UserResource($user)]);
+        } else return response()->json(["error" => "identifiants incorrects"]);
     }
 }

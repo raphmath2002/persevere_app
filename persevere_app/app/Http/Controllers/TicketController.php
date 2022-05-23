@@ -20,10 +20,7 @@ class TicketController extends Controller
     {
         $tickets = Ticket::all();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => TicketResource::collection($tickets)
-        ]]);
+        return response()->json(["success" => TicketResource::collection($tickets)]);
     }
 
     /**

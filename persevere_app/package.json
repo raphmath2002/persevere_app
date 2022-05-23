@@ -31,11 +31,13 @@
     },
     "dependencies": {
         "@babel/plugin-proposal-decorators": "^7.17.12",
+        "@types/vue-markdown": "^2.2.1",
         "register-service-worker": "^1.7.2",
         "ts-loader": "^9.3.0",
         "v-calendar": "^2.4.1",
         "vue-axios": "^3.4.1",
-        "vue-simple-markdown": "^1.1.4",
+        "vue-markdown": "^2.2.4",
+        "vue-simple-markdown": "^1.1.5",
         "vuetify": "^2.6.6",
         "vuex-persistedstate": "^4.0.0-beta.3"
     }
