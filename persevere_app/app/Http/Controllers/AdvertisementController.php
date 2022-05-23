@@ -20,10 +20,7 @@ class AdvertisementController extends Controller
     {
         $advertisements = Advertisement::all();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => AdvertisementResource::collection($advertisements)
-        ]]);
+        return response()->json(["success" => AdvertisementResource::collection($advertisements)]);
     }
 
     /**

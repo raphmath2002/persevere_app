@@ -188,6 +188,7 @@
 import {Vue, Component} from "vue-property-decorator"
 import axios from "axios";
 import { UserInterface } from "../Types/User";
+import Admin from '../Types/Admin'
 
 @Component
 export default class Login extends Vue {
@@ -258,11 +259,35 @@ export default class Login extends Vue {
        let {data} =  await axios.post("http://localhost:8000/api/login", this.loginInfo)
 
        if(data.success) {
+
+            if(!data.success.id) {
+                this.verification_code = data.success;
+                this.step = 'verification'
+                return
+            }
+
+            
             let user: UserInterface = data.success;
             this.$store.commit('SET_USER', user);
-            this.$store.commit('SHOW_INTERFACE', true);
-            this.$store.commit('LOGGED', true);
-            this.$router.push({name: 'home'})
+            
+
+
+            if(user.auth_level == 'customer') {
+                this.$router.push({name: 'home'})
+                this.$store.commit('SHOW_INTERFACE', true);
+                this.$store.commit('LOGGED', true);
+                await this.$store.dispatch('updateNotifs');
+
+            } else {
+                const admin = new Admin();
+                await admin.updateAll().then(() => {
+                    this.$store.commit('SET_ADMIN_DATA', admin);
+                    this.$store.commit('SHOW_INTERFACE', true);
+                    this.$store.commit('LOGGED', true);
+                    this.$router.push({name: 'dashboard'})
+                });
+                
+            }
         }
 
         else if(data.error) {
@@ -311,10 +336,22 @@ export default class Login extends Vue {
         })
 
         if(data.success) {
+            
             this.$store.commit('SET_USER', data.success);
-            this.$store.commit('SHOW_INTERFACE', true);
-            this.$store.commit('LOGGED', true);
-            this.$router.push({name: 'home'})
+            if(data.success.auth_level == "customer") {
+                this.$store.commit('SHOW_INTERFACE', true);
+                this.$store.commit('LOGGED', true);
+                this.$router.push({name: 'home'})
+            } else {
+                
+                const admin = new Admin();
+                await admin.updateAll().then(() => {
+                    this.$store.commit('SET_ADMIN_DATA', admin);
+                    this.$store.commit('SHOW_INTERFACE', true);
+                    this.$store.commit('LOGGED', true);
+                    this.$router.push({name: 'dashboard'})
+                });
+            }
         } else if(data.error) {
             this.displayError(data.error)
         } else {

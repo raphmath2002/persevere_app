@@ -20,10 +20,7 @@ class BillController extends Controller
     {
         $bills = Bill::all();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => BillResource::collection($bills)
-        ]]);
+        return response()->json(["success" => BillResource::collection($bills)]);
     }
 
     /**

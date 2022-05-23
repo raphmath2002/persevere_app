@@ -19,10 +19,7 @@ class ExceptionController extends Controller
     {
         $exceptions = Exception::all();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => ExceptionResource::collection($exceptions)
-        ]]);
+        return response()->json(["success" => ExceptionResource::collection($exceptions)]);
     }
 
     /**

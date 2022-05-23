@@ -20,10 +20,7 @@ class MessageController extends Controller
     {
         $messages = Message::all();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => MessageResource::collection($messages)
-        ]]);
+        return response()->json(["success" =>HorseResource::collection($horses)]);
     }
 
     /**

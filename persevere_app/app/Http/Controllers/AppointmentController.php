@@ -19,10 +19,7 @@ class AppointmentController extends Controller
     {
         $appointments = Appointment::all();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => AppointmentResource::collection($appointments)
-        ]]);
+        return response()->json(["success" => AppointmentResource::collection($appointments)]);
     }
 
     /**

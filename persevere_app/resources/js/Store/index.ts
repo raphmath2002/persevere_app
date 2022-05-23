@@ -6,6 +6,7 @@ import store from './index';
 import { HorseInterface } from '../Types/Horse';
 import { UserInterface } from '../Types/User';
 import { InformationInterface } from '../Types/Information';
+import Admin from '../Types/Admin';
 
 Vue.use(Vuex);
 
@@ -19,7 +20,10 @@ export default new Vuex.Store({
     show_interface: false,
     notifications: false,
     mobile: false,
-    notifs: null
+    notifs: null,
+    
+    admin_data: null as Admin,
+    admin_data_loading: false
   },
   mutations: {
     SET_USER(state, user: UserInterface) {
@@ -36,6 +40,10 @@ export default new Vuex.Store({
 
     SET_NOTIFICATIONS(state, notifications: InformationInterface) {
       state.notifs = notifications;
+    },
+
+    SET_ADMIN_DATA(state, admin_data: Admin) {
+      state.admin_data = admin_data;
     }
   },
   actions: {

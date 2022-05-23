@@ -63,11 +63,11 @@
 <script lang="ts">
 import {Vue, Component, Prop} from "vue-property-decorator"
 import Horse, { HorseInterface } from "../Types/Horse"
-import User, {UserInterface} from '../Types/User'
+import User, {UserInterface,emptyUser} from '../Types/User'
 
 @Component
 export default class SubscriptionComponent extends Vue {
-    @Prop({default: User.emptyUser}) readonly user!: UserInterface
+    @Prop({default: emptyUser()}) readonly user!: UserInterface
     @Prop({default: Horse.emptyHorse}) readonly horse!: HorseInterface
 }
 </script>

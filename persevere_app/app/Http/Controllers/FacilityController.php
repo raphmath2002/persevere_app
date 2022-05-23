@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\{Facility};
+use App\Http\Resources\FacilityResource;
 
 class FacilityController extends Controller
 {
@@ -16,7 +17,7 @@ class FacilityController extends Controller
     public function index()
     {
         $facilities = Facility::all();
-        return response()->json($facilities);
+        return response()->json(["success" => FacilityResource::collection($facilities)]);
     }
 
     /**

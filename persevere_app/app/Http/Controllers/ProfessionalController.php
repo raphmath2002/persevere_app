@@ -22,10 +22,7 @@ class ProfessionalController extends Controller
     {
         $professionals = Professional::all();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => ProfessionalResource::collection($professionals)
-        ]]);
+        return response()->json(["success" => ProfessionalResource::collection($professionals)]);
     }
 
     /**

@@ -22,10 +22,7 @@ class HorseController extends Controller
     {
         $horses = Horse::all();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => HorseResource::collection($horses)
-        ]]);
+        return response()->json(["success" => HorseResource::collection($horses)]);
     }
 
     /**

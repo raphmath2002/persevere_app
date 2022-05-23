@@ -62,21 +62,22 @@ export default class User implements UserInterface {
         this.created_at = user.created_at;
         this.updated_at = user.updated_at;
     }
+    
+}
 
-    static emptyUser(): UserInterface {
-        return {
-            name: "",
-            firstname: "",
-            email: "",
-            phone: "",
-            postal_code: "",
-            postal_address: "",
-            city: "",
-            country: "",
-            birth_date: "",
-            storage_path: "",
-            auth_level: ""
-        }
+export function emptyUser(): UserInterface {
+    return {
+        name: "",
+        firstname: "",
+        email: "",
+        phone: "",
+        postal_code: "",
+        postal_address: "",
+        city: "",
+        country: "",
+        birth_date: "",
+        storage_path: "",
+        auth_level: ""
     }
 }
 

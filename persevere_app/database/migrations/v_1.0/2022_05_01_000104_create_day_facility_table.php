@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId("day_id")->constrained()->onDelete("cascade"); 
             $table->foreignId("facility_id")->constrained()->onDelete("cascade"); 
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->timestamp('start_date')->default(\DB::raw('UTC_TIMESTAMP'));
+            $table->timestamp('end_date')->default(\DB::raw('UTC_TIMESTAMP'));
             $table->timestamps();
         });
     }

@@ -19,10 +19,7 @@ class OptionController extends Controller
     {
         $options = Option::all();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => OptionResource::collection($options)
-        ]]);
+        return response()->json(["success" => OptionResource::collection($options)]);
     }
 
     /**

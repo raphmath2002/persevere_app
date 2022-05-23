@@ -12,7 +12,7 @@
       </div>
 
       <nav class="middle-menu">
-        <ul v-if="user.auth_level='customer'">
+        <ul v-if="user.auth_level =='customer'">
           <li @click="goToRoute('home')">
             <v-icon color="black" size="40px">mdi-home</v-icon>
             <span>Accueil</span>
@@ -35,7 +35,45 @@
         </ul>
 
         <ul v-else>
-          
+          <li @click="goToRoute('dashboard')">
+            <v-icon color="black" size="40px">mdi-desktop-mac-dashboard</v-icon>
+            <span>Dashboard</span>
+          </li>
+
+           <li @click="goToRoute('users')">
+            <v-icon color="black" size="40px">mdi-account-group</v-icon>
+            <span>Utilisateurs</span>
+          </li>
+
+           <li @click="goToRoute('api-horses')">
+            <v-icon color="black" size="40px">mdi-horse</v-icon>
+            <span>Chevaux</span>
+          </li>
+
+           <li @click="goToRoute('bookings')">
+            <v-icon color="black" size="40px">mdi-notebook</v-icon>
+            <span>Réservations</span>
+          </li>
+
+           <li @click="goToRoute('facilities')">
+            <v-icon color="black" size="40px">mdi-domain</v-icon>
+            <span>Installations</span>
+          </li>
+
+           <li @click="goToRoute('advertisements')">
+            <v-icon color="black" size="40px">mdi-bullhorn</v-icon>
+            <span>Annonces</span>
+          </li>
+
+           <li @click="goToRoute('subscriptions')">
+            <v-icon color="black" size="40px">mdi-currency-usd</v-icon>
+            <span>Pensions / Options</span>
+          </li>
+
+          <li @click="goToRoute('visits')">
+            <v-icon color="black" size="40px">mdi-calendar-month</v-icon>
+            <span>Visites</span>
+          </li>
         </ul>
       </nav>
 
@@ -55,7 +93,7 @@
             <v-icon  size="50px">mdi-menu</v-icon>
           </div>
 
-          <div @click="goToRoute('notifications', false)" class="mobile-burger-btn notif">
+          <div v-if="user.auth_level == 'customer'" @click="goToRoute('notifications', false)" class="mobile-burger-btn notif">
             <v-icon v-if="!haveNotif" size="40px">mdi-bell</v-icon>
             <v-icon v-else size="40px">mdi-bell-badge</v-icon>
           </div>
@@ -103,19 +141,18 @@ export default class App extends Vue {
     
   }
 
+  
+
   private logout(): void {
     this.switchMobileMenu()
     this.$store.commit("LOGGED", false);
+    this.$store.commit("SET_USER", null)
     this.$router.push({name: 'login'})
     // TODO logout
   }
 
   private get logged(): boolean {
     return this.$store.state.logged;
-  }
-
-  async mounted() {
-    await this.$store.dispatch('updateNotifs');
   }
 }
 </script>
@@ -183,7 +220,7 @@ export default class App extends Vue {
       justify-content: space-between;
     }
 
-    .middle-menu > ul {
+    .middle-menu  ul {
       list-style: none;
       height: 100%;
 

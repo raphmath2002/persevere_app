@@ -40,7 +40,6 @@ class UserController extends Controller
             'firstname' => 'required|string|max:255',
             'birth_date' => 'required|date',
             'email' => 'required|string|max:255|unique:users,email',
-            'password' => 'required|string|regex:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&.])[A-Za-z\d@$!%*#?&.]{8,}$/', // 1 leter, 1 number, 1 special caracter, 8 caracters min
             'phone' => 'required|string|max:255',
             'postal_code' => 'required|string|max:255',
             'postal_address' => 'required|string|max:255',
@@ -62,7 +61,7 @@ class UserController extends Controller
         $user->firstname = $inputs['firstname'];
         $user->birth_date = $inputs['birth_date'];
         $user->email = $inputs['email'];
-        $user->password = Hash::make($inputs['password']);
+        $user->password = null;
         $user->phone = $inputs['phone'];
         $user->postal_code = $inputs['postal_code'];
         $user->postal_address = $inputs['postal_address'];
