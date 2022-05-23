@@ -146,6 +146,6 @@ class AppointmentController extends Controller
         $appointment->cancel_reason = $inputs['cancel_reason'];
         $appointment->update();
 
-        return response()->json(["success" => "Rendez-vous annulé avec succès"]);
+        return response()->json(["success" => "Rendez-vous annulé avec succès !"]);
     }
 }

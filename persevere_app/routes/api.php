@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{LoginController, AdvertisementController,BillController,HorseController,JobController,UserController,PensionController,ProfessionalController,AppointmentController,OptionController,FacilityController,TicketController,MessageController,RoleController};
+use App\Http\Controllers\{LoginController,AppointmentHorseController,AdvertisementController,BillController,HorseController,JobController,UserController,PensionController,ProfessionalController,AppointmentController,OptionController,FacilityController,TicketController,MessageController,RoleController};
 
 
 /*
@@ -19,7 +19,6 @@ use App\Http\Controllers\{LoginController, AdvertisementController,BillControlle
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/login/verifCode', [LoginController::class, 'verifCode'])->name('verif');
 
-
 // Routes for advertisements
 Route::middleware('auth:api')->get('/advertisements', [AdvertisementController::class, 'index']); 
 Route::middleware('auth:api')->post('/advertisements/store', [AdvertisementController::class, 'store']);
@@ -27,13 +26,19 @@ Route::middleware('auth:api')->get('/advertisements/{advertisement}/edit', [Adve
 Route::middleware('auth:api')->put('/advertisements/{advertisement}/update', [AdvertisementController::class, 'update']);
 Route::middleware('auth:api')->delete('/advertisements/{advertisement}/destroy', [AdvertisementController::class, 'destroy']); 
 
-
 // Routes for appointments
 Route::middleware('auth:api')->get('/appointments', [AppointmentController::class, 'index']);
 Route::middleware('auth:api')->post('/appointments/store', [AppointmentController::class, 'store']);
 Route::middleware('auth:api')->get('/appointments/{appointment}/edit', [AppointmentController::class, 'edit']);
 Route::middleware('auth:api')->put('/appointments/{appointment}/update', [AppointmentController::class, 'update']);
 Route::middleware('auth:api')->delete('/appointments/{appointment}/destroy', [AppointmentController::class, 'destroy']);
+
+// Routes for appointment horse
+Route::middleware('auth:api')->post('/appointmentHorse/{appointment}/{horse}/store', [AppointmentHorseController::class, 'store']);
+Route::middleware('auth:api')->put('/appointmentHorse/{appointmentHorse}/accept', [AppointmentHorseController::class, 'accept']);
+Route::middleware('auth:api')->put('/appointmentHorse/{appointmentHorse}/refuse', [AppointmentHorseController::class, 'refuse']);
+Route::middleware('auth:api')->put('/appointmentHorse/{appointmentHorse}/cancel', [AppointmentHorseController::class, 'cancel']);
+Route::middleware('auth:api')->put('/appointmentHorse/{appointmentHorse}/close', [AppointmentHorseController::class, 'close']);
 
 // Routes for bills
 Route::middleware('auth:api')->get('/bills', [BillController::class, 'index']); 
