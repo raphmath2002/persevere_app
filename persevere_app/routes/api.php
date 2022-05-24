@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{LoginController,AppointmentHorseController,AdvertisementController,BillController,HorseController,JobController,UserController,PensionController,ProfessionalController,AppointmentController,OptionController,FacilityController,TicketController,MessageController,RoleController};
+use App\Http\Controllers\{LoginController,DayFacilityController,ExceptionController,ExceptionFacilityController,AppointmentHorseController,FacilityHorseController,AdvertisementController,BillController,HorseController,JobController,UserController,PensionController,ProfessionalController,AppointmentController,OptionController,FacilityController,TicketController,MessageController,RoleController};
 
 
 /*
@@ -53,6 +53,15 @@ Route::middleware('auth:api')->post('/facilities/store', [FacilityController::cl
 Route::middleware('auth:api')->get('/facilities/{facility}/edit', [FacilityController::class, 'edit']);
 Route::middleware('auth:api')->put('/facilities/{facility}/update', [FacilityController::class, 'update']);
 Route::middleware('auth:api')->delete('/facilities/{facility}/destroy', [FacilityController::class, 'destroy']);
+
+// Routes for facility horse
+Route::middleware('auth:api')->post('/facilityHorse/{facility}/{horse}/store', [FacilityHorseController::class, 'store']);
+Route::middleware('auth:api')->put('/facilityHorse/{facilityHorse}/cancel', [FacilityHorseController::class, 'cancel']);
+Route::middleware('auth:api')->put('/facilityHorse/{facilityHorse}/decline', [FacilityHorseController::class, 'decline']);
+
+// Routes for day facility
+Route::middleware('auth:api')->post('/dayFacility/{day}/{facility}/store', [DayFacilityController::class, 'store']);
+Route::middleware('auth:api')->delete('/dayFacility/{dayFacility}/destroy', [DayFacilityController::class, 'destroy']);
 
 // Routes for horses
 Route::middleware('auth:api')->get('/horses', [HorseController::class, 'index']);
@@ -107,3 +116,12 @@ Route::middleware('auth:api')->put('/users/{user}/update_password', [UserControl
 Route::middleware('auth:api')->delete('/users/{user}/destroy', [UserController::class, 'destroy']);
 Route::middleware('auth:api')->get('/users/{user}/advertisements', [AdvertisementController::class, 'getAdvertsByUser']);
 Route::middleware('auth:api')->get('/users/{user}/advertisements/{advert}/read', [AdvertisementController::class, 'markAdvertAsRead']);
+
+// Routes for exceptions
+Route::middleware('auth:api')->get('/exceptions', [ExceptionController::class, 'index']); 
+Route::middleware('auth:api')->post('/exceptions/store', [ExceptionController::class, 'store']);
+Route::middleware('auth:api')->delete('/exceptions/{exception}/destroy', [ExceptionController::class, 'destroy']);
+
+// Routes for exception facility
+Route::middleware('auth:api')->post('/exceptionFacility/{exception}/{facility}/store', [ExceptionFacilityController::class, 'store']);
+Route::middleware('auth:api')->delete('/exceptionFacility/{exceptionFacility}/destroy', [ExceptionFacilityController::class, 'destroy']);

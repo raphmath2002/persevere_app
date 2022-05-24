@@ -35,7 +35,7 @@ class AppointmentHorseController extends Controller
         $selected_start_date = Carbon::parse($inputs['start_date']);
         $selected_end_date = Carbon::parse($inputs['start_date'])->addMinutes($appointment->duration);
 
-        $appointment_horse = AppointmentHorse::where([['appointment_id', '=', $appointment->id],['status','=','waiting']])->orWhere([['appointment_id', '=', $appointment->id],['status','=','accepted']])->get();
+        $appointment_horse = AppointmentHorse::where([['appointment_id', '=', $appointment->id],['status','=','waiting'],['start_date','>',Carbon::now()]])->orWhere([['appointment_id', '=', $appointment->id],['status','=','accepted'],['start_date','>',Carbon::now()]])->get();
 
         foreach($appointment_horse as $app_horse){
             $start_date = Carbon::parse($app_horse->start_date);
@@ -77,7 +77,7 @@ class AppointmentHorseController extends Controller
     /**
      * Accept the specified resource from storage.
      *
-     * @param  \App\Models\Appointment $appointment
+     * @param  \App\Models\AppointmentHorse $appointmentHorse
      * @return \Illuminate\Http\Response
      */
     public function accept(Request $request, AppointmentHorse $appointmentHorse)
@@ -92,7 +92,7 @@ class AppointmentHorseController extends Controller
     /**
      * Refuse the specified resource from storage.
      *
-     * @param  \App\Models\Appointment $appointment
+     * @param  \App\Models\AppointmentHorse $appointmentHorse
      * @return \Illuminate\Http\Response
      */
     public function refuse(Request $request, AppointmentHorse $appointmentHorse)
@@ -118,7 +118,7 @@ class AppointmentHorseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Appointment $appointment
+     * @param  \App\Models\AppointmentHorse $appointmentHorse
      * @return \Illuminate\Http\Response
      */
     public function cancel(Request $request, AppointmentHorse $appointmentHorse)
@@ -144,7 +144,7 @@ class AppointmentHorseController extends Controller
     /**
      * Close the specified resource from storage.
      *
-     * @param  \App\Models\Appointment $appointment
+     * @param  \App\Models\AppointmentHorse $appointmentHorse
      * @return \Illuminate\Http\Response
      */
     public function close(Request $request, AppointmentHorse $appointmentHorse)

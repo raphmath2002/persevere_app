@@ -90,7 +90,7 @@ class AppointmentController extends Controller
             return response()->json(["input_error" => $validator->errors()]);
         }
 
-        $appointment_horse = AppointmentHorse::where([['appointment_id', '=', $appointment->id],['status','=','waiting']])->orWhere([['appointment_id', '=', $appointment->id],['status','=','accepted']])->get();
+        $appointment_horse = AppointmentHorse::where([['appointment_id', '=', $appointment->id],['status','=','waiting'],['start_date','>',Carbon::now()]])->orWhere([['appointment_id', '=', $appointment->id],['status','=','accepted'],['start_date','>',Carbon::now()]])->get();
 
         // Cancel all appointment horse
         $inputs = $request->all();
@@ -130,7 +130,7 @@ class AppointmentController extends Controller
             return response()->json(["input_error" => $validator->errors()]);
         }
 
-        $appointment_horse = AppointmentHorse::where([['appointment_id', '=', $appointment->id],['status','=','waiting']])->orWhere([['appointment_id', '=', $appointment->id],['status','=','accepted']])->get();
+        $appointment_horse = AppointmentHorse::where([['appointment_id', '=', $appointment->id],['status','=','waiting'],['start_date','>',Carbon::now()]])->orWhere([['appointment_id', '=', $appointment->id],['status','=','accepted'],['start_date','>',Carbon::now()]])->get();
 
         // Cancel all appointment horse
         $inputs = $request->all();
