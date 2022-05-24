@@ -10,7 +10,7 @@ import Tickets from '../Pages/Tickets.vue'
 import Dashboard from '../Pages/admin/Dashboard.vue'
 import Users from '../Pages/admin/Users.vue'
 import AdminHorses from '../Pages/admin/Horses.vue'
-import Profesionnals from '../Pages/admin/Profesionnals.vue'
+import Professionals from '../Pages/admin/Professionals.vue'
 import Visits from '../Pages/admin/Visits.vue'
 
 
@@ -64,9 +64,9 @@ const routes: Array<RouteConfig> = [
     },
 
     {
-      path: '/admin/profesionnals',
-      name: "profesionnals",
-      component: Profesionnals
+      path: '/admin/professionals',
+      name: "professionals",
+      component: Professionals
     },
 
     {

@@ -31,7 +31,7 @@ export default new Vuex.Store({
       tickets: [],
       options: [],
       pensions: [],
-      profesionnals: []
+      professionals: []
     },
 
     admin_data_loading: false
@@ -85,8 +85,8 @@ export default new Vuex.Store({
       state.admin_data.pensions = pensions;
     },
 
-    SET_PROFESIONNALS(state, profesionnals) {
-      state.admin_data.profesionnals = profesionnals;
+    SET_PROFESSIONALS(state, professionals) {
+      state.admin_data.professionals = professionals;
     },
   },
   actions: {
@@ -195,15 +195,15 @@ export default new Vuex.Store({
         if(pensions.data.success) commit('SET_PENSIONS', pensions.data.success);
       }
 
-      if(choice == 'profesionnals' || choice == "all")
+      if(choice == 'professionals' || choice == "all")
       {
-        let profesionnals = await axios.get('http://localhost:8000/api/profesionnals', {
+        let professionals = await axios.get('http://localhost:8000/api/professionals', {
           headers: {
               "Authorization": "Bearer " + state.user.api_token
           }
         })
 
-        if(profesionnals.data.success) commit('SET_PROFESIONNALS', profesionnals.data.success);
+        if(professionals.data.success) commit('SET_PROFESSIONALS', professionals.data.success);
       }
     }
   },

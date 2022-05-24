@@ -23,7 +23,7 @@
 
             <v-row class="pros-list">
                 <v-col v-for="pro in allOrFilter()" :key="pro.id">
-                    <ProViewComponent :profesionnal="pro" />
+                    <ProViewComponent :professional="pro" />
                 </v-col>
             </v-row>
 
@@ -40,8 +40,8 @@
 
 <script lang="ts">
 import {Vue, Component} from "vue-property-decorator"
-import ProEditComponent from "../../Components/Profesionnals/ProEditComponent.vue"
-import ProViewComponent from "../../Components/Profesionnals/ProViewComponent.vue"
+import ProEditComponent from "../../Components/Professionals/ProEditComponent.vue"
+import ProViewComponent from "../../Components/Professionals/ProViewComponent.vue"
 
 @Component({
     components: {
@@ -49,7 +49,7 @@ import ProViewComponent from "../../Components/Profesionnals/ProViewComponent.vu
         ProViewComponent
     }
 })
-export default class Profesionnals extends Vue {
+export default class Professionals extends Vue {
 
     private get admin_data() {
         return this.$store.state.admin_data;
@@ -65,7 +65,7 @@ export default class Profesionnals extends Vue {
         if(this.filter.length > 3) {
             this.filtered_pros = [];
 
-            for(let pro of this.admin_data.profesionnals) {
+            for(let pro of this.admin_data.professionals) {
                 
                 const string_user = JSON.stringify(pro).toLowerCase();
                 const filter = this.filter.toLowerCase();
@@ -78,7 +78,7 @@ export default class Profesionnals extends Vue {
     private allOrFilter() {
         if(this.filter.length > 3) {
             return this.filtered_pros;
-        } else return this.admin_data.profesionnals;
+        } else return this.admin_data.professionals;
     }
 }
 </script>

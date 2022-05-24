@@ -14,7 +14,7 @@
                             <li>Pensionnaires : {{getUsersByLevel('customer').length}}</li>
                             <li>Chevaux : {{admin_data.horses.length}}</li>
                             <li>Administrateurs : {{getUsersByLevel('admin').length}}</li>
-                            <li>Professionnels : {{admin_data.profesionnals.length}}</li>
+                            <li>Professionnels : {{admin_data.professionals.length}}</li>
                             <li>Tickets en cours : {{admin_data.tickets.length}}</li>
                         </ul>
                     </v-card-text>

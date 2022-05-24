@@ -37,10 +37,7 @@ class MessageController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Create new Message instance
@@ -52,10 +49,7 @@ class MessageController extends Controller
         $message->user_id = Auth::user()->id;
         $message->save();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new MessageResource($message)
-        ]]);
+        return response()->json(["success" => new MessageResource($message)]);
     }
 
     /**
@@ -66,10 +60,7 @@ class MessageController extends Controller
      */
     public function edit(Message $message)
     {
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new MessageResource($message)
-        ]]);
+        return response()->json(["success" => new MessageResource($message)]);
     }
 
     /**
@@ -86,10 +77,7 @@ class MessageController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Update Message
@@ -98,10 +86,7 @@ class MessageController extends Controller
         $message->content = $inputs['content'];
         $message->update();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new MessageResource($message)
-        ]]);
+        return response()->json(["success" => new MessageResource($message)]);
     }
 
     /**
@@ -114,9 +99,6 @@ class MessageController extends Controller
     {
         $message->delete();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "message" => "Message supprimé avec succès !"
-        ]]);
+        return response()->json(["success" => "Message supprimé avec succès !"]);
     }
 }

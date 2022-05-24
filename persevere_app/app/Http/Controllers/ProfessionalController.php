@@ -49,7 +49,7 @@ class ProfessionalController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["error" => $validator->errors()]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Create new Professional instance
@@ -83,6 +83,17 @@ class ProfessionalController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Professional $professional
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Professional $professional)
+    {
+        return response()->json(["success" => new ProfessionalResource($professional)]);
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -105,7 +116,7 @@ class ProfessionalController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["error" => $validator->errors()]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
 
@@ -141,7 +152,7 @@ class ProfessionalController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["error" => $validator->errors()]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
 
@@ -182,7 +193,7 @@ class ProfessionalController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["error" => $validator->errors()]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Update password
@@ -209,6 +220,6 @@ class ProfessionalController extends Controller
     {
         $professional->delete();
 
-        return response()->json(["success" => "Professionnel supprimé !"]);
+        return response()->json(["success" => "Professionnel supprimé avec succès !"]);
     }
 }

@@ -65,7 +65,7 @@
                         >
                            <v-select
                                 v-model="selected_pro"
-                                :items="admin_data.profesionnals"
+                                :items="admin_data.professionals"
                                 item-text="firstname"
                                 filled
                                 outlined
@@ -123,7 +123,7 @@ export default class VisitEditComponent extends Vue {
         
 
         if(this.new) {
-            delete this.visit_infos.profesionnal
+            delete this.visit_infos.professional
             let {data} = await axios.post(`http://localhost:8000/api/appointments/store`, this.visit_infos, {
                 headers: {
                     "Authorization" : "Bearer " + this.user.api_token

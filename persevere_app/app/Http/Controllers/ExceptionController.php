@@ -37,10 +37,7 @@ class ExceptionController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Create new Exception instance
@@ -52,60 +49,7 @@ class ExceptionController extends Controller
         $exception->end_date = $inputs['end_date'];
         $exception->save();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new ExceptionResource($exception)
-        ]]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Exception $exception
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Exception $exception)
-    {
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new ExceptionResource($exception)
-        ]]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Exception $exception
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Exception $exception)
-    {
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|string|max:255',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date',
-        ]);
-
-        if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
-        }
-
-        // Update Exception
-        $inputs = $request->all();
-        
-        $exception->title = $inputs['title'];
-        $exception->start_date = $inputs['start_date'];
-        $exception->end_date = $inputs['end_date'];
-        $exception->update();
-
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new ExceptionResource($exception)
-        ]]);
+        return response()->json(["success" => new ExceptionResource($exception)]);
     }
 
     /**
@@ -118,9 +62,6 @@ class ExceptionController extends Controller
     {
         $exception->delete();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "message" => "Exception supprimée avec succès !"
-        ]]);
+        return response()->json(["success" => "Exception supprimée avec succès !"]);
     }
 }

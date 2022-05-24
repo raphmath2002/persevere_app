@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{LoginController, AdvertisementController,BillController,HorseController,JobController,UserController,PensionController,ProfessionalController,AppointmentController,OptionController,FacilityController,TicketController,MessageController,RoleController};
+use App\Http\Controllers\{LoginController,AdvertisementUserController,FacilitiesImageController,DayFacilityController,ExceptionController,ExceptionFacilityController,AppointmentHorseController,FacilityHorseController,AdvertisementController,BillController,HorseController,JobController,UserController,PensionController,ProfessionalController,AppointmentController,OptionController,FacilityController,TicketController,MessageController,RoleController};
 
 
 /*
@@ -19,7 +19,6 @@ use App\Http\Controllers\{LoginController, AdvertisementController,BillControlle
 Route::middleware('cors')->post('/login', [LoginController::class, 'login'])->name('login');
 Route::middleware('cors')->post('/login/verifCode', [LoginController::class, 'verifCode'])->name('verif');
 
-
 Route::middleware(['cors'])->group(function () {
     // Routes for advertisements
     Route::middleware('auth:api')->get('/advertisements', [AdvertisementController::class, 'index']); 
@@ -28,13 +27,19 @@ Route::middleware(['cors'])->group(function () {
     Route::middleware('auth:api')->put('/advertisements/{advertisement}/update', [AdvertisementController::class, 'update']);
     Route::middleware('auth:api')->delete('/advertisements/{advertisement}/destroy', [AdvertisementController::class, 'destroy']); 
 
-
     // Routes for appointments
     Route::middleware('auth:api')->get('/appointments', [AppointmentController::class, 'index']);
     Route::middleware('auth:api')->post('/appointments/store', [AppointmentController::class, 'store']);
     Route::middleware('auth:api')->get('/appointments/{appointment}/edit', [AppointmentController::class, 'edit']);
     Route::middleware('auth:api')->put('/appointments/{appointment}/update', [AppointmentController::class, 'update']);
     Route::middleware('auth:api')->delete('/appointments/{appointment}/destroy', [AppointmentController::class, 'destroy']);
+
+    // Routes for appointment horse
+    Route::middleware('auth:api')->post('/appointmentHorse/{appointment}/{horse}/store', [AppointmentHorseController::class, 'store']);
+    Route::middleware('auth:api')->put('/appointmentHorse/{appointmentHorse}/accept', [AppointmentHorseController::class, 'accept']);
+    Route::middleware('auth:api')->put('/appointmentHorse/{appointmentHorse}/refuse', [AppointmentHorseController::class, 'refuse']);
+    Route::middleware('auth:api')->put('/appointmentHorse/{appointmentHorse}/cancel', [AppointmentHorseController::class, 'cancel']);
+    Route::middleware('auth:api')->put('/appointmentHorse/{appointmentHorse}/close', [AppointmentHorseController::class, 'close']);
 
     // Routes for bills
     Route::middleware('auth:api')->get('/bills', [BillController::class, 'index']); 
@@ -49,6 +54,19 @@ Route::middleware(['cors'])->group(function () {
     Route::middleware('auth:api')->get('/facilities/{facility}/edit', [FacilityController::class, 'edit']);
     Route::middleware('auth:api')->put('/facilities/{facility}/update', [FacilityController::class, 'update']);
     Route::middleware('auth:api')->delete('/facilities/{facility}/destroy', [FacilityController::class, 'destroy']);
+
+    // Routes for facility horse
+    Route::middleware('auth:api')->post('/facilityHorse/{facility}/{horse}/store', [FacilityHorseController::class, 'store']);
+    Route::middleware('auth:api')->put('/facilityHorse/{facilityHorse}/cancel', [FacilityHorseController::class, 'cancel']);
+    Route::middleware('auth:api')->put('/facilityHorse/{facilityHorse}/decline', [FacilityHorseController::class, 'decline']);
+
+    // Routes for day facility
+    Route::middleware('auth:api')->post('/dayFacility/{day}/{facility}/store', [DayFacilityController::class, 'store']);
+    Route::middleware('auth:api')->delete('/dayFacility/{dayFacility}/destroy', [DayFacilityController::class, 'destroy']);
+
+    // Routes for facilities images
+    Route::middleware('auth:api')->post('/facilitiesImage/{facility}/store', [FacilitiesImageController::class, 'store']);
+    Route::middleware('auth:api')->delete('/facilitiesImage/{facilitiesImage}/destroy', [FacilitiesImageController::class, 'destroy']);
 
     // Routes for horses
     Route::middleware('auth:api')->get('/horses', [HorseController::class, 'index']);
@@ -80,11 +98,11 @@ Route::middleware(['cors'])->group(function () {
     Route::middleware('auth:api')->delete('/pensions/{pension}/destroy', [PensionController::class, 'destroy']);
 
     // Routes for professionals
-    Route::middleware('auth:api')->get('/profesionnals', [ProfessionalController::class, 'index']);
-    Route::middleware('auth:api')->post('/profesionnals/store', [ProfessionalController::class, 'store']);
-    Route::middleware('auth:api')->get('/profesionnals/{professional}/edit', [ProfessionalController::class, 'edit']);
-    Route::middleware('auth:api')->put('/profesionnals/{professional}/update', [ProfessionalController::class, 'update']);
-    Route::middleware('auth:api')->delete('/profesionnals/{professional}/destroy', [ProfessionalController::class, 'destroy']);
+    Route::middleware('auth:api')->get('/professionals', [ProfessionalController::class, 'index']);
+    Route::middleware('auth:api')->post('/professionals/store', [ProfessionalController::class, 'store']);
+    Route::middleware('auth:api')->get('/professionals/{professional}/edit', [ProfessionalController::class, 'edit']);
+    Route::middleware('auth:api')->put('/professionals/{professional}/update', [ProfessionalController::class, 'update']);
+    Route::middleware('auth:api')->delete('/professionals/{professional}/destroy', [ProfessionalController::class, 'destroy']);
 
     // Routes for tickets
     Route::middleware('auth:api')->get('/tickets', [TicketController::class, 'index']);
@@ -101,8 +119,23 @@ Route::middleware(['cors'])->group(function () {
     Route::middleware('auth:api')->put('/users/{user}/update_photo', [UserController::class, 'update_photo']);
     Route::middleware('auth:api')->put('/users/{user}/update_password', [UserController::class, 'update_password']);
     Route::middleware('auth:api')->delete('/users/{user}/destroy', [UserController::class, 'destroy']);
-    Route::middleware('auth:api')->get('/users/{user}/advertisements', [AdvertisementController::class, 'getAdvertsByUser']);
-    Route::middleware('auth:api')->get('/users/{user}/advertisements/{advert}/read', [AdvertisementController::class, 'markAdvertAsRead']);
 
+    // Routes for advertisement user
+    Route::middleware('auth:api')->get('/users/{user}/advertisements', [AdvertisementUserController::class, 'index']);
+    Route::middleware('auth:api')->get('/users/{user}/advertisements/{advertisement}/read', [AdvertisementUserController::class, 'store']);
+
+    // Routes for exceptions
+    Route::middleware('auth:api')->get('/exceptions', [ExceptionController::class, 'index']); 
+    Route::middleware('auth:api')->post('/exceptions/store', [ExceptionController::class, 'store']);
+    Route::middleware('auth:api')->delete('/exceptions/{exception}/destroy', [ExceptionController::class, 'destroy']);
+
+    // Routes for exception facility
+    Route::middleware('auth:api')->post('/exceptionFacility/{exception}/{facility}/store', [ExceptionFacilityController::class, 'store']);
+    Route::middleware('auth:api')->delete('/exceptionFacility/{exceptionFacility}/destroy', [ExceptionFacilityController::class, 'destroy']);
 });
+
+
+
+
+
 

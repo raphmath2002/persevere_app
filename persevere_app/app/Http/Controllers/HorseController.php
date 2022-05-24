@@ -49,7 +49,7 @@ class HorseController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["error" => $validator->errors()]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Create new Horse instance
@@ -94,6 +94,17 @@ class HorseController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Horse $horse
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Horse $horse)
+    {
+        return response()->json(["success" => new HorseResource($horse)]);
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -116,7 +127,7 @@ class HorseController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["error" => $validator->errors()]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Update Horse
@@ -151,7 +162,7 @@ class HorseController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["error" => $validator->errors()]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Update photo
@@ -173,7 +184,6 @@ class HorseController extends Controller
         $horse->update();
 
         return response()->json(["success" => new HorseResource($horse)]);
-
     }
 
     /**
@@ -186,7 +196,6 @@ class HorseController extends Controller
     {
         $horse->delete();
 
-        return response()->json(["success" => "cheval supprimé"]);
-
+        return response()->json(["success" => "Cheval supprimé avec succès !"]);
     }
 }

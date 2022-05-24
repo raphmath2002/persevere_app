@@ -34,13 +34,11 @@ class OptionController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
             'description' => 'required|string|max:2048',
+            'option_type' => 'required|string|max:255',
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Create new Option instance
@@ -50,12 +48,10 @@ class OptionController extends Controller
         $option->name = $inputs['name'];
         $option->price = $inputs['price'];
         $option->description = $inputs['description'];
+        $option->option_type = $inputs['option_type'];
         $option->save();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new OptionResource($option)
-        ]]);
+        return response()->json(["success" => new OptionResource($option)]);
     }
 
     /**
@@ -66,10 +62,7 @@ class OptionController extends Controller
      */
     public function edit(Option $option)
     {
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new OptionResource($option)
-        ]]);
+        return response()->json(["success" => new OptionResource($option)]);
     }
 
     /**
@@ -85,13 +78,11 @@ class OptionController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
             'description' => 'required|string|max:2048',
+            'option_type' => 'required|string|max:255',
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Update Option
@@ -100,12 +91,10 @@ class OptionController extends Controller
         $option->name = $inputs['name'];
         $option->price = $inputs['price'];
         $option->description = $inputs['description'];
+        $option->option_type = $inputs['option_type'];
         $option->update();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new OptionResource($option)
-        ]]);
+        return response()->json(["success" => new OptionResource($option)]);
     }
 
     /**
@@ -118,9 +107,6 @@ class OptionController extends Controller
     {
         $option->delete();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "message" => "Option supprimée avec succès !"
-        ]]);
+        return response()->json(["success" => "Option supprimée avec succès !"]);
     }
 }

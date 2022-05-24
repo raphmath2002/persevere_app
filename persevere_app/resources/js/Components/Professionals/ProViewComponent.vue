@@ -2,7 +2,7 @@
     <v-container>
         <v-card>
             <v-card-title>
-                <h3>{{profesionnal.name}} {{profesionnal.firstname}}</h3>
+                <h3>{{professional.name}} {{professional.firstname}}</h3>
             </v-card-title>
 
             <v-card-text>
@@ -10,10 +10,10 @@
                     @click="viewOrEdit"
                     class="pro-widget d-flex align-center"
                 >
-                    <v-img max-width="100px" height="100px" class="pro-avatar" :src="profesionnal.storage_path"></v-img>
+                    <v-img max-width="100px" height="100px" class="pro-avatar" :src="professional.storage_path"></v-img>
                     
                     <div class="profession-container">
-                        <span>{{profesionnal.profession}}</span>
+                        <span>{{professional.profession}}</span>
                     </div>
                 </div>
             </v-card-text>
@@ -32,7 +32,7 @@
             :fullscreen="$vuetify.breakpoint.xsOnly"
 
         >
-            <ProEditComponent @done="editProDialog = false" :profesionnal="profesionnal" />
+            <ProEditComponent @done="editProDialog = false" :professional="professional" />
         </v-dialog>
     </v-container>
 </template>
@@ -50,7 +50,7 @@ import ProEditComponent from "./ProEditComponent.vue"
     }
 })
 export default class ProViewComponent extends Vue {
-    @Prop() readonly profesionnal!: ProfessionalInterface
+    @Prop() readonly professional!: ProfessionalInterface
 
     private editProDialog = false;
     private proDialog = false;

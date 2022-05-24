@@ -22,7 +22,7 @@ interface AdminInterface {
     tickets: TicketInterface[];
     options: OptionInterface[];
     pensions: PensionInterface[];
-    profesionnals: ProfessionalInterface[];
+    professionals: ProfessionalInterface[];
 }
 
 export default class Admin implements AdminInterface {
@@ -34,7 +34,7 @@ export default class Admin implements AdminInterface {
     public tickets: TicketInterface[] = [];
     public options: OptionInterface[] = [];
     public pensions: PensionInterface[] = [];
-    public profesionnals: ProfessionalInterface[] = [];
+    public professionals: ProfessionalInterface[] = [];
 
     _apiToken = store.state.user.api_token;
 
@@ -121,7 +121,7 @@ export default class Admin implements AdminInterface {
             }
         })
 
-        if(data.success) this.profesionnals = data.success;
+        if(data.success) this.professionals = data.success;
     }
 
     public async updateAll() {

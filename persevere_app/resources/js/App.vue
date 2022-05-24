@@ -45,7 +45,7 @@
             <span>Utilisateurs</span>
           </li>
 
-          <li @click="goToRoute('profesionnals')">
+          <li @click="goToRoute('professionals')">
             <v-icon color="black" size="40px">mdi-account-multiple</v-icon>
             <span>Professionnels</span>
           </li>

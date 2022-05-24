@@ -17,7 +17,7 @@
 
             <v-row>
                 <v-col class="avatar-container d-flex justify-center" @click="$refs.file.click()">
-                    <v-img width="100px" height="100px" v-if="profesionnal_infos.storage_path.length > 0" class="pro-details-avatar" :src="profesionnal_infos.storage_path"></v-img>
+                    <v-img width="100px" height="100px" v-if="professional_infos.storage_path.length > 0" class="pro-details-avatar" :src="professional_infos.storage_path"></v-img>
                     <div v-else class="pro-details-avatar no-avatar"></div>
                     <input ref="file" id="avatar-file" type="file" name="name" style="display: none;" v-on:change="insertAvatar" />
                 </v-col>
@@ -32,7 +32,7 @@
                             md="4"
                         >
                             <v-text-field
-                                v-model="profesionnal_infos.name"
+                                v-model="professional_infos.name"
                                 label="Nom"
                             ></v-text-field>
                         </v-col>
@@ -42,7 +42,7 @@
                             md="4"
                         >
                             <v-text-field
-                                v-model="profesionnal_infos.firstname"
+                                v-model="professional_infos.firstname"
                                 label="Prénom"
                             ></v-text-field>
                         </v-col>
@@ -52,7 +52,7 @@
                             md="4"
                         >
                             <v-text-field
-                                v-model="profesionnal_infos.email"
+                                v-model="professional_infos.email"
                                 label="Adresse email"
                             ></v-text-field>
                         </v-col>
@@ -62,7 +62,7 @@
                             md="4"
                         >
                             <v-text-field
-                                v-model="profesionnal_infos.phone"
+                                v-model="professional_infos.phone"
                                 label="Téléphone"
                             ></v-text-field>
                         </v-col>
@@ -72,7 +72,7 @@
                             md="4"
                         >
                             <v-text-field
-                                v-model="profesionnal_infos.profession"
+                                v-model="professional_infos.profession"
                                 label="Profession"
                             ></v-text-field>
                         </v-col>
@@ -82,7 +82,7 @@
                             md="4"
                         >
                             <v-text-field
-                                v-model="profesionnal_infos.postal_code"
+                                v-model="professional_infos.postal_code"
                                 label="Code postal"
                             ></v-text-field>
                         </v-col>
@@ -92,7 +92,7 @@
                             md="4"
                         >
                             <v-text-field
-                                v-model="profesionnal_infos.postal_address"
+                                v-model="professional_infos.postal_address"
                                 label="Adresse"
                             ></v-text-field>
                         </v-col>
@@ -102,7 +102,7 @@
                             md="4"
                         >
                             <v-text-field
-                                v-model="profesionnal_infos.city"
+                                v-model="professional_infos.city"
                                 label="Ville"
                             ></v-text-field>
                         </v-col>
@@ -112,7 +112,7 @@
                             md="4"
                         >
                             <v-text-field
-                                v-model="profesionnal_infos.country"
+                                v-model="professional_infos.country"
                                 label="Pays"
                             ></v-text-field>
                         </v-col>
@@ -124,7 +124,7 @@
                             
                             <span>Date de naissance : </span>
 
-                            <v-date-picker is-dark v-model="profesionnal_infos.birth_date" mode="date" label="Date de naissance" is24hr>
+                            <v-date-picker is-dark v-model="professional_infos.birth_date" mode="date" label="Date de naissance" is24hr>
                                 <template v-slot="{ inputValue, inputEvents }">
                                     <input
                                         class="px-2 py-1 border rounded focus:outline-none border:blue focus:border-blue-300 color:red"
@@ -151,7 +151,7 @@ import { UserInterface } from "../../Types/User"
 
 @Component
 export default class ProEditComponent extends Vue {
-    @Prop() readonly profesionnal!: ProfessionalInterface
+    @Prop() readonly professional!: ProfessionalInterface
     @Prop({default: false}) readonly new: boolean
 
     private get user(): UserInterface {
@@ -160,7 +160,7 @@ export default class ProEditComponent extends Vue {
     
     private loading = false;
 
-    private profesionnal_infos: any = {
+    private professional_infos: any = {
         name: "",
         firstname: "",
         email: "",
@@ -183,7 +183,7 @@ export default class ProEditComponent extends Vue {
 
         reader.onloadend = async (evt: any) => {
             if(evt.target.readyState == FileReader.DONE) {
-                this.profesionnal_infos.storage_path = reader.result as string
+                this.professional_infos.storage_path = reader.result as string
             }
         }
         await reader.readAsDataURL(event.target.files[0])
@@ -191,31 +191,31 @@ export default class ProEditComponent extends Vue {
 
 
     private async save() {
-        //console.log(this.profesionnal_infos)
-        //this.profesionnal_infos.birth_date = this.formatDate(this.profesionnal_infos.birth_date)
+        //console.log(this.professional_infos)
+        //this.professional_infos.birth_date = this.formatDate(this.professional_infos.birth_date)
         if(this.new) {
 
-            let {data} = await axios.post(`http://localhost:8000/api/profesionnals/store`, this.profesionnal_infos, {
+            let {data} = await axios.post(`http://localhost:8000/api/professionals/store`, this.professional_infos, {
                 headers: {
                     "Authorization" : "Bearer " + this.user.api_token
                 }
             })
 
             if(data.success) {
-                await this.$store.dispatch('update', 'profesionnals')
+                await this.$store.dispatch('update', 'professionals')
                 this.$emit('done')
             } else {
                 console.log(data)
             }
         } else {
-             let {data} = await axios.put(`http://localhost:8000/api/profesionnals/${this.profesionnal_infos.id}/update`, this.profesionnal_infos, {
+             let {data} = await axios.put(`http://localhost:8000/api/professionals/${this.professional_infos.id}/update`, this.professional_infos, {
                 headers: {
                     "Authorization" : "Bearer " + this.user.api_token
                 }
             })
 
             if(data.success) {
-                await this.$store.dispatch('update', 'profesionnals')
+                await this.$store.dispatch('update', 'professionals')
                 this.$emit('done')
             } else {
                 console.log(data)
@@ -224,7 +224,7 @@ export default class ProEditComponent extends Vue {
     }
 
     private mounted() {
-        if(!this.new) this.profesionnal_infos = JSON.parse(JSON.stringify(this.profesionnal));
+        if(!this.new) this.professional_infos = JSON.parse(JSON.stringify(this.professional));
     }
 }
 </script>
