@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{LoginController,AdvertisementUserController,FacilitiesImageController,DayFacilityController,ExceptionController,ExceptionFacilityController,AppointmentHorseController,FacilityHorseController,AdvertisementController,BillController,HorseController,JobController,UserController,PensionController,ProfessionalController,AppointmentController,OptionController,FacilityController,TicketController,MessageController,RoleController};
+use App\Http\Controllers\{LoginController,HorsePensionController,HorseOptionController,AdvertisementUserController,FacilitiesImageController,DayFacilityController,ExceptionController,ExceptionFacilityController,AppointmentHorseController,FacilityHorseController,AdvertisementController,BillController,HorseController,JobController,UserController,PensionController,ProfessionalController,AppointmentController,OptionController,FacilityController,TicketController,MessageController,RoleController};
 
 
 /*
@@ -90,12 +90,22 @@ Route::middleware(['cors'])->group(function () {
     Route::middleware('auth:api')->put('/options/{option}/update', [OptionController::class, 'update']);
     Route::middleware('auth:api')->delete('/options/{option}/destroy', [OptionController::class, 'destroy']);
 
+    // Routes for horse option
+    Route::middleware('auth:api')->post('/horseOption/{horse}/{option}/subscribe', [HorseOptionController::class, 'subscribe']);
+    Route::middleware('auth:api')->put('/horseOption/{horseOption}/unsubscribe', [HorseOptionController::class, 'unsubscribe']);
+
+    
+
     // Routes for pensions
     Route::middleware('auth:api')->get('/pensions', [PensionController::class, 'index']);
     Route::middleware('auth:api')->post('/pensions/store', [PensionController::class, 'store']);
     Route::middleware('auth:api')->get('/pensions/{pension}/edit', [PensionController::class, 'edit']);
     Route::middleware('auth:api')->put('/pensions/{pension}/update', [PensionController::class, 'update']);
     Route::middleware('auth:api')->delete('/pensions/{pension}/destroy', [PensionController::class, 'destroy']);
+
+    // Routes for horse pension
+    Route::middleware('auth:api')->post('/horsePension/{horse}/{pension}/subscribe', [HorsePensionController::class, 'subscribe']);
+    Route::middleware('auth:api')->put('/horsePension/{horsePension}/unsubscribe', [HorsePensionController::class, 'unsubscribe']);
 
     // Routes for professionals
     Route::middleware('auth:api')->get('/professionals', [ProfessionalController::class, 'index']);
