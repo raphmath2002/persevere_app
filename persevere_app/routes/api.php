@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{LoginController,DayFacilityController,ExceptionController,ExceptionFacilityController,AppointmentHorseController,FacilityHorseController,AdvertisementController,BillController,HorseController,JobController,UserController,PensionController,ProfessionalController,AppointmentController,OptionController,FacilityController,TicketController,MessageController,RoleController};
+use App\Http\Controllers\{LoginController,FacilitiesImageController,DayFacilityController,ExceptionController,ExceptionFacilityController,AppointmentHorseController,FacilityHorseController,AdvertisementController,BillController,HorseController,JobController,UserController,PensionController,ProfessionalController,AppointmentController,OptionController,FacilityController,TicketController,MessageController,RoleController};
 
 
 /*
@@ -62,6 +62,10 @@ Route::middleware('auth:api')->put('/facilityHorse/{facilityHorse}/decline', [Fa
 // Routes for day facility
 Route::middleware('auth:api')->post('/dayFacility/{day}/{facility}/store', [DayFacilityController::class, 'store']);
 Route::middleware('auth:api')->delete('/dayFacility/{dayFacility}/destroy', [DayFacilityController::class, 'destroy']);
+
+// Routes for facilities images
+Route::middleware('auth:api')->post('/facilitiesImage/{facility}/store', [FacilitiesImageController::class, 'store']);
+Route::middleware('auth:api')->delete('/facilitiesImage/{facilitiesImage}/destroy', [FacilitiesImageController::class, 'destroy']);
 
 // Routes for horses
 Route::middleware('auth:api')->get('/horses', [HorseController::class, 'index']);
