@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Image;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -38,7 +39,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'firstname' => 'required|string|max:255',
-            'birth_date' => 'required|date',
+            'birth_date' => 'required',
             'email' => 'required|string|max:255|unique:users,email',
             'phone' => 'required|string|max:255',
             'postal_code' => 'required|string|max:255',
@@ -106,13 +107,14 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'firstname' => 'required|string|max:255',
-            'birth_date' => 'required|date',
+            'birth_date' => 'required',
             'email' => 'required|string|max:255|unique:users,email,' . $user->id,
             'phone' => 'required|string|max:255',
             'postal_code' => 'required|string|max:255',
             'postal_address' => 'required|string|max:255',
             'city' => 'required|string|max:255',
             'country' => 'required|string|max:255',
+            'storage_path' => 'string'
         ]);
 
         if($validator->fails()){
@@ -131,6 +133,22 @@ class UserController extends Controller
         $user->postal_address = $inputs['postal_address'];
         $user->city = $inputs['city'];
         $user->country = $inputs['country'];
+
+        if(isset($inputs['storage_path'])) {
+            $make_image = Image::make($inputs['storage_path']);
+            $type = $make_image->mime();
+            $extension_path = explode("/", $type)[1];
+
+            $url = 'img_uploads/img_users/'. Str::random(15) .'.'.$extension_path.'';
+            $make_image->save(public_path($url));
+            $user->storage_path = URL::asset($url);
+
+            // Delete old photo
+            if(file_exists($inputs['storage_path'])){
+                unlink($inputs['storage_path']);
+            }
+        }
+        
         $user->update();
 
         return response()->json(["success" => new UserResource($user)]);

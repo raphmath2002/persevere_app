@@ -44,6 +44,7 @@ class UserResource extends JsonResource
             'auth_level' => $this->auth_level,
             'have_notif' => $this->haveNotif(),
             'horses' => HorseResource::collection($this->horses),
+            'tickets' => $this->tickets,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

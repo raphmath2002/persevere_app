@@ -14,8 +14,8 @@ export interface HorseInterface {
     storage_path: string;
     sex: string;
 
-    pension?: PensionInterface;
-    options?: OptionInterface[];
+    pension: PensionInterface;
+    options: OptionInterface[];
     user_id: number;
     appointments?: string;
     created_at?: string;
@@ -35,8 +35,8 @@ export default class Horse implements HorseInterface {
     storage_path: string;
     sex: string;
 
-    options?: OptionInterface[];
-    pension?: PensionInterface;
+    options: OptionInterface[];
+    pension: PensionInterface;
     user_id: number;
     appointments?: string;
     created_at?: string;
@@ -78,6 +78,8 @@ export default class Horse implements HorseInterface {
                 birth_country: "",
                 storage_path: "",
                 sex: "",
+                options: [],
+                pension: null,
 
                 user_id: 0,
                 created_at: "",

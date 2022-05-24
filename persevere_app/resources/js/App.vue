@@ -45,6 +45,11 @@
             <span>Utilisateurs</span>
           </li>
 
+          <li @click="goToRoute('profesionnals')">
+            <v-icon color="black" size="40px">mdi-account-multiple</v-icon>
+            <span>Professionnels</span>
+          </li>
+
            <li @click="goToRoute('api-horses')">
             <v-icon color="black" size="40px">mdi-horse</v-icon>
             <span>Chevaux</span>
@@ -96,6 +101,10 @@
           <div v-if="user.auth_level == 'customer'" @click="goToRoute('notifications', false)" class="mobile-burger-btn notif">
             <v-icon v-if="!haveNotif" size="40px">mdi-bell</v-icon>
             <v-icon v-else size="40px">mdi-bell-badge</v-icon>
+          </div>
+
+          <div @click="goToRoute('tickets', false)" class="mobile-burger-btn notif">
+            <v-icon size="40px">mdi-lifebuoy</v-icon>
           </div>
       </div>
       
@@ -190,7 +199,6 @@ export default class App extends Vue {
 
     .mobile-menu {
       padding: 30px 20px 20px 20px;
-      border: solid red 1px;
       position: fixed;
       width: 70%;
       height: 100%;

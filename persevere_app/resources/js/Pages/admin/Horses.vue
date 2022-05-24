@@ -339,6 +339,7 @@ export default class AdminHorses extends Vue {
 
     private editHorse(horse: HorseInterface = null) {
         if(horse) {
+            console.log(horse)
             this.selected_horse = horse;
             this.create = false;
         } else {
@@ -367,15 +368,14 @@ export default class AdminHorses extends Vue {
     }
 
     private formatDate(date: any): string {
-        return `${date.getUTCFullYear()}-${date.getUTCMonth()}-${date.getUTCDate()} 00:00:00`
+        return `${date.getUTCFullYear()}-${date.getUTCMonth()+1}-${date.getUTCDate()} 00:00:00`
     }
 
     private async save() {
         
 
         this.selected_horse.birth_date = this.formatDate(this.selected_horse.birth_date)
-
-        console.log(this.selected_horse)
+        
         if(this.create) {
             let {data} = await axios.post(`http://localhost:8000/api/horses/store`, this.selected_horse, {headers: {
                 "Authorization": 'Bearer ' + this.user?.api_token

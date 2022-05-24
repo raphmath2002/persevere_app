@@ -23,6 +23,7 @@ class AppointmentHorseResource extends JsonResource
             'cares' => $this->cares,
             'price' => $this->price,
             'observations' => $this->observations,
+            'status' => $this->status,
             'appointment' => $this->appointment,
             'horse' => $this->horse,
             'created_at' => $this->created_at,

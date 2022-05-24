@@ -27,7 +27,7 @@ class HorseResource extends JsonResource
             'storage_path' => $this->storage_path,
             //'appointments' => $this->appointment_horse,
             'pension' => $this->pension,
-            'options' => $this->options,
+            'options' => $this->horse_option,
             'user' => $this->user,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

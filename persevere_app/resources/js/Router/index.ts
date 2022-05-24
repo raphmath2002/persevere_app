@@ -1,16 +1,17 @@
 import VueRouter, { RouteConfig } from 'vue-router'
 
-
 import Home from '../Pages/Home.vue'
 import Login from '../Pages/Login.vue'
 import Horses from '../Pages/Horses.vue'
 import Profile from '../Pages/Profile.vue'
 import Notifications from '../Pages/Notifications.vue'
+import Tickets from '../Pages/Tickets.vue'
 
 import Dashboard from '../Pages/admin/Dashboard.vue'
 import Users from '../Pages/admin/Users.vue'
 import AdminHorses from '../Pages/admin/Horses.vue'
-
+import Profesionnals from '../Pages/admin/Profesionnals.vue'
+import Visits from '../Pages/admin/Visits.vue'
 
 
 const routes: Array<RouteConfig> = [
@@ -60,8 +61,25 @@ const routes: Array<RouteConfig> = [
       path: '/admin/horses',
       name: "api-horses",
       component: AdminHorses
-    }
+    },
 
+    {
+      path: '/admin/profesionnals',
+      name: "profesionnals",
+      component: Profesionnals
+    },
+
+    {
+      path: '/admin/visits',
+      name: "visits",
+      component: Visits
+    },
+
+    {
+      path: '/tickets',
+      name: "tickets",
+      component: Tickets
+    }
     
 
 

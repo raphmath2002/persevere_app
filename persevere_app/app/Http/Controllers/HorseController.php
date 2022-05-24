@@ -84,8 +84,8 @@ class HorseController extends Controller
                 $horse_option = new HorseOption();
                 $horse_option->horse_id = $horse->id;
                 $horse_option->option_id = $option;
-                $horse_option->start_date = Carbon::now();
-                $horse_option->end_date = Carbon::now();
+                $horse_option->subscribe_date = Carbon::now();
+                $horse_option->unsubscribe_date = Carbon::now();
                 $horse_option->save();
             }
         }

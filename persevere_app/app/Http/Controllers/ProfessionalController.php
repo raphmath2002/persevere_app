@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\URL;
 use Image;
+use Carbon\Carbon;
 
 class ProfessionalController extends Controller
 {
@@ -38,7 +39,6 @@ class ProfessionalController extends Controller
             'firstname' => 'required|string|max:255',
             'birth_date' => 'required|date',
             'email' => 'required|string|max:255|unique:professionals,email',
-            'password' => 'required|string|regex:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&.])[A-Za-z\d@$!%*#?&.]{8,}$/', // 1 leter, 1 number, 1 special caracter, 8 caracters min
             'phone' => 'required|string|max:255',
             'postal_code' => 'required|string|max:255',
             'postal_address' => 'required|string|max:255',
@@ -49,10 +49,7 @@ class ProfessionalController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["error" => $validator->errors()]);
         }
 
         // Create new Professional instance
@@ -61,9 +58,9 @@ class ProfessionalController extends Controller
         $professional = new Professional();
         $professional->name = $inputs['name'];
         $professional->firstname = $inputs['firstname'];
-        $professional->birth_date = $inputs['birth_date'];
+        $professional->birth_date = new Carbon($inputs['birth_date']);
         $professional->email = $inputs['email'];
-        $professional->password = Hash::make($inputs['password']);
+
         $professional->phone = $inputs['phone'];
         $professional->postal_code = $inputs['postal_code'];
         $professional->postal_address = $inputs['postal_address'];
@@ -82,24 +79,7 @@ class ProfessionalController extends Controller
 
         $professional->save();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new ProfessionalResource($professional)
-        ]]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Professional $professional
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Professional $professional)
-    {
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new ProfessionalResource($professional)
-        ]]);
+        return response()->json(["success" => new ProfessionalResource($professional)]);
     }
 
     /**
@@ -114,7 +94,7 @@ class ProfessionalController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'firstname' => 'required|string|max:255',
-            'birth_date' => 'required|date',
+            'birth_date' => 'required',
             'email' => 'required|string|max:255|unique:professionals,email,' . $professional->id,
             'phone' => 'required|string|max:255',
             'postal_code' => 'required|string|max:255',
@@ -125,18 +105,16 @@ class ProfessionalController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["error" => $validator->errors()]);
         }
+
 
         // Update Professional
         $inputs = $request->all();
         
         $professional->name = $inputs['name'];
         $professional->firstname = $inputs['firstname'];
-        $professional->birth_date = $inputs['birth_date'];
+        $professional->birth_date = new Carbon($inputs['birth_date']);
         $professional->email = $inputs['email'];
         $professional->phone = $inputs['phone'];
         $professional->postal_code = $inputs['postal_code'];
@@ -146,10 +124,7 @@ class ProfessionalController extends Controller
         $professional->profession = $inputs['profession'];
         $professional->update();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new ProfessionalResource($professional)
-        ]]);
+        return response()->json(["success" => new ProfessionalResource($professional)]);
     }
 
     /**
@@ -166,11 +141,9 @@ class ProfessionalController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["error" => $validator->errors()]);
         }
+
 
         // Update photo
         $inputs = $request->all();
@@ -190,10 +163,7 @@ class ProfessionalController extends Controller
 
         $professional->update();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new ProfessionalResource($professional)
-        ]]);
+        return response()->json(["success" => new ProfessionalResource($professional)]);
     }
 
     /**
@@ -212,10 +182,7 @@ class ProfessionalController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["error" => $validator->errors()]);
         }
 
         // Update password
@@ -229,10 +196,7 @@ class ProfessionalController extends Controller
             $professional->update();
         }
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new ProfessionalResource($professional)
-        ]]);
+        return response()->json(["success" => new ProfessionalResource($professional)]);
     }
 
     /**
@@ -245,9 +209,6 @@ class ProfessionalController extends Controller
     {
         $professional->delete();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => "Professionnel supprimé avec succès !"
-        ]]);
+        return response()->json(["success" => "Professionnel supprimé !"]);
     }
 }

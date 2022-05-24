@@ -33,7 +33,7 @@ class AppointmentController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'duration' => 'required|integer',
-            'start_date' => 'required|date',
+            'start_date' => 'required',
             'max_appointments' => 'required|integer',
             'professional_id' => 'required|integer',
         ]);
@@ -47,7 +47,7 @@ class AppointmentController extends Controller
 
         $appointment = new Appointment();
         $appointment->duration = $inputs['duration'];
-        $appointment->start_date = $inputs['start_date'];
+        $appointment->start_date = new Carbon($inputs['start_date']);
         $appointment->max_appointments = $inputs['max_appointments'];
         $appointment->professional_id = $inputs['professional_id'];
         $appointment->status = "waiting";
@@ -82,8 +82,9 @@ class AppointmentController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'duration' => 'required|integer',
-            'start_date' => 'required|date',
+            'start_date' => 'required',
             'max_appointments' => 'required|integer',
+            'professional_id' => 'required|integer'
         ]);
 
         if($validator->fails()){
@@ -103,8 +104,9 @@ class AppointmentController extends Controller
 
         // Update Appointment
         $appointment->duration = $inputs['duration'];
-        $appointment->start_date = $inputs['start_date'];
+        $appointment->start_date = new Carbon($inputs['start_date']);
         $appointment->max_appointments = $inputs['max_appointments'];
+        $appointment->professional_id = $inputs['professional_id'];
 
         $end_date = Carbon::parse($inputs['start_date']);
         $appointment->end_date = $end_date->addMinutes($inputs['duration'] * $inputs['max_appointments']);

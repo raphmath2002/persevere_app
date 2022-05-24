@@ -4,8 +4,8 @@ export interface AppointmentInterface {
     id?: number;
 
     duration: number;
-    price: number;
     start_date: string;
+    end_date: string;
     max_appointments: string;
     professional_id: number;
 
@@ -20,6 +20,7 @@ export default class Appointment implements AppointmentInterface {
     duration: number;
     price: number;
     start_date: string;
+    end_date: string;
     max_appointments: string;
     professional_id: number;
 
@@ -31,10 +32,10 @@ export default class Appointment implements AppointmentInterface {
         this.id = appointment.id;
         
         this.duration = appointment.duration;
-        this.price = appointment.price;
         this.start_date = appointment.start_date;
         this.max_appointments = appointment.max_appointments;
         this.professional_id = appointment.professional_id;
+        this.end_date = appointment.end_date;
 
         this.professional = appointment.professional;
         this.created_at = appointment.created_at;

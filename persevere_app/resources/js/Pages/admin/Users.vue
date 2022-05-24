@@ -213,7 +213,7 @@
 
                     <v-card-actions>
                         <v-btn color="primary" @click="save">Sauvegarder</v-btn>
-                        <v-btn :disabled="user.id == selected_user.id ? true : false" color="red" @click="deleteUser">Supprimer</v-btn>
+                        <v-btn v-if="!create" :disabled="user.id == selected_user.id ? true : false" color="red" @click="deleteUser">Supprimer</v-btn>
 
                     </v-card-actions>
 
@@ -261,12 +261,12 @@ export default class Users extends Vue {
         {name: "Pensionnaire", value: "customer"}
     ]
 
-     private admin_roles = [
+    private admin_roles = [
         {name: "Pensionnaire", value: "customer"}
     ]
 
-    private formatDate(date: any): string {
-        return `${date.getUTCFullYear()}-${date.getUTCMonth()}-${date.getUTCDate()} 00:00:00`
+    private formatDate(date: Date): string {
+        return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
     }
 
     private async deleteUser() {
@@ -299,7 +299,7 @@ export default class Users extends Vue {
         this.createUserDialog = true;
     }
 
-    private default_user: UserInterface = {
+    private default_user: any = {
         name: "",
         firstname: "",
         email: "",
@@ -340,9 +340,13 @@ export default class Users extends Vue {
     }
 
     private async save() {
-        this.selected_user.birth_date = this.formatDate(this.selected_user.birth_date)
+        if(typeof this.selected_user.birth_date != 'string') {
+            this.selected_user.birth_date = this.formatDate(this.selected_user.birth_date)
+        }
 
         if(this.create) {
+            
+
             let {data} = await axios.post(`http://localhost:8000/api/users/store`, this.selected_user, {headers: {
                 "Authorization": 'Bearer ' + this.user?.api_token
             }})
@@ -354,12 +358,14 @@ export default class Users extends Vue {
                 console.log(data)
             }
         } else {
+                
              let {data} = await axios.put(`http://localhost:8000/api/users/${this.selected_user.id}/update`, this.selected_user, {
                 headers: {
                     'Authorization': 'Bearer ' + this.user?.api_token
                 }
             })
             if(data.success) {
+                console.log()
                 this.$store.dispatch('update', 'users')
             } else if (data.error) {
                 console.log(data)
