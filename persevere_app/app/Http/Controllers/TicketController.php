@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\{Ticket};
+use App\Models\{Ticket, User};
 use App\Http\Resources\{TicketResource};
 use Illuminate\Support\Facades\Validator;
 use Auth;
@@ -21,6 +21,13 @@ class TicketController extends Controller
         $tickets = Ticket::all();
 
         return response()->json(["success" => TicketResource::collection($tickets)]);
+    }
+
+    public function getTicketByUser(User $user)
+    {
+        $tickets = Ticket::where('user_id', $user->id)->get();
+
+        return response()->json(['success' => TicketResource::collection($tickets)]);
     }
 
     /**

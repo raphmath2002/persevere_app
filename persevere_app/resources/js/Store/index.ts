@@ -7,6 +7,7 @@ import { HorseInterface } from '../Types/Horse';
 import { UserInterface } from '../Types/User';
 import { InformationInterface } from '../Types/Information';
 import Admin from '../Types/Admin';
+import { TicketInterface } from '../Types/Ticket';
 
 Vue.use(Vuex);
 
@@ -21,6 +22,7 @@ export default new Vuex.Store({
     notifications: false,
     mobile: false,
     notifs: null,
+    tickets: [],
     
     admin_data: {
       horses: [],
@@ -37,6 +39,10 @@ export default new Vuex.Store({
     admin_data_loading: false
   },
   mutations: {
+    SET_USER_TICKETS(state, tickets) {
+      state.user.tickets = tickets;
+    },
+
     SET_USER(state, user: UserInterface) {
       state.user = user
     },

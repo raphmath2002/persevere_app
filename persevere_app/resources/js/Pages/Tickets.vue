@@ -6,15 +6,15 @@
                 <v-col>
                     <div class="d-flex justify-space-between">
                         <h1>Support</h1>
-                        <v-icon @click="createTicketDialog = true" size="50px" color="green">mdi-plus</v-icon>
+                        <v-icon v-if="user.auth_level == 'customer'" @click="createTicketDialog = true" size="50px" color="green">mdi-plus</v-icon>
                     </div>
                 </v-col>
             </v-row>
 
 
             <v-row class="tickets-list">
-                <v-col v-for="ticket in tickets" :key="ticket.id">
-                    <TicketViewComponent :visit="visit" />
+                <v-col cols="12" xl="4" sm="4" v-for="ticket in tickets" :key="ticket.id">
+                    <TicketViewComponent :ticket="ticket" />
                 </v-col>
             </v-row>
 
@@ -52,11 +52,15 @@ export default class Tickets extends Vue {
     }
 
     private createTicketDialog = false;
+
+    private mounted() {
+        console.log(this.tickets)
+    }
 }
 </script>
 
 <style>
-    .visit-page {
+    .tickets-page {
         padding-bottom: 80px;
     }
 </style>

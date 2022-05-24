@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-card @click="ticketDialog = true">
+        <v-card dark dense @click="ticketDialog = true">
             <v-card-title>
                 <h3>{{ticket.title}}</h3>
             </v-card-title>
@@ -8,9 +8,27 @@
 
 
         <v-dialog
+            :fullscreen="$vuetify.breakpoint.xsOnly"
             v-model="ticketDialog"
         >
+            <v-card>
+                <v-card-title class="d-flex justify-space-between">
+                       <h2>Ticket</h2>
+                       <v-icon color="red" size="50px" @click="ticketDialog = false">mdi-close</v-icon>
+                </v-card-title>
 
+                <v-card-text>
+                    <div class="chatbox-container">
+                        <div class="chatbox-messages-container">
+                            
+                        </div>
+
+                        <div class="chatbox-input-container">
+
+                        </div>
+                    </div>
+                </v-card-text>
+            </v-card>
         </v-dialog>
     </v-container>
 </template>
@@ -39,5 +57,14 @@ export default class TicketViewComponent extends Vue {
 
     .pro-avatar {
         border-radius: 50px;
+    }
+
+    .chatbox-container {
+        border: solid red 1px;
+        height: 100%;
+    }
+
+    .chatbox-input-container {
+        border: solid blue 1px;
     }
 </style>

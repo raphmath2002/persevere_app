@@ -82,6 +82,7 @@ export default class TicketCreateComponent extends Vue {
     }
 
     private async save() {
+        this.loading = true;
         await axios.post(`http://localhost:8000/api/tickets/store`, this.ticket_infos, {
                 headers: {
                     "Authorization" : "Bearer " + this.user.api_token
@@ -91,18 +92,32 @@ export default class TicketCreateComponent extends Vue {
                 
                 this.first_message.ticket_id = res.data.success.id;
 
-                let {data} = await axios.post(`http://localhost:8000/api/messages/store`, this.first_message, {
+                await axios.post(`http://localhost:8000/api/messages/store`, this.first_message, {
                         headers: {
                             "Authorization" : "Bearer " + this.user.api_token
                         }
+                }).then( async (res: any) => {
+                    if(res.data.success) {
+                        await axios.get(`http://localhost:8000/api/tickets/user/${this.user.id}`, {
+                                headers: {
+                                    "Authorization" : "Bearer " + this.user.api_token
+                                }
+                        }).then((res: any) => {
+
+                            if(res.data.success) {
+                                console.log(res.data.success)
+                                this.$store.commit('SET_USER_TICKETS', res.data.success);
+                                this.$emit('done');
+                            } else console.log(res.data)
+                        })
+                    }
                 })
 
-                if(data.success) {
-                    await this.$store.dispatch('update', 'tickets');
-                    this.$emit('done');
-                }
+                
 
             } else console.log(res.data)
+
+            this.loading = false;
         })
     }
 }

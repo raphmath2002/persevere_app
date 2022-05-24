@@ -111,6 +111,9 @@ Route::middleware(['cors'])->group(function () {
     Route::middleware('auth:api')->put('/tickets/{ticket}/update', [TicketController::class, 'update']);
     Route::middleware('auth:api')->delete('/tickets/{ticket}/destroy', [TicketController::class, 'destroy']);
 
+    Route::middleware('auth:api')->get('/tickets/user/{user}', [TicketController::class, 'getTicketByUser']);
+
+
     // Routes for users
     Route::middleware('auth:api')->get('/users', [UserController::class, 'index']);
     Route::middleware('auth:api')->post('/users/store', [UserController::class, 'store']);
