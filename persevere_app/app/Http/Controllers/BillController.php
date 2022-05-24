@@ -38,10 +38,7 @@ class BillController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Create new Bill instance
@@ -54,10 +51,7 @@ class BillController extends Controller
         $bill->user_id = Auth::user()->id;
         $bill->save();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new BillResource($bill)
-        ]]);
+        return response()->json(["success" => new BillResource($bill)]);
     }
 
     /**
@@ -68,10 +62,7 @@ class BillController extends Controller
      */
     public function edit(Bill $bill)
     {
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new BillResource($bill)
-        ]]);
+        return response()->json(["success" => new BillResource($bill)]);
     }
 
     /**
@@ -90,10 +81,7 @@ class BillController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Update Bill
@@ -104,10 +92,7 @@ class BillController extends Controller
         $bill->pricing = $inputs['pricing'];
         $bill->update();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new BillResource($bill)
-        ]]);
+        return response()->json(["success" => new BillResource($bill)]);
     }
 
     /**
@@ -120,9 +105,6 @@ class BillController extends Controller
     {
         $bill->delete();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "message" => "Facture supprimée avec succès !"
-        ]]);
+        return response()->json(["success" => "Facture supprimée avec succès !"]);
     }
 }

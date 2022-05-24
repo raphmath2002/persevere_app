@@ -33,14 +33,10 @@ class TicketController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
-            'content' => 'required|string|max:2048',
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Create new Ticket instance
@@ -48,14 +44,10 @@ class TicketController extends Controller
 
         $ticket = new Ticket();
         $ticket->title = $inputs['title'];
-        $ticket->content = $inputs['content'];
         $ticket->user_id = Auth::user()->id;
         $ticket->save();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new TicketResource($ticket)
-        ]]);
+        return response()->json(["success" => new TicketResource($ticket)]);
     }
 
     /**
@@ -66,10 +58,7 @@ class TicketController extends Controller
      */
     public function edit(Ticket $ticket)
     {
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new TicketResource($ticket)
-        ]]);
+        return response()->json(["success" => new TicketResource($ticket)]);
     }
 
     /**
@@ -83,27 +72,19 @@ class TicketController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
-            'content' => 'required|string|max:2048',
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Update Ticket
         $inputs = $request->all();
         
         $ticket->title = $inputs['title'];
-        $ticket->content = $inputs['content'];
         $ticket->update();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new TicketResource($ticket)
-        ]]);
+        return response()->json(["success" => new TicketResource($ticket)]);
     }
 
     /**
@@ -116,9 +97,6 @@ class TicketController extends Controller
     {
         $ticket->delete();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "ticket" => "Ticket supprimé avec succès !"
-        ]]);
+        return response()->json(["success" => "Ticket supprimé avec succès !"]);
     }
 }

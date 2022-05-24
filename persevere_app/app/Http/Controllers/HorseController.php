@@ -48,10 +48,7 @@ class HorseController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Create new Horse instance
@@ -80,10 +77,7 @@ class HorseController extends Controller
 
         $horse->save();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new HorseResource($horse)
-        ]]);
+        return response()->json(["success" => new HorseResource($horse)]);
     }
 
     /**
@@ -94,10 +88,7 @@ class HorseController extends Controller
      */
     public function edit(Horse $horse)
     {
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new HorseResource($horse)
-        ]]);
+        return response()->json(["success" => new HorseResource($horse)]);
     }
 
     /**
@@ -123,10 +114,7 @@ class HorseController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Update Horse
@@ -144,10 +132,7 @@ class HorseController extends Controller
         $horse->user_id = $inputs['user_id'];
         $horse->update();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new HorseResource($horse)
-        ]]);
+        return response()->json(["success" => new HorseResource($horse)]);
     }
     /**
      * Update the specified resource in storage.
@@ -163,10 +148,7 @@ class HorseController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Update photo
@@ -187,10 +169,7 @@ class HorseController extends Controller
 
         $horse->update();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new HorseResource($horse)
-        ]]);
+        return response()->json(["success" => new HorseResource($horse)]);
     }
 
     /**
@@ -203,9 +182,6 @@ class HorseController extends Controller
     {
         $horse->delete();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "message" => "Cheval supprimé avec succès !"
-        ]]);
+        return response()->json(["success" => "Cheval supprimé avec succès !"]);
     }
 }

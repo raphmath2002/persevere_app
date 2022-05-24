@@ -49,10 +49,7 @@ class ProfessionalController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Create new Professional instance
@@ -82,10 +79,7 @@ class ProfessionalController extends Controller
 
         $professional->save();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new ProfessionalResource($professional)
-        ]]);
+        return response()->json(["success" => new ProfessionalResource($professional)]);
     }
 
     /**
@@ -96,10 +90,7 @@ class ProfessionalController extends Controller
      */
     public function edit(Professional $professional)
     {
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new ProfessionalResource($professional)
-        ]]);
+        return response()->json(["success" => new ProfessionalResource($professional)]);
     }
 
     /**
@@ -125,10 +116,7 @@ class ProfessionalController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Update Professional
@@ -146,10 +134,7 @@ class ProfessionalController extends Controller
         $professional->profession = $inputs['profession'];
         $professional->update();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new ProfessionalResource($professional)
-        ]]);
+        return response()->json(["success" => new ProfessionalResource($professional)]);
     }
 
     /**
@@ -166,10 +151,7 @@ class ProfessionalController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Update photo
@@ -190,10 +172,7 @@ class ProfessionalController extends Controller
 
         $professional->update();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new ProfessionalResource($professional)
-        ]]);
+        return response()->json(["success" => new ProfessionalResource($professional)]);
     }
 
     /**
@@ -212,10 +191,7 @@ class ProfessionalController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Update password
@@ -229,10 +205,7 @@ class ProfessionalController extends Controller
             $professional->update();
         }
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new ProfessionalResource($professional)
-        ]]);
+        return response()->json(["success" => new ProfessionalResource($professional)]);
     }
 
     /**
@@ -245,9 +218,6 @@ class ProfessionalController extends Controller
     {
         $professional->delete();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => "Professionnel supprimé avec succès !"
-        ]]);
+        return response()->json(["success" => "Professionnel supprimé avec succès !"]);
     }
 }

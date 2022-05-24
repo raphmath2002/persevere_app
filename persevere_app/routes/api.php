@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{LoginController,FacilitiesImageController,DayFacilityController,ExceptionController,ExceptionFacilityController,AppointmentHorseController,FacilityHorseController,AdvertisementController,BillController,HorseController,JobController,UserController,PensionController,ProfessionalController,AppointmentController,OptionController,FacilityController,TicketController,MessageController,RoleController};
+use App\Http\Controllers\{LoginController,AdvertisementUserController,FacilitiesImageController,DayFacilityController,ExceptionController,ExceptionFacilityController,AppointmentHorseController,FacilityHorseController,AdvertisementController,BillController,HorseController,JobController,UserController,PensionController,ProfessionalController,AppointmentController,OptionController,FacilityController,TicketController,MessageController,RoleController};
 
 
 /*
@@ -118,8 +118,10 @@ Route::middleware('auth:api')->put('/users/{user}/update', [UserController::clas
 Route::middleware('auth:api')->put('/users/{user}/update_photo', [UserController::class, 'update_photo']);
 Route::middleware('auth:api')->put('/users/{user}/update_password', [UserController::class, 'update_password']);
 Route::middleware('auth:api')->delete('/users/{user}/destroy', [UserController::class, 'destroy']);
-Route::middleware('auth:api')->get('/users/{user}/advertisements', [AdvertisementController::class, 'getAdvertsByUser']);
-Route::middleware('auth:api')->get('/users/{user}/advertisements/{advert}/read', [AdvertisementController::class, 'markAdvertAsRead']);
+
+// Routes for advertisement user
+Route::middleware('auth:api')->get('/users/{user}/advertisements', [AdvertisementUserController::class, 'index']);
+Route::middleware('auth:api')->get('/users/{user}/advertisements/{advertisement}/read', [AdvertisementUserController::class, 'store']);
 
 // Routes for exceptions
 Route::middleware('auth:api')->get('/exceptions', [ExceptionController::class, 'index']); 

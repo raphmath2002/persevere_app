@@ -37,10 +37,7 @@ class PensionController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Create new Pension instance
@@ -52,10 +49,7 @@ class PensionController extends Controller
         $pension->description = $inputs['description'];
         $pension->save();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new PensionResource($pension)
-        ]]);
+        return response()->json(["success" => new PensionResource($pension)]);
     }
 
     /**
@@ -66,10 +60,7 @@ class PensionController extends Controller
      */
     public function edit(Pension $pension)
     {
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new PensionResource($pension)
-        ]]);
+        return response()->json(["success" => new PensionResource($pension)]);
     }
 
     /**
@@ -88,10 +79,7 @@ class PensionController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(["res" => [
-                "code" => 400,
-                "error" => $validator->errors()
-            ]]);
+            return response()->json(["input_error" => $validator->errors()]);
         }
 
         // Update Pension
@@ -102,10 +90,7 @@ class PensionController extends Controller
         $pension->description = $inputs['description'];
         $pension->update();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "data" => new PensionResource($pension)
-        ]]);
+        return response()->json(["success" => new PensionResource($pension)]);
     }
 
     /**
@@ -118,9 +103,6 @@ class PensionController extends Controller
     {
         $pension->delete();
 
-        return response()->json(["res" => [
-            "code" => 200,
-            "message" => "Pension supprimée avec succès !"
-        ]]);
+        return response()->json(["success" => "Pension supprimée avec succès !"]);
     }
 }

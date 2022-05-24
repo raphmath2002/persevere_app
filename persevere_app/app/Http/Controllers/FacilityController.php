@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\{Facility};
 use App\Http\Resources\FacilityResource;
+use Illuminate\Support\Facades\Validator;
 
 class FacilityController extends Controller
 {
@@ -17,6 +18,7 @@ class FacilityController extends Controller
     public function index()
     {
         $facilities = Facility::all();
+
         return response()->json(["success" => FacilityResource::collection($facilities)]);
     }
 
@@ -28,20 +30,26 @@ class FacilityController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:2048',
             'max_customer_allowed' => 'required|integer',
         ]);
 
+        if($validator->fails()){
+            return response()->json(["input_error" => $validator->errors()]);
+        }
+
         // Create new Facility instance
+        $inputs = $request->all();
+
         $facility = new Facility();
-        $facility->name = $validatedData['name'];
-        $facility->description = $validatedData['description'];
-        $facility->max_customer_allowed = $validatedData['max_customer_allowed'];
+        $facility->name = $inputs['name'];
+        $facility->description = $inputs['description'];
+        $facility->max_customer_allowed = $inputs['max_customer_allowed'];
         $facility->save();
 
-        return response()->json('Equipement ajouté avec succès !');
+        return response()->json(["success" => new FacilityResource($facility)]);
     }
 
     /**
@@ -52,7 +60,7 @@ class FacilityController extends Controller
      */
     public function edit(Facility $facility)
     {
-        return response()->json($facility);
+        return response()->json(["success" => new FacilityResource($facility)]);
     }
 
     /**
@@ -64,19 +72,25 @@ class FacilityController extends Controller
      */
     public function update(Request $request, Facility $facility)
     {
-        $validatedData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:2048',
             'max_customer_allowed' => 'required|integer',
         ]);
 
+        if($validator->fails()){
+            return response()->json(["input_error" => $validator->errors()]);
+        }
+
         // Update Facility
-        $facility->name = $validatedData['name'];
-        $facility->description = $validatedData['description'];
-        $facility->max_customer_allowed = $validatedData['max_customer_allowed'];
+        $inputs = $request->all();
+
+        $facility->name = $inputs['name'];
+        $facility->description = $inputs['description'];
+        $facility->max_customer_allowed = $inputs['max_customer_allowed'];
         $facility->update();
 
-        return response()->json('Equipement mis à jour avec succès !');
+        return response()->json(["success" => new FacilityResource($facility)]);
     }
 
     /**
@@ -89,6 +103,6 @@ class FacilityController extends Controller
     {
         $facility->delete();
 
-        return response()->json('Equipement supprimé avec succès !');
+        return response()->json(["success" => "Equipement supprimé avec succès !"]);
     }
 }
