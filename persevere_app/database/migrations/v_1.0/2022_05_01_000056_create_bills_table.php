@@ -16,8 +16,11 @@ return new class extends Migration
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
             $table->string('reference');
-            $table->date('start_date');
-            $table->float('pricing');
+            $table->date('due_date');
+            $table->float('global_pricing');
+            $table->text('details_pricing');
+            $table->text('horses_pensions');
+            $table->text('horses_options');
             $table->foreignId("user_id")->constrained()->onDelete("cascade"); 
             $table->timestamps();
         });

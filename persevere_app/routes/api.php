@@ -43,9 +43,7 @@ Route::middleware(['cors'])->group(function () {
 
     // Routes for bills
     Route::middleware('auth:api')->get('/bills', [BillController::class, 'index']); 
-    Route::middleware('auth:api')->post('/bills/store', [BillController::class, 'store']);
-    Route::middleware('auth:api')->get('/bills/{bill}/edit', [BillController::class, 'edit']); 
-    Route::middleware('auth:api')->put('/bills/{bill}/update', [BillController::class, 'update']);
+    Route::middleware('auth:api')->post('/bills/{user}/store', [BillController::class, 'store']);
     Route::middleware('auth:api')->delete('/bills/{bill}/destroy', [BillController::class, 'destroy']); 
 
     // Routes for facilities

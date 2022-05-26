@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\{Facility,Horse,FacilityHorse,ExceptionFacility,DayFacility};
+use App\Models\{Facility,Horse,FacilityHorse,ExceptionFacility,DayFacility,Day};
 use App\Http\Resources\{FacilityResource,HorseResource,FacilityHorseResource};
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
@@ -64,20 +64,33 @@ class FacilityHorseController extends Controller
         }
 
         // Check date validity
+        $week_map = [
+            0 => 'Dimanche',
+            1 => 'Lundi',
+            2 => 'Mardi',
+            3 => 'Mercredi',
+            4 => 'Jeudi',
+            5 => 'Vendredi',
+            6 => 'Samedi',
+        ];
+        $selected_day = Carbon::parse($inputs['start_date'])->dayOfWeek;
+        $week_day = $week_map[$selected_day];
+        $day = Day::where('name', '=', $week_day)->first();
+
         $selected_start_date = Carbon::parse($inputs['start_date'])->format('HH:MM:SS');
         $selected_end_date = Carbon::parse($inputs['end_date'])->format('HH:MM:SS');
-
-        $day_facility = DayFacility::where('facility_id', '=', $facility->id)->get();
+        
+        $day_facility = DayFacility::where([['facility_id', '=', $facility->id],['day_id', '=', $day->id]])->get();
 
         foreach($day_facility as $day_fac){
             $start_date = Carbon::parse("2000-01-01 $day_fac->start_hour:$day_fac->start_minute:00")->format('HH:MM:SS');
             $end_date = Carbon::parse("2000-01-01 $day_fac->end_hour:$day_fac->end_minute:00")->format('HH:MM:SS');
 
             if($selected_start_date < $start_date){ // If selected date (start) < facility start date
-                return response()->json(["error" => "La date de début du rendez-vous ne respecte pas la plage horaires de l'installation."]);
+                return response()->json(["error" => "La date de début du rendez-vous ne respecte pas la plage horaires de l'installation pour un $day->name."]);
             }
             elseif($selected_end_date > $end_date){ // If selected date (end) > facility end date
-                return response()->json(["error" => "La date de fin du rendez-vous ne respecte pas la plage horaires de l'installation."]);
+                return response()->json(["error" => "La date de fin du rendez-vous ne respecte pas la plage horaires de l'installation pour un $day->name."]);
             }
         }
 
