@@ -234,8 +234,6 @@ export default class ProEditComponent extends Vue {
         width: 100px;
         height: 100px;
 
-        
-
         border-radius: 100px;
     }
 

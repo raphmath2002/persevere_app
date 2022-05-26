@@ -12,6 +12,7 @@ import Users from '../Pages/admin/Users.vue'
 import AdminHorses from '../Pages/admin/Horses.vue'
 import Professionals from '../Pages/admin/Professionals.vue'
 import Visits from '../Pages/admin/Visits.vue'
+import Facilities from '../Pages/admin/Facilities.vue'
 
 
 const routes: Array<RouteConfig> = [
@@ -79,6 +80,12 @@ const routes: Array<RouteConfig> = [
       path: '/tickets',
       name: "tickets",
       component: Tickets
+    },
+
+    {
+      path: '/admin/facilities',
+      name: "facilities",
+      component: Facilities
     }
     
 

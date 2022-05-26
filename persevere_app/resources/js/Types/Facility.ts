@@ -2,7 +2,9 @@ export interface FacilityInterface {
     id?: number;
     name: string;
     description: string;
-    max_customer_allowed: number;
+    max_customers: number;
+    facilities_images?: any[];
+    days?: any;
     created_at?: string;
     updated_at?: string;
 }
@@ -11,7 +13,9 @@ export default class Facility implements FacilityInterface {
     id?: number;
     name: string;
     description: string;
-    max_customer_allowed: number;
+    max_customers: number;
+    facilities_images?: any[];
+    days?: any;
     created_at?: string;
     updated_at?: string;
 
@@ -19,7 +23,8 @@ export default class Facility implements FacilityInterface {
         this.id = facility.id;
         this.name = facility.name;
         this.description = facility.description;
-        this.max_customer_allowed = facility.max_customer_allowed;
+        this.max_customers = facility.max_customers;
+        this.days = facility.days;
         this.created_at = facility.created_at;
         this.updated_at = facility.updated_at;
     }

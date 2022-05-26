@@ -20,6 +20,7 @@ class FacilityResource extends JsonResource
             'description' => $this->description,
             'max_customers' => $this->max_customers,
             'facilities_images' => $this->facilities_images,
+            'days' => $this->day_facility,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

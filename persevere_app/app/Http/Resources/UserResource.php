@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\Advertisement;
 
+
 class UserResource extends JsonResource
 {
     private function haveNotif() {
@@ -44,7 +45,7 @@ class UserResource extends JsonResource
             'auth_level' => $this->auth_level,
             'have_notif' => $this->haveNotif(),
             'horses' => HorseResource::collection($this->horses),
-            'tickets' => $this->tickets,
+            'tickets' => TicketResource::collection($this->tickets),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

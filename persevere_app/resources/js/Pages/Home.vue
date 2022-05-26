@@ -84,6 +84,8 @@ export default class Home extends Vue {
         if(!this.logged) this.$router.push({name: 'login'});
     }
 
+    private loading = false;
+
 
 
     private horses: HorseInterface[]

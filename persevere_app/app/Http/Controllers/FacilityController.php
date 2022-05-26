@@ -33,7 +33,7 @@ class FacilityController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:2048',
-            'max_customer_allowed' => 'required|integer',
+            'max_customers' => 'required|integer',
         ]);
 
         if($validator->fails()){
@@ -46,7 +46,7 @@ class FacilityController extends Controller
         $facility = new Facility();
         $facility->name = $inputs['name'];
         $facility->description = $inputs['description'];
-        $facility->max_customer_allowed = $inputs['max_customer_allowed'];
+        $facility->max_customers = $inputs['max_customers'];
         $facility->save();
 
         return response()->json(["success" => new FacilityResource($facility)]);
@@ -75,7 +75,7 @@ class FacilityController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:2048',
-            'max_customer_allowed' => 'required|integer',
+            'max_customers' => 'required|integer',
         ]);
 
         if($validator->fails()){
@@ -87,7 +87,7 @@ class FacilityController extends Controller
 
         $facility->name = $inputs['name'];
         $facility->description = $inputs['description'];
-        $facility->max_customer_allowed = $inputs['max_customer_allowed'];
+        $facility->max_customers = $inputs['max_customers'];
         $facility->update();
 
         return response()->json(["success" => new FacilityResource($facility)]);

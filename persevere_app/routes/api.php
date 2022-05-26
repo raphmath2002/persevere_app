@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{LoginController,HorsePensionController,HorseOptionController,AdvertisementUserController,FacilitiesImageController,DayFacilityController,ExceptionController,ExceptionFacilityController,AppointmentHorseController,FacilityHorseController,AdvertisementController,BillController,HorseController,JobController,UserController,PensionController,ProfessionalController,AppointmentController,OptionController,FacilityController,TicketController,MessageController,RoleController};
+use App\Http\Controllers\{DayController, LoginController,HorsePensionController,HorseOptionController,AdvertisementUserController,FacilitiesImageController,DayFacilityController,ExceptionController,ExceptionFacilityController,AppointmentHorseController,FacilityHorseController,AdvertisementController,BillController,HorseController,JobController,UserController,PensionController,ProfessionalController,AppointmentController,OptionController,FacilityController,TicketController,MessageController,RoleController};
 
 
 /*
@@ -94,7 +94,7 @@ Route::middleware(['cors'])->group(function () {
     Route::middleware('auth:api')->post('/horseOption/{horse}/{option}/subscribe', [HorseOptionController::class, 'subscribe']);
     Route::middleware('auth:api')->put('/horseOption/{horseOption}/unsubscribe', [HorseOptionController::class, 'unsubscribe']);
 
-    
+    Route::middleware('auth:api')->get('/days', [DayController::class, 'index']);
 
     // Routes for pensions
     Route::middleware('auth:api')->get('/pensions', [PensionController::class, 'index']);
