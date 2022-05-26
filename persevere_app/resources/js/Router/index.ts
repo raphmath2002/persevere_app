@@ -6,6 +6,7 @@ import Horses from '../Pages/Horses.vue'
 import Profile from '../Pages/Profile.vue'
 import Notifications from '../Pages/Notifications.vue'
 import Tickets from '../Pages/Tickets.vue'
+import PensionOption from '../Pages/admin/PensionsOptions.vue'
 
 import Dashboard from '../Pages/admin/Dashboard.vue'
 import Users from '../Pages/admin/Users.vue'
@@ -86,6 +87,12 @@ const routes: Array<RouteConfig> = [
       path: '/admin/facilities',
       name: "facilities",
       component: Facilities
+    },
+
+    {
+      path: '/subscriptions',
+      name: "subscriptions",
+      component: PensionOption
     }
     
 

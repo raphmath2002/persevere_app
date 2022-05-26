@@ -135,6 +135,17 @@
                 </v-container>
             </v-form>
         </v-card-text>
+        <v-card-actions   class="d-flex justify-center">
+            <v-btn
+              
+                v-if="!news"
+                dense
+                color="red"
+                @click="deleteFacility"
+            >
+                Supprimer
+            </v-btn>
+        </v-card-actions>
     </v-card>
 </template>
 
@@ -164,7 +175,7 @@ import { FacilityInterface } from "../../Types/Facility"
 @Component
 export default class VisitEditComponent extends Vue {
     @Prop() readonly facility!: FacilityInterface
-    @Prop({default: false}) readonly new: boolean
+    @Prop({default: false}) readonly news: boolean
 
     private get user(): UserInterface {
         return this.$store.state.user;
@@ -206,7 +217,7 @@ export default class VisitEditComponent extends Vue {
     private async save() {
         const headers = {headers: {"Authorization": "Bearer " + this.user.api_token}}
 
-        if(this.new) {
+        if(this.news) {
             await axios.post(`http://127.0.0.1:8000/api/facilities/store`, this.facility_infos, headers)
             .then( async (res: any) => {
 
@@ -274,6 +285,17 @@ export default class VisitEditComponent extends Vue {
         this.$emit('done')
     }
 
+    private async deleteFacility() {
+        const headers = {headers: {"Authorization": "Bearer " + this.user.api_token}}
+        await axios.delete(`http://127.0.0.1:8000/api/facilities/${this.facility.id}/destroy`, headers)
+        .then( async (res: any) => {
+            if(res.data.success) {
+                await this.$store.dispatch('update', 'facilities');
+                this.$emit('done')
+            }
+        })
+    }
+
     private days_to_delete: number[] = []
     private dispos_to_delete: number[] = []
     private images_to_delete: number[] = []
@@ -290,12 +312,12 @@ export default class VisitEditComponent extends Vue {
             this.day_facility_list.splice(day_facility_index, 1);
 
         }
-        if(!this.new) this.dispos_to_delete.push(day_facility.id)
+        if(!this.news) this.dispos_to_delete.push(day_facility.id)
 
     }
 
     private deleteImage(image: any) {
-        if(!this.new) {
+        if(!this.news) {
             this.images_to_delete.push(image.id)
         }
 
@@ -411,7 +433,7 @@ export default class VisitEditComponent extends Vue {
     }
 
     private async mounted() {
-        if(!this.new) {
+        if(!this.news) {
             this.facility_infos = JSON.parse(JSON.stringify(this.facility));
 
             for (const image of this.facility.facilities_images) {

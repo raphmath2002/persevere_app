@@ -67,7 +67,7 @@ import User, {UserInterface,emptyUser} from '../Types/User'
 
 @Component
 export default class SubscriptionComponent extends Vue {
-    @Prop({default: emptyUser()}) readonly user!: UserInterface
+    @Prop() readonly user!: UserInterface
     @Prop({default: Horse.emptyHorse}) readonly horse!: HorseInterface
 }
 </script>

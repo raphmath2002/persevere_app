@@ -32,7 +32,7 @@
                 :fullscreen="$vuetify.breakpoint.xsOnly"
 
             >
-                <FacilityEditComponent @done="createFacilityDialog = false" :new="true"/>
+                <FacilityEditComponent @done="createFacilityDialog = false" :news="true"/>
             </v-dialog>
         </v-container>
     </div>
