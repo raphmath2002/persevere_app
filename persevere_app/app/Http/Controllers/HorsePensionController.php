@@ -27,6 +27,11 @@ class HorsePensionController extends Controller
             return response()->json(["input_error" => $validator->errors()]);
         }
 
+        $horsePension = HorsePension::where([['horse_id', '=', $horse->id], ['unsubscribe_date', '=', null]])->first();
+        if(!is_null($horsePension)){
+            return response()->json(["error" => "Le cheval est déjà rattaché à une pension en cours."]);
+        }
+
         // Create new HorsePension instance
         $inputs = $request->all();
 

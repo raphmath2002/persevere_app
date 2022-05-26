@@ -7,5 +7,4 @@ INSERT INTO `days` (`id`,`name`,`created_at`,`updated_at`) VALUES
 (4,'Jeudi',UTC_TIMESTAMP(),UTC_TIMESTAMP()),
 (5,'Vendredi',UTC_TIMESTAMP(),UTC_TIMESTAMP()),
 (6,'Samedi',UTC_TIMESTAMP(),UTC_TIMESTAMP()),
-(7,'Dimanche',UTC_TIMESTAMP(),UTC_TIMESTAMP()),
-(8,'Férié',UTC_TIMESTAMP(),UTC_TIMESTAMP());
+(7,'Dimanche',UTC_TIMESTAMP(),UTC_TIMESTAMP());
