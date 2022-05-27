@@ -16,6 +16,8 @@ use App\Http\Controllers\{DayController, LoginController,HorsePensionController,
 |
 */
 
+
+// Routes for login
 Route::middleware('cors')->post('/login', [LoginController::class, 'login'])->name('login');
 Route::middleware('cors')->post('/login/verifCode', [LoginController::class, 'verifCode'])->name('verif');
 
@@ -92,6 +94,7 @@ Route::middleware(['cors'])->group(function () {
     Route::middleware('auth:api')->post('/horseOption/{horse}/{option}/subscribe', [HorseOptionController::class, 'subscribe']);
     Route::middleware('auth:api')->put('/horseOption/{horseOption}/unsubscribe', [HorseOptionController::class, 'unsubscribe']);
 
+    // Routs for days
     Route::middleware('auth:api')->get('/days', [DayController::class, 'index']);
 
     // Routes for pensions
@@ -119,8 +122,8 @@ Route::middleware(['cors'])->group(function () {
     Route::middleware('auth:api')->put('/tickets/{ticket}/update', [TicketController::class, 'update']);
     Route::middleware('auth:api')->delete('/tickets/{ticket}/destroy', [TicketController::class, 'destroy']);
 
+    // Routes for ticket user
     Route::middleware('auth:api')->get('/tickets/user/{user}', [TicketController::class, 'getTicketByUser']);
-
 
     // Routes for users
     Route::middleware('auth:api')->get('/users', [UserController::class, 'index']);
@@ -144,9 +147,3 @@ Route::middleware(['cors'])->group(function () {
     Route::middleware('auth:api')->post('/exceptionFacility/{exception}/{facility}/store', [ExceptionFacilityController::class, 'store']);
     Route::middleware('auth:api')->delete('/exceptionFacility/{exceptionFacility}/destroy', [ExceptionFacilityController::class, 'destroy']);
 });
-
-
-
-
-
-
