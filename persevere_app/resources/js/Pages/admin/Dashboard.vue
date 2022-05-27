@@ -4,7 +4,7 @@
 
         <v-row>
             <v-col>
-                <v-card>
+                <v-card dark>
                     <v-card-title>
                         <h2>Statistiques</h2>
                     </v-card-title>

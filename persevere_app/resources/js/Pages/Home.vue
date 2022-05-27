@@ -27,38 +27,6 @@
                         </div>
                     </div>
                 </v-container>
-
-                <v-divider></v-divider>
-
-                <v-container>
-                    <div class="preview">
-                        <div @click="$router.push({name: 'facilities'})" class="preview-top">
-                            <h2 class="preview-title">Mes installations</h2>
-                            <v-icon color="black">mdi-chevron-right-circle-outline</v-icon>
-                        </div>
-                        
-
-                        <div class="preview-container">
-                            
-                            <v-card
-                                v-for="facility in facilities"
-                                :key="facility.id"
-                                :loading="loading"
-                                class="facility"
-                                max-width="374"
-                            >
-
-                                <v-img
-                                height="100"
-                                :src="facility.image"
-                                ></v-img>
-
-                                <v-card-title>{{facility.name}}</v-card-title>
-                            </v-card>
-
-                        </div>
-                    </div>
-                </v-container>
             </div>
         </div>
     </v-container>

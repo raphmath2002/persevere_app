@@ -233,6 +233,10 @@
                                                 multiple
                                             ></v-select>
                                         </v-col>
+
+                                        <v-col>
+                                            <SubscriptionComponent :horse="selected_horse" :user="selected_horse.user" />
+                                        </v-col>
                                     </v-row>
                                 </v-container>
                             </v-form>
@@ -254,8 +258,13 @@ import Admin from '../../Types/Admin';
 import { HorseInterface } from '../../Types/Horse';
 import { UserInterface } from '../../Types/User';
 import axios from "axios"
+import SubscriptionComponent from '../../Components/SubscriptionComponent.vue'
 
-@Component
+@Component({
+    components: {
+        SubscriptionComponent
+    }
+})
 export default class AdminHorses extends Vue {
 
     private get user(): UserInterface {
@@ -269,7 +278,7 @@ export default class AdminHorses extends Vue {
         return this.$store.state.admin_data;
     }
 
-    private test = null;
+    private edit = false;
 
     private loading = false;
 
@@ -337,10 +346,20 @@ export default class AdminHorses extends Vue {
         return {icon: "mdi-gender-male", color: "blue"}
     }
 
-    private editHorse(horse: HorseInterface = null) {
+    private editHorse(horse: any = null) {
         if(horse) {
-            console.log(horse)
+            this.edit = true;
             this.selected_horse = horse;
+            this.selected_horse.pension_id = horse.pension.id
+
+            this.selected_horse.user_id = horse.user.id
+
+            this.selected_horse.options = []
+
+            for (const option of horse.options) {
+                this.selected_horse.options.push(option)
+            }
+
             this.create = false;
         } else {
             this.selected_horse = this.default_horse;
@@ -368,12 +387,11 @@ export default class AdminHorses extends Vue {
     }
 
     private formatDate(date: any): string {
+        date = new Date(date);
         return `${date.getUTCFullYear()}-${date.getUTCMonth()+1}-${date.getUTCDate()} 00:00:00`
     }
 
     private async save() {
-        
-
         this.selected_horse.birth_date = this.formatDate(this.selected_horse.birth_date)
         
         if(this.create) {
@@ -388,7 +406,14 @@ export default class AdminHorses extends Vue {
                 console.log(data)
             }
         } else {
-            let {data} = await axios.put(`http://localhost:8000/api/users/${this.selected_horse.id}/update`, this.selected_horse, {
+
+            await axios.put(`http://localhost:8000/api/horses/${this.selected_horse.id}/update_photo`, {storage_path: this.selected_horse.storage_path}, {
+                headers: {
+                    'Authorization': 'Bearer ' + this.user.api_token
+                }
+            })
+
+            let {data} = await axios.put(`http://localhost:8000/api/horses/${this.selected_horse.id}/update`, this.selected_horse, {
                 headers: {
                     'Authorization': 'Bearer ' + this.user.api_token
                 }

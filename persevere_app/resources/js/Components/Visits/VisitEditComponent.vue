@@ -78,6 +78,10 @@
                 </v-container>
             </v-form>
         </v-card-text>
+
+        <v-card-actions class="d-flex align-center">
+            <v-btn color="red" @click="deleteVisit">Supprimer</v-btn>
+        </v-card-actions>
     </v-card>
 </template>
 
@@ -114,6 +118,19 @@ export default class VisitEditComponent extends Vue {
 
     private formatDate(date: any): string {
         return date.toDateString();
+    }
+
+    private async deleteVisit() {
+        await axios.post(`http://localhost:8000/api/appointments/${this.visit.id}/destroy`,{cancel_reason: 'Visite supprimée par l\'administrateur'}, {
+            headers: {
+                "Authorization" : "Bearer " + this.user.api_token
+            }
+        }).then( async(res: any) => {
+            if(res.data.success) {
+                await this.$store.dispatch('update', 'appointments');
+                this.$emit('done');
+            } else console.log(res)
+        })
     }
 
 

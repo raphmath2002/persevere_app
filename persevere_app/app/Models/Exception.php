@@ -21,6 +21,6 @@ class Exception extends Model
     {
         return $this->belongsToMany(Facility::class)
                     ->using(ExceptionFacility::class)
-                    ->withPivot("id","created_at","updated_at");
+                    ->withPivot("id", "created_at","updated_at");
     }
 }

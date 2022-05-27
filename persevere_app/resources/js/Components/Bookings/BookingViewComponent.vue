@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-card>
+        <v-card dark>
             <v-card-title>
                 <h3>{{professional.name}} {{professional.firstname}}</h3>
             </v-card-title>
@@ -62,7 +62,7 @@
                                     <span>Description : {{booking.pivot.description}}</span>
                                     <span>Status : <strong>{{booking.pivot.status}}</strong></span>
 
-                                    <div v-if="booking.status == 'ended'" class="d-flex flex-column">
+                                    <div v-if="booking.pivot.status == 'ended'" class="d-flex flex-column">
                                         <span>Soins effectués :  {{booking.pivot.cares}} </span>
                                         <span>Observations :  {{booking.pivot.observations}} </span>
                                     </div>

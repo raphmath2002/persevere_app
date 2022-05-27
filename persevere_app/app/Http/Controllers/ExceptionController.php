@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\{Exception};
+use App\Models\{Exception, Facility, ExceptionFacility};
 use App\Http\Resources\{ExceptionResource};
 use Illuminate\Support\Facades\Validator;
 
@@ -28,12 +28,12 @@ class ExceptionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Facility $facility)
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date',
+            'start_date' => 'required',
+            'end_date' => 'required',
         ]);
 
         if($validator->fails()){
@@ -48,6 +48,11 @@ class ExceptionController extends Controller
         $exception->start_date = $inputs['start_date'];
         $exception->end_date = $inputs['end_date'];
         $exception->save();
+
+        $exceptionFacility = new ExceptionFacility();
+        $exceptionFacility->facility_id = $facility->id;
+        $exceptionFacility->exception_id = $exception->id;
+        $exceptionFacility->save();
 
         return response()->json(["success" => new ExceptionResource($exception)]);
     }

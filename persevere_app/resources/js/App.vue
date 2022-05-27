@@ -65,7 +65,7 @@
             <span>Installations</span>
           </li>
 
-           <li @click="goToRoute('advertisements')">
+           <li @click="goToRoute('admin-adverts')">
             <v-icon color="black" size="40px">mdi-bullhorn</v-icon>
             <span>Annonces</span>
           </li>

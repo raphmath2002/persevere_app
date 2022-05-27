@@ -28,6 +28,10 @@ class AppointmentHorseController extends Controller
         if($validator->fails()){
             return response()->json(["input_error" => $validator->errors()]);
         }
+
+        if($appointment->status == 'canceled') {
+            return response()->json(["error" => "Ce rendez-vous à été annulé"]);
+        }
         
         $inputs = $request->all();
 

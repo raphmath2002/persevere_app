@@ -159,7 +159,8 @@ export default class PensionOptionEditComponent extends Vue {
             })
 
             if(data.success) {
-                await this.$store.dispatch('update', 'pensions-options')
+                await this.$store.dispatch('update', 'pensions')
+                await this.$store.dispatch('update', 'options')
                 this.$emit('done')
             } else {
                 console.log(data)

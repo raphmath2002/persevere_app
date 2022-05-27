@@ -131,49 +131,10 @@
             </div>
 
             <div class="subscriptions-container section" v-if="selected_section == 'Souscription'">
-                <h2>Souscriptions</h2>
-                <div class="current-pensions">
-                    <v-row class="d-flex flex-column">
-                        <v-col v-for="pension in new_user.pensions" :key="pension.id" >
-                            <div class="pension">
-                                <ul>
-                                    <li><span>Pension :</span> {{pension.name}}</li>
-                                    <li><span>Description :</span> {{pension.description}}</li>
-                                    <li><span>Prix mensuel :</span> {{pension.price}}€</li>
-                                    <li><span>Cheval :</span> {{pension.horse.name}}</li>
-                                </ul>
-                            </div>
-                        </v-col>
-                        
-                        <v-col>
-                            <span v-if="!user.pensions || user.pensions.length == 0">Cet utilisateur n'a pas de pension</span>
-
-                        </v-col>
-
-                    </v-row>
-
-                    <v-row class="d-flex flex-column">
-                        <v-col v-for="option in new_user.options" :key="option.id" >
-                            <div class="option">
-                                <ul>
-                                    <li><span>Option :</span> {{option.name}}</li>
-                                    <li><span>Description :</span> {{option.description}}</li>
-                                    <li><span>Prix mensuel :</span> {{option.price}}€</li>
-                                    <li><span>Cheval :</span> {{option.horse.name}}</li>
-                                </ul>
-                            </div>
-                        </v-col>
-
-                        <v-col>
-                            <span v-if="!user.options || user.options.length == 0">Cet utilisateur n'a pas d'option</span>
-                        </v-col>
-                        
-                    </v-row>
-                </div>
 
                 <div class="bills-container">
                     <h2>Factures</h2>
-                   <!-- TODO bills -->
+                   
                 </div>
             </div>
 

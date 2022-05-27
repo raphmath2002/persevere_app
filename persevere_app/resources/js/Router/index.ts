@@ -15,6 +15,7 @@ import AdminHorses from '../Pages/admin/Horses.vue'
 import Professionals from '../Pages/admin/Professionals.vue'
 import Visits from '../Pages/admin/Visits.vue'
 import Facilities from '../Pages/admin/Facilities.vue'
+import Advertisements from '../Pages/admin/Advertisements.vue'
 
 
 const routes: Array<RouteConfig> = [
@@ -100,6 +101,12 @@ const routes: Array<RouteConfig> = [
       path: '/bookings',
       name: 'user-bookings',
       component: Bookings
+    },
+
+    {
+      path: '/admin/advertisements',
+      name: 'admin-adverts',
+      component: Advertisements
     }
     
 

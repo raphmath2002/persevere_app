@@ -3,7 +3,7 @@
         <h1>Notifications</h1>
 
         <v-row>
-            <v-col v-for="info in infos" :key="info.id">
+            <v-col cols="12" v-for="info in infos" :key="info.id">
                 <NotificationComponent :info="info" />
             </v-col>
         </v-row>

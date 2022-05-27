@@ -219,7 +219,13 @@ export default class BookingEditComponent extends Vue {
                 'Authorization': 'Bearer ' + this.user.api_token
             }
         })
-        .then((res: any) => this.$store.state.user.horses.appointments.push(res.success))
+        .then(async(res: any) => {
+            await axios.get(`http://localhost:8000/api/users/${this.user.id}/edit`, {
+                headers: {
+                    'Authorization': 'Bearer ' + this.user.api_token
+                }
+            }).then((res: any) => this.$store.commit('SET_USER', res.data.success))
+        })
 
         this.$emit('done')
     }

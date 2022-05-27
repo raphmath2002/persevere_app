@@ -10,13 +10,42 @@
                 </v-col>
             </v-row>
 
-            <v-row class="visits-list" >
+            <v-col cols="12">
+                <v-select
+                    :items="booking_types"
+                    v-model="selected_type"
+                    item-text="name"
+                    item-value="value"
+
+                    dense
+                    outlined
+                    filled
+                ></v-select>
+            </v-col>
+
+            <v-row v-if="selected_type == 'bookings'">
+                <v-col>
+                    <v-select
+                        :items="status_list"
+                        v-model="filter_status"
+                        item-text="name"
+                        item-value="value"
+
+                        dense
+                        outlined
+                        filled
+                    >
+                    </v-select>
+                </v-col>
+
                 <div v-for="horse in adminOrCustomerView" :key="horse.id">
                      <v-col v-for="booking in horse.appointments" :key="booking.id">
-                        <BookingViewComponent :booking="booking" :horse="horse" />
+                        <BookingViewComponent v-if="booking.pivot.status == filter_status || filter_status == 'all'" :booking="booking" :horse="horse" />
                     </v-col>
                 </div>
-               
+            </v-row>
+            <v-row v-else>
+                
             </v-row>
 
             <v-dialog
@@ -49,6 +78,23 @@ export default class Bookings extends Vue {
     private get user() {
         return this.$store.state.user;
     }
+
+    private selected_type = "bookings"
+
+    private booking_types = [
+        {name: "Installations", value: "facilities"},
+        {name: "Rendez-vous", value: "bookings"}
+    ]
+
+    private status_list = [
+        {name: "Tous", value: "all"},
+        {name: "En attente", value: "waiting"},
+        {name: "Acceptés", value: "accepted"},
+        {name: "Annulés", value: "canceled"},
+        {name: "Refusés", value: "refused"}
+    ]
+
+    private filter_status = "all"
 
     private get admin_data() {
         return this.$store.state.admin_data;

@@ -32,7 +32,7 @@ Route::middleware(['cors'])->group(function () {
     Route::middleware('auth:api')->post('/appointments/store', [AppointmentController::class, 'store']);
     Route::middleware('auth:api')->get('/appointments/{appointment}/edit', [AppointmentController::class, 'edit']);
     Route::middleware('auth:api')->put('/appointments/{appointment}/update', [AppointmentController::class, 'update']);
-    Route::middleware('auth:api')->delete('/appointments/{appointment}/destroy', [AppointmentController::class, 'destroy']);
+    Route::middleware('auth:api')->post('/appointments/{appointment}/destroy', [AppointmentController::class, 'destroy']);
 
     // Routes for appointment horse
     Route::middleware('auth:api')->get('/bookings/user/{horse}', [AppointmentHorseController::class, 'getBookingsByUser']);
@@ -145,7 +145,7 @@ Route::middleware(['cors'])->group(function () {
 
     // Routes for exceptions
     Route::middleware('auth:api')->get('/exceptions', [ExceptionController::class, 'index']); 
-    Route::middleware('auth:api')->post('/exceptions/store', [ExceptionController::class, 'store']);
+    Route::middleware('auth:api')->post('/exceptions/{facility}/store', [ExceptionController::class, 'store']);
     Route::middleware('auth:api')->delete('/exceptions/{exception}/destroy', [ExceptionController::class, 'destroy']);
 
     // Routes for exception facility

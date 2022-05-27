@@ -2,8 +2,8 @@
     <v-container>
         <v-card dark @click="viewOrEdit">
             <v-card-text>
-                  <div class="facility-widget d-flex">
-                    <v-img width="150px" :src="facility.facilities_images[0].storage_path"></v-img>
+                  <div class="facility-widget d-flex flex-wrap">
+                    <v-img width="100px" :src="facility.facilities_images[0].storage_path"></v-img>
                     <div class="user-widget-infos d-flex flex-column justify-center align-center">
                         <span class="user-widget-name">{{facility.name}}</span>
                     </div>
@@ -67,6 +67,14 @@
                             </v-col>
                         </v-col>
 
+                        <v-col v-if="facility.exceptions.length > 0">
+                            <h3>Indisponnibilités exceptionnelles</h3>
+                            <div class="exception" v-for="exception in facility.exceptions" :key="exception.id">
+                                <span>ATTENTION : cette installation ne sera pas disponnible du</span>
+                                <span>{{formatDate(exception.start_date)}} au {{formatDate(exception.end_date)}}</span>
+                            </div>
+                        </v-col>
+
                       <v-col cols="12">
                             <h3>Disponibilités</h3>
                             <v-col v-for="day_facility in day_facility_list" :key="day_facility.id">
@@ -88,13 +96,30 @@
                   </v-row>
               </v-card-text>
             </v-card>
-        </v-dialog>
 
+             <v-snackbar
+                v-model="displayAlert"
+                :timeout="3000"
+                color="red"
+            >
+            {{ errorMessage}}
+
+                <template v-slot:action="{ attrs }">
+                    <v-btn
+                        color="black"
+                        text
+                        v-bind="attrs"
+                        @click="displayAlert = false"
+                    >
+                        <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                </template>
+            </v-snackbar>
+        </v-dialog>
 
         <v-dialog
             v-model="editFacilityDialog"
             :fullscreen="$vuetify.breakpoint.xsOnly"
-
         >
             <FacilityEditComponent @done="editFacilityDialog = false" :facility="facility" />
         </v-dialog>
@@ -114,8 +139,9 @@ import axios from "axios"
         FacilityEditComponent
     }
 })
-export default class ProViewComponent extends Vue {
-    @Prop() readonly facility!: FacilityInterface
+export default class FacilityViewComponent extends Vue {
+    @Prop() readonly facility!: any
+    @Prop({default: false}) readonly nodisplay!: boolean 
 
     private editFacilityDialog = false;
     private facilityDialog = false;
@@ -127,28 +153,30 @@ export default class ProViewComponent extends Vue {
 
     private today = new Date()
 
+    private errorMessage = ""
+    private displayAlert = false
+
     private selected_horse = 0
 
     private viewOrEdit() {
+        if(this.nodisplay) return
         if(this.user.auth_level == "customer") this.facilityDialog = true;
         else this.editFacilityDialog = true;
     }
 
     private async mounted() {
         await this.getDispos();
+        console.log(this.facility)
     }
 
     private days: {id: number, name: string}[] = []
 
 
     private async save() {
-        let date = new Date(this.selected_date).toDateString()
-
+        let date = new Date(this.selected_date).toJSON().split('T')[0]
+        
         let from = `${date} ${this.day_facility_infos.start}:00`
         let to = `${date} ${this.day_facility_infos.end}:00`
-
-        from = new Date(from).toJSON().replace("T", " ").replace("Z", '')
-        to = new Date(to).toJSON().replace("T", " ").replace("Z", '')
 
 
         await axios.post(`http://localhost:8000/api/facilityHorse/${this.facility.id}/${this.selected_horse}/store`, {start_date: from, end_date: to}, {
@@ -157,9 +185,14 @@ export default class ProViewComponent extends Vue {
             }
         })
         .then((res: any) => {
-            console.log(res)
-        })
-        
+            if(res.data.error) {
+                this.errorMessage = res.data.error
+                this.displayAlert = true;
+            } else {
+                this.facilityDialog = false;
+                this.$emit('done')
+            }
+        })  
     }
 
     private addDayFacility () {
@@ -206,7 +239,6 @@ export default class ProViewComponent extends Vue {
 
             if(!new_m) new_m = ""
             if(!new_h) new_h = ""
-
 
             this.day_facility_infos.start = `${new_h}:${new_m}`;
         }
@@ -258,11 +290,41 @@ export default class ProViewComponent extends Vue {
             } else console.log(res)
         })
     }
+
+   private formatDate(_date: string) {
+        let date = _date.split(" ")[0];
+        let time = _date.split(" ")[1];
+
+        let day = new Date(date).getDate().toString()
+        let month: any = new Date(date).getMonth() + 1
+
+        if(day.length < 2) day = `0${day}`
+        if(`${month}`.length < 2) month = `0${month}`
+
+        time = time.split(":")[0] + "h" + time.split(":")[1]
+
+        return `${day}/${month} à ${time}`;
+    }
 }
 </script>
 
-<style>
+<style scoped>
     .profession-container {
         padding: 5px 5px 5px 20px;
+    }
+
+    .exception {
+        padding: 10px;
+
+        background-color: rgb(255, 121, 121);
+        font-weight: bold;
+        border-radius: 20px;
+        margin: 15px 0 15px 0;
+
+        text-align: center;
+    }
+
+    .exception span {
+        color: black;
     }
 </style>

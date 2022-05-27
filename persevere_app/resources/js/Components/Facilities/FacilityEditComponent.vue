@@ -173,7 +173,7 @@ import { FacilityInterface } from "../../Types/Facility"
  */
 
 @Component
-export default class VisitEditComponent extends Vue {
+export default class FacilityEditComponent extends Vue {
     @Prop() readonly facility!: FacilityInterface
     @Prop({default: false}) readonly news: boolean
 
@@ -273,9 +273,6 @@ export default class VisitEditComponent extends Vue {
                             await axios.post(`http://127.0.0.1:8000/api/dayFacility/${day_id}/${this.facility.id}/store`, day_facility, headers)
                             .then((res: any) => console.log(res))
                         }
-
-
-
                     } else console.log(res)
                 })
 

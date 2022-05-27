@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-card>
+        <v-card dark>
             <v-card-title>
                 <h3>{{professional.name}} {{professional.firstname}}</h3>
             </v-card-title>

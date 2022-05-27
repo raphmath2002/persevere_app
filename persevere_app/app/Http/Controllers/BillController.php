@@ -68,6 +68,8 @@ class BillController extends Controller
         $horses_pensions = "";
         $horses_options = "";
 
+        //TODO refaire horse_pension
+
         foreach($horses as $horse){
             // Select horse pension
             $db_request = "SELECT pn.name, pn.price, pn.description, hrs_pn.subscribe_date, hrs_pn.unsubscribe_date
