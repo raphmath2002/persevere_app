@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{DayController, LoginController,HorsePensionController,HorseOptionController,AdvertisementUserController,FacilitiesImageController,DayFacilityController,ExceptionController,ExceptionFacilityController,AppointmentHorseController,FacilityHorseController,AdvertisementController,BillController,HorseController,JobController,UserController,PensionController,ProfessionalController,AppointmentController,OptionController,FacilityController,TicketController,MessageController,RoleController};
+use App\Http\Controllers\{DayController,BillUserController,LoginController,HorsePensionController,HorseOptionController,AdvertisementUserController,FacilitiesImageController,DayFacilityController,ExceptionController,ExceptionFacilityController,AppointmentHorseController,FacilityHorseController,AdvertisementController,BillController,HorseController,JobController,UserController,PensionController,ProfessionalController,AppointmentController,OptionController,FacilityController,TicketController,MessageController,RoleController};
 
 
 /*
@@ -47,6 +47,9 @@ Route::middleware(['cors'])->group(function () {
     Route::middleware('auth:api')->get('/bills', [BillController::class, 'index']); 
     Route::middleware('auth:api')->post('/bills/{user}/store', [BillController::class, 'store']);
     Route::middleware('auth:api')->delete('/bills/{bill}/destroy', [BillController::class, 'destroy']); 
+
+    // Routes for bill user
+    Route::middleware('auth:api')->get('/billUser/{user}/index', [BillUserController::class, 'index']); 
 
     // Routes for facilities
     Route::middleware('auth:api')->get('/facilities', [FacilityController::class, 'index']); 
