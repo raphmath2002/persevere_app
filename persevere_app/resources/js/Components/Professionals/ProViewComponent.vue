@@ -40,7 +40,6 @@
 <script lang="ts">
 import {Vue, Component, Prop} from "vue-property-decorator"
 import { UserInterface } from "../../Types/User";
-import {AppointmentInterface} from "../../Types/Appointment"
 import { ProfessionalInterface } from "../../Types/Professional";
 import ProEditComponent from "./ProEditComponent.vue"
 

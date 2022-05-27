@@ -27,7 +27,7 @@
             </v-row>
 
             <v-row class="pensions-list" v-if="selected_item.value == 'pensions'">
-                <v-col v-for="pension in admin_data.pensions" :key="pension.id">
+                <v-col cols="12" v-for="pension in admin_data.pensions" :key="pension.id">
                     <PensionOptionViewComponent :item="pension" />
                 </v-col>
             </v-row>

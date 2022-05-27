@@ -35,11 +35,16 @@ Route::middleware(['cors'])->group(function () {
     Route::middleware('auth:api')->delete('/appointments/{appointment}/destroy', [AppointmentController::class, 'destroy']);
 
     // Routes for appointment horse
+    Route::middleware('auth:api')->get('/bookings/user/{horse}', [AppointmentHorseController::class, 'getBookingsByUser']);
+
     Route::middleware('auth:api')->post('/appointmentHorse/{appointment}/{horse}/store', [AppointmentHorseController::class, 'store']);
     Route::middleware('auth:api')->put('/appointmentHorse/{appointmentHorse}/accept', [AppointmentHorseController::class, 'accept']);
     Route::middleware('auth:api')->put('/appointmentHorse/{appointmentHorse}/refuse', [AppointmentHorseController::class, 'refuse']);
     Route::middleware('auth:api')->put('/appointmentHorse/{appointmentHorse}/cancel', [AppointmentHorseController::class, 'cancel']);
     Route::middleware('auth:api')->put('/appointmentHorse/{appointmentHorse}/close', [AppointmentHorseController::class, 'close']);
+
+    Route::middleware('auth:api')->get('/appointments/{appointment}/freeSchedules', [AppointmentHorseController::class, 'getFreeSchedules']);
+
 
     // Routes for bills
     Route::middleware('auth:api')->get('/bills', [BillController::class, 'index']); 
@@ -111,6 +116,9 @@ Route::middleware(['cors'])->group(function () {
     Route::middleware('auth:api')->get('/professionals/{professional}/edit', [ProfessionalController::class, 'edit']);
     Route::middleware('auth:api')->put('/professionals/{professional}/update', [ProfessionalController::class, 'update']);
     Route::middleware('auth:api')->delete('/professionals/{professional}/destroy', [ProfessionalController::class, 'destroy']);
+
+    Route::middleware('auth:api')->get('/professions', [ProfessionalController::class, 'getProfessions']);
+
 
     // Routes for tickets
     Route::middleware('auth:api')->get('/tickets', [TicketController::class, 'index']);

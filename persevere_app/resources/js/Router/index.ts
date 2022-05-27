@@ -6,6 +6,7 @@ import Horses from '../Pages/Horses.vue'
 import Profile from '../Pages/Profile.vue'
 import Notifications from '../Pages/Notifications.vue'
 import Tickets from '../Pages/Tickets.vue'
+import Bookings from '../Pages/Bookings.vue'
 import PensionOption from '../Pages/admin/PensionsOptions.vue'
 
 import Dashboard from '../Pages/admin/Dashboard.vue'
@@ -93,6 +94,12 @@ const routes: Array<RouteConfig> = [
       path: '/subscriptions',
       name: "subscriptions",
       component: PensionOption
+    },
+
+    {
+      path: '/bookings',
+      name: 'user-bookings',
+      component: Bookings
     }
     
 

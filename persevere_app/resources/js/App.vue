@@ -23,7 +23,7 @@
             <span>Mes chevaux</span>
           </li>
 
-          <li @click="goToRoute('book')">
+          <li @click="goToRoute('user-bookings')">
             <v-icon color="black" size="40px">mdi-calendar-plus</v-icon>
             <span>Réserver</span>
           </li>
@@ -55,7 +55,7 @@
             <span>Chevaux</span>
           </li>
 
-           <li @click="goToRoute('bookings')">
+           <li @click="goToRoute('user-bookings')">
             <v-icon color="black" size="40px">mdi-notebook</v-icon>
             <span>Réservations</span>
           </li>

@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <v-card dense>
         <v-card-title class="d-flex justify-space-between">
                 <h2>Add/Edit Pension/Option</h2>
                 <div>
@@ -159,7 +159,7 @@ export default class PensionOptionEditComponent extends Vue {
             })
 
             if(data.success) {
-                await this.$store.dispatch('update', this.type)
+                await this.$store.dispatch('update', 'pensions-options')
                 this.$emit('done')
             } else {
                 console.log(data)

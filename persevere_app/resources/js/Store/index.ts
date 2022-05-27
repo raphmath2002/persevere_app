@@ -179,7 +179,7 @@ export default new Vuex.Store({
         if(tickets.data.success) commit('SET_TICKETS', tickets.data.success);
       }
 
-      if(choice == 'options' || choice == "all")
+      if(choice == 'pensions-options' || choice == "all")
       {
         let options = await axios.get('http://localhost:8000/api/options', {
           headers: {
@@ -190,7 +190,7 @@ export default new Vuex.Store({
         if(options.data.success) commit('SET_OPTIONS', options.data.success);
       }
 
-      if(choice == 'pensions' || choice == "all")
+      if(choice == 'pensions-options' || choice == "all")
       {
         let pensions = await axios.get('http://localhost:8000/api/pensions', {
           headers: {

@@ -24,7 +24,7 @@ class AppointmentResource extends JsonResource
             'cancel_reason' => $this->cancel_reason,
             'professional' => $this->professional,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'updated_at' => $this->updated_at
         ];
     }
 }

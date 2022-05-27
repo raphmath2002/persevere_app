@@ -120,7 +120,7 @@ import SubscriptionComponent from "../Components/SubscriptionComponent.vue"
     }
 })
 export default class FacilityComponent extends Vue {
-    @Prop({default: Horse.emptyHorse()}) readonly horse!: HorseInterface
+    @Prop() readonly horse!: HorseInterface
 
     private horseDetailsDialog = false;
 

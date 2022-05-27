@@ -210,6 +210,23 @@ class ProfessionalController extends Controller
         return response()->json(["success" => new ProfessionalResource($professional)]);
     }
 
+    public function getProfessions() 
+    {
+        $professions = [];
+
+        $professionals =  Professional::all();
+
+        foreach ($professionals as $pro) {
+            $profession = strtolower($pro->profession);
+
+            if(!in_array($profession, $professions)) {
+                array_push($professions, $profession);
+            }
+        }
+
+        return response()->json(['success' => $professions]);
+    }
+
     /**
      * Remove the specified resource from storage.
      *

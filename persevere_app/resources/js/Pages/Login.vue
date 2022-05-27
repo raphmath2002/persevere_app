@@ -33,6 +33,7 @@
                             @click:append="() => (hasPassword = !hasPassword)"
                             :type="hasPassword ? 'password' : 'text'"
                             @input="_=>loginInfo.password=_"
+                            v-on:keyup.13="login"
                         ></v-text-field>
                         </v-col>
                     </v-row>

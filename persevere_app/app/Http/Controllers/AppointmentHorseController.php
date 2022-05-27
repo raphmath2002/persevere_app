@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\{Appointment,Horse,AppointmentHorse};
+use App\Models\{Appointment,Horse,AppointmentHorse, User};
 use App\Http\Resources\{AppointmentResource,HorseResource,AppointmentHorseResource};
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
@@ -22,7 +22,7 @@ class AppointmentHorseController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'description' => 'required|string|max:2048',
-            'start_date' => 'required|date',
+            'start_date' => 'required',
         ]);
 
         if($validator->fails()){
@@ -88,6 +88,43 @@ class AppointmentHorseController extends Controller
 
         return response()->json(["success" => "Rendez-vous accepté avec succès !"]);
     }
+
+    function getFreeSchedules(Appointment $appointment) {
+        $bookings = AppointmentHorse::where('appointment_id', $appointment->id)->where('status', 'accepted')->orWhere('status', 'waiting')->get();
+
+        $not_free = [];
+        $free = [];
+
+        foreach($bookings as $booking) {
+            array_push($not_free, $booking->start_date);
+        }
+
+        $datetime = Carbon::parse($appointment->start_date);
+
+        $end_date = $appointment->end_date;
+
+        while(True) {
+            
+            if($datetime >= $end_date) {
+                break;
+            } else {
+                if(!in_array($datetime, $not_free)) {
+                    array_push($free, $datetime);
+                }
+                $datetime = Carbon::parse($datetime)->addMinutes($appointment->duration);
+            }
+        }
+
+        return response()->json(['success' => $free]);
+    }
+
+    public function getBookingsByUser(Horse $horse)
+    {
+        $bookings = AppointmentHorse::where('horse_id', $horse->id)->get();
+        return response()->json(['success' => AppointmentHorseResource::collection($bookings)]);
+
+    }
+
 
     /**
      * Refuse the specified resource from storage.
