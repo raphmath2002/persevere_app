@@ -9,7 +9,7 @@
                 <v-img class="horse-avatar" :src="horse.storage_path"></v-img>
                 <div class="horse-details d-flex flex-column justify-center">
                     <span class="horse-name">{{horse.name}}</span>
-                    <span class="horse-added-at">Ajouté(e) le {{horse.created_at}}</span>
+                    <span class="horse-added-at">Ajouté(e) le {{formatDate(horse.created_at)}}</span>
                 </div>
 
                 <div class="sex-container">
@@ -34,7 +34,7 @@
             <v-card-text>
                 <div class="avatar-container">
                     <v-img class="horse-details-avatar" :src="horse.storage_path"></v-img>
-                    <span>Inscrit(e) le {{horse.created_at}}</span>
+                    <span>Inscrit(e) le {{formatDate(horse.created_at)}}</span>
                 </div>
 
                 <v-card class="card">
@@ -137,6 +137,13 @@ export default class FacilityComponent extends Vue {
         } 
         return {icon: "mdi-gender-male", color: "blue"}
     }
+
+    private formatDate(_date: string): string {
+        let date = new Date(_date)
+        return date.toDateString();
+    }
+
+
 
 }
 

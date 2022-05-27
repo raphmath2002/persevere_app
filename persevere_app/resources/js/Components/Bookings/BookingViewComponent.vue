@@ -14,7 +14,7 @@
                     
                     <div class="booking-container d-flex flex-column">
                         <span>Rendez-vous pour {{horse.name}}</span>
-                        <span>De {{booking.start_date}} à {{booking.end_date}}</span>
+                        <span>Du {{formatDate(booking.start_date)}} au {{formatDate(booking.end_date)}}</span>
                     </div>
                 </div>
             </v-card-text>
@@ -175,6 +175,21 @@ export default class BookingViewComponent extends Vue {
 
     private get user(): UserInterface{
         return this.$store.state.user;
+    }
+
+    private formatDate(_date: string) {
+        let date = _date.split(" ")[0];
+        let time = _date.split(" ")[1];
+
+        let day = new Date(date).getDate().toString()
+        let month: any = new Date(date).getMonth() + 1
+
+        if(day.length < 2) day = `0${day}`
+        if(`${month}`.length < 2) month = `0${month}`
+
+        time = time.split(":")[0] + "h" + time.split(":")[1]
+
+        return `${day}/${month} à ${time}`;
     }
 
     private decline_reason = ""

@@ -30,79 +30,90 @@
                         >
                         </v-select>
 
-
-                        <v-col
-                            cols="12"
-                            md="4"
+                        <div
                             v-if="selected_booking_type.value == 'appointmentHorse'"
                         >
-                            <v-text-field
-                                v-model="booking_infos.title"
-                                label="Pourquoi prenez-vous rendez-vous ?"
-                            ></v-text-field>
-                        </v-col>
-
-                         <v-col
-                            cols="12"
-                            md="4"
-                            v-if="selected_booking_type.value == 'appointmentHorse'"
-                        >
-                            <v-textarea
-                                v-model="booking_infos.description"
-                                label="Quelques précisions sur ce rendez-vous ?"
-                            ></v-textarea>
-                        </v-col>
-
-                        <v-col
-                            cols="12"
-                            md="4"
-                            v-if="selected_booking_type.value == 'appointmentHorse'"
-                        > 
-                            <div
-                                v-if="!selected_visit"
-                                class="d-flex justify-center"
+                            <v-col
+                                cols="12"
+                                md="4"
                             >
-                                <v-btn @click="selectVisitDialog = true" color="primary" dense>Choisir une visite</v-btn>
-                            </div>
-
-                            <v-row cols="12" v-else>
-
-                                <v-col cols="8">
-                                    <VisitViewComponent :visit="selected_visit"/>
-
-                                </v-col>
-                                <v-col cols="4" class="d-flex align-center">
-                                     <v-icon size="50px" color="primary" @click="selectVisitDialog = true">mdi-swap-horizontal</v-icon>
-                                </v-col>
-
-                                <v-col
-                                    cols="12"
-                                >
-                                    <v-select
-                                        v-model="booking_infos.start_date"
-                                        :items="free_schedules"
-                                        label="Choisissez un créneau horaire"
-                                    >
-                                    </v-select>
-                                </v-col>
-                            </v-row>
+                                <v-text-field
+                                    v-model="booking_infos.title"
+                                    label="Pourquoi prenez-vous rendez-vous ?"
+                                ></v-text-field>
+                            </v-col>
 
                             <v-col
                                 cols="12"
                                 md="4"
-                                v-if="selected_booking_type.value == 'appointmentHorse'"
                             >
-                                <v-select
-                                    label="Quel cheval"
-                                    :items="user.horses"
-                                    v-model.number="booking_infos.horse_id"
-                                    item-text="name"
-                                    item-value="id"
-                                >
-                                </v-select>
+                                <v-textarea
+                                    v-model="booking_infos.description"
+                                    label="Quelques précisions sur ce rendez-vous ?"
+                                ></v-textarea>
                             </v-col>
+
+                            <v-col
+                                cols="12"
+                                md="4"
+                            > 
+                                <div
+                                    v-if="!selected_visit"
+                                    class="d-flex justify-center"
+                                >
+                                    <v-btn @click="selectVisitDialog = true" color="primary" dense>Choisir une visite</v-btn>
+                                </div>
+
+                                <v-row cols="12" v-else>
+
+                                    <v-col cols="8">
+                                        <VisitViewComponent :visit="selected_visit"/>
+
+                                    </v-col>
+                                    <v-col cols="4" class="d-flex align-center">
+                                        <v-icon size="50px" color="primary" @click="selectVisitDialog = true">mdi-swap-horizontal</v-icon>
+                                    </v-col>
+
+                                    <v-col
+                                        cols="12"
+                                    >
+                                        <v-select
+                                            v-model="booking_infos.start_date"
+                                            :items="free_schedules"
+                                            label="Choisissez un créneau horaire"
+                                        >
+                                        </v-select>
+                                    </v-col>
+                                </v-row>
+
+                                <v-col
+                                    cols="12"
+                                    md="4"
+                                >
+                                    <v-select
+                                        label="Quel cheval"
+                                        :items="user.horses"
+                                        v-model.number="booking_infos.horse_id"
+                                        item-text="name"
+                                        item-value="id"
+                                    >
+                                    </v-select>
+                                </v-col>
+                            </v-col>
+                        </div>
+
+                        <div v-else>
+                            <v-row>
+                                <v-col
+                                    v-for="facility in facilities"
+                                    :key="facility.id"
+                                    cols="12"
+                                >
+                                    <FacilityViewComponent :facility="facility" />
+                                </v-col>
+                            </v-row>
+                        </div>
                         
-                        </v-col>
 
                     </v-row>
                 </v-container>
@@ -135,10 +146,12 @@ import {Vue, Component, Prop, Watch} from "vue-property-decorator"
 import axios from "axios"
 import { UserInterface } from "../../Types/User"
 import VisitViewComponent from '../Visits/VisitViewComponent.vue'
+import FacilityViewComponent from '../Facilities/FacilityViewComponent.vue'
 
 @Component({
     components: {
-        VisitViewComponent
+        VisitViewComponent,
+        FacilityViewComponent
     }
 })
 export default class BookingEditComponent extends Vue {
@@ -181,6 +194,7 @@ export default class BookingEditComponent extends Vue {
     }
     
     private loading = false;
+    private facilities = []
 
     private booking_infos: any = {
        title: "",
@@ -218,6 +232,14 @@ export default class BookingEditComponent extends Vue {
         }).then((res: any) => {
             console.log(res)
             this.visits = res.data.success})
+
+        await axios.get(`http://localhost:8000/api/facilities`, {
+            headers: {
+                'Authorization': 'Bearer ' + this.user.api_token
+            }
+        }).then((res: any) => {
+            console.log(res)
+            this.facilities = res.data.success})
 
         
     }

@@ -20,8 +20,8 @@ class FacilityHorseController extends Controller
     public function store(Request $request, Facility $facility, Horse $horse)
     {
         $validator = Validator::make($request->all(), [
-            'start_date' => 'required|date',
-            'end_date' => 'required|date',
+            'start_date' => 'required',
+            'end_date' => 'required',
         ]);
 
         if($validator->fails()){
