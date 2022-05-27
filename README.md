@@ -1,29 +1,105 @@
-## Compréhension
+# INITIALISATION DU PROJET
 
-Ce que j'ai compris:
+## Récupération des sources
 
- * Un pensionnaire se fait inscrire par l'administrateur, ainsi que son/ses chevaux
- * Ensuite il doit, lors de cette inscription, souscrire à une pension (disponnible [ici](https://www.ecuriesdepersevere.com/travail-du-cheval-et-enseignement))
- * Cette pension lui laisse accès à des [installations](https://www.ecuriesdepersevere.com/installations) spécifiques à celle-ci et des prestations (et je crois bien que ces prestations n'apparaitront pas sur l'appli)
- * En plus de ça, hors des pensions, le pensionnaire peut prendre rendez-vous avec un professionnel de santé équine lors de ses visites et, si j'ai bien compris, ces prestations-là ne sont pas inclues dans les pensions donc il doit les payer
- * Les visites sont programmés par les "administrateurs" à une date dans une fourchette horaire, et étant donné que le temps moyen des rendez-vous est précisé lors de la programmation de la visite, il faudra calculer le max de rdv pour une visite dans sa fourchette horaire
- * Les soins prodigués doivent etre traçables, d'où l'association 0,n de batard dans le MCD (visits_booking)
+Récupération du projet sur GITHUB : [https://github.com/p2sias/uf_b2_persevere](https://github.com/p2sias/uf_b2_persevere)
 
-Pour le moment le seul truc sur lequel je bug c'est que si une installation n'est pas comprise dans une pension, faut-il la faire payer lors de la réservation ?
+```sh
+git clone https://github.com/p2sias/uf_b2_persevere
+```
 
-## Le MCD
+## Gestion de la base de données
 
-J'ai fait un premier jet du MCD, relis bien la doc et essaye de trouver des bails à rajouter. Il manque des colonnes notamment sur les installations (facilities) pour gérer l'utilisation max par jour / semaine (j'ai pas trop bien compris ce point-là)
+### Création de la base de données
 
-C'est le fichier en .loo tu peux l'ouvrir avec [Looping](https://www.looping-mcd.fr/), c'est un executable t'as rien à installer
+```sql
+DROP IF EXISTS db_name;
+CREATE DATABASE db_name;
+USE db_name;
+```
 
-## Initialisation
+### Création de l'utilisateur de la base de données
 
-J'ai initialisé le projet avec un template Vue TS donc ça sert à rien de mettre des routes web dans Laravel (routes/web.php) tout sera redirigé vers Vue.
-Donc si tu veux test tes endpoints soit tu fais une vue de test dans vue (ressources/js) et tu mets tes routes dans l'index du fichier router, soit postman tu coco.
-Si t'as des questions ou des remarques hésite pas à envoyer un message.
+```sql
+CREATE USER 'new_user'@'localhost' IDENTIFIED BY 'password'
+GRANT ALL PRIVILEGES ON db_name . * TO 'new_user'@'localhost';
+```
 
-Pour les maquettes j'ai terminé la partie client, je vais essayer de taffer sur la partie admin demain entre 16h et 20h.
-SI tu veux jetter un coup d'oeil c'est [ici](https://whimsical.com/uf-louis-3vVuL1TdFxH8rcnzLPtVbV), le mot de passe c'est "suceunzob123".
+## Configuration de l'application
 
-Bensouer
+### Prérequis :
+
+ * Composer 2.0              (version du développement : 2.2.6)
+ * Nodejs 16.0               (version du développement : 16.14.2)
+ * Apache 2.4                (version du développement : 2.4.51)
+ * MySQL 5.7 / MariaDB 10.6  (version du développement : 5.7.36 / 10.6.5)
+ * PHP 8.0                   (version du développement : 8.0.13)
+
+### Environnement
+
+```sh
+cd uf_b2_persevere
+cp .env.example .env
+vi .env
+```
+
+Configuration du fichier .env de notre application (mettre les informations correctes concernant la base de données créée précédemment) :
+```sh
+APP_NAME='My Web App'     # Nom de l'application web
+APP_ENV=local             # 'production' en cas de mise en production
+APP_KEY=
+APP_DEBUG=true            # 'false' en cas de mise en production
+APP_URL=http://localhost  # Url d'hébergement de l'application
+
+DB_CONNECTION=mysql
+DB_HOST=localhost         # '127.0.0.1' en cas d'échec de connexion
+DB_PORT=3306
+DB_DATABASE=db_name       # Nom de la base de données
+DB_USERNAME=new_user      # Utilisateur de la base de données
+DB_PASSWORD=password      # Mot de passe de l'utilisateur
+```
+
+Supprimer le fichier .env.example
+```sh
+rm .env.example
+```
+
+Génération de la clé
+```sh
+php artisan key:generate
+```
+
+Création du lien symbolique de stockage des fichiers
+```sh
+php artisan storage:link
+```
+
+### Les paquets
+```sh
+composer update
+composer install
+npm i
+npm run dev
+```
+
+### Création des tables de la base de données
+```sh
+php artisan migrate:fresh --path=database/migrations/v_1.0
+```
+
+### Peuplement de la base de données
+Exécuter tous les fichiers, dans la base de données, situés dans le dossier : /database/data/v_1.0
+
+##  Mise en production
+
+Modifier le fichier .env avec les prérequis de la mise en production (commentaires).
+
+Mise en cache de la configuration de l'application
+```sh
+php artisan config:clear
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+```
+
+Enjoy ;) !
