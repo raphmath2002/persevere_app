@@ -81,17 +81,20 @@ class FacilityHorseController extends Controller
         $selected_end_date = Carbon::parse($inputs['end_date'])->format('HH:MM:SS');
         
         $day_facility = DayFacility::where([['facility_id', '=', $facility->id],['day_id', '=', $day->id]])->get();
+        $count_day_facility = $day_facility->count();
+        $count_errors = 0;
 
         foreach($day_facility as $day_fac){
             $start_date = Carbon::parse("2000-01-01 $day_fac->start_hour:$day_fac->start_minute:00")->format('HH:MM:SS');
             $end_date = Carbon::parse("2000-01-01 $day_fac->end_hour:$day_fac->end_minute:00")->format('HH:MM:SS');
 
-            if($selected_start_date < $start_date){ // If selected date (start) < facility start date
-                return response()->json(["error" => "La date de début du rendez-vous ne respecte pas la plage horaires de l'installation pour un $day->name."]);
+            if(($selected_start_date < $start_date) || ($selected_end_date > $end_date)){ // If selected date (start) < facility start date OR selected date (end) > facility end date
+                $count_errors++;
             }
-            elseif($selected_end_date > $end_date){ // If selected date (end) > facility end date
-                return response()->json(["error" => "La date de fin du rendez-vous ne respecte pas la plage horaires de l'installation pour un $day->name."]);
-            }
+        }
+
+        if(($count_day_facility == $count_errors) || ($count_day_facility == 0)){
+            return response()->json(["error" => "La plage horaire du rendez-vous ne respecte pas les plages horaires de l'installation pour un $day->name."]);
         }
 
         // Create new FacilityHorse instance

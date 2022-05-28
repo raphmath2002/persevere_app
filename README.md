@@ -27,7 +27,7 @@ GRANT ALL PRIVILEGES ON db_name . * TO 'new_user'@'localhost';
 
 ## Configuration de l'application
 
-### Prérequis :
+### Prérequis
 
  * Composer 2.0              (version du développement : 2.2.6)
  * Nodejs 16.0               (version du développement : 16.14.2)

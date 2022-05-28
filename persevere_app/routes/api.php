@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{DayController, LoginController,HorsePensionController,HorseOptionController,AdvertisementUserController,FacilitiesImageController,DayFacilityController,ExceptionController,ExceptionFacilityController,AppointmentHorseController,FacilityHorseController,AdvertisementController,BillController,HorseController,JobController,UserController,PensionController,ProfessionalController,AppointmentController,OptionController,FacilityController,TicketController,MessageController,RoleController};
+use App\Http\Controllers\{DayController,BillUserController,LoginController,HorsePensionController,HorseOptionController,AdvertisementUserController,FacilitiesImageController,DayFacilityController,ExceptionController,ExceptionFacilityController,AppointmentHorseController,FacilityHorseController,AdvertisementController,BillController,HorseController,JobController,UserController,PensionController,ProfessionalController,AppointmentController,OptionController,FacilityController,TicketController,MessageController,RoleController};
 
 
 /*
@@ -16,6 +16,8 @@ use App\Http\Controllers\{DayController, LoginController,HorsePensionController,
 |
 */
 
+
+// Routes for login
 Route::middleware('cors')->post('/login', [LoginController::class, 'login'])->name('login');
 Route::middleware('cors')->post('/login/verifCode', [LoginController::class, 'verifCode'])->name('verif');
 
@@ -50,6 +52,9 @@ Route::middleware(['cors'])->group(function () {
     Route::middleware('auth:api')->get('/bills', [BillController::class, 'index']); 
     Route::middleware('auth:api')->post('/bills/{user}/store', [BillController::class, 'store']);
     Route::middleware('auth:api')->delete('/bills/{bill}/destroy', [BillController::class, 'destroy']); 
+
+    // Routes for bill user
+    Route::middleware('auth:api')->get('/billUser/{user}/index', [BillUserController::class, 'index']); 
 
     // Routes for facilities
     Route::middleware('auth:api')->get('/facilities', [FacilityController::class, 'index']); 
@@ -98,6 +103,7 @@ Route::middleware(['cors'])->group(function () {
     Route::middleware('auth:api')->post('/horseOption/{horse}/{option}/subscribe', [HorseOptionController::class, 'subscribe']);
     Route::middleware('auth:api')->put('/horseOption/{horseOption}/unsubscribe', [HorseOptionController::class, 'unsubscribe']);
 
+    // Routs for days
     Route::middleware('auth:api')->get('/days', [DayController::class, 'index']);
 
     // Routes for pensions
@@ -128,8 +134,8 @@ Route::middleware(['cors'])->group(function () {
     Route::middleware('auth:api')->put('/tickets/{ticket}/update', [TicketController::class, 'update']);
     Route::middleware('auth:api')->delete('/tickets/{ticket}/destroy', [TicketController::class, 'destroy']);
 
+    // Routes for ticket user
     Route::middleware('auth:api')->get('/tickets/user/{user}', [TicketController::class, 'getTicketByUser']);
-
 
     // Routes for users
     Route::middleware('auth:api')->get('/users', [UserController::class, 'index']);
@@ -153,9 +159,3 @@ Route::middleware(['cors'])->group(function () {
     Route::middleware('auth:api')->post('/exceptionFacility/{exception}/{facility}/store', [ExceptionFacilityController::class, 'store']);
     Route::middleware('auth:api')->delete('/exceptionFacility/{exceptionFacility}/destroy', [ExceptionFacilityController::class, 'destroy']);
 });
-
-
-
-
-
-
