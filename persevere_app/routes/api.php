@@ -63,6 +63,7 @@ Route::middleware(['cors'])->group(function () {
     Route::middleware('auth:api')->put('/facilityHorse/{facilityHorse}/cancel', [FacilityHorseController::class, 'cancel']);
     Route::middleware('auth:api')->put('/facilityHorse/{facilityHorse}/decline', [FacilityHorseController::class, 'decline']);
 
+
     // Routes for day facility
     Route::middleware('auth:api')->post('/dayFacility/{day}/{facility}/store', [DayFacilityController::class, 'store']);
     Route::middleware('auth:api')->delete('/dayFacility/{dayFacility}/destroy', [DayFacilityController::class, 'destroy']);

@@ -37,7 +37,7 @@
                     <span>Inscrit(e) le {{formatDate(horse.created_at)}}</span>
                 </div>
 
-                <v-card class="card">
+                <v-card dark class="card">
                     <v-card-title><span class="card-title">Caractéristiques</span></v-card-title>
                     <v-card-text>
                         <ul>
@@ -48,7 +48,7 @@
                     </v-card-text>
                 </v-card>
 
-                <v-card class="card">
+                <v-card dark class="card">
                     <v-card-title>
                         <span class="card-title">Son planning</span>
                     </v-card-title>
@@ -60,26 +60,14 @@
                     </v-container>
                 </v-card>
 
-               <v-card class="card">
-                   <v-card-title>
+               <v-card @click="caresViewDialog = true" dark class="card">
+                   <v-card-title class="d-flex justify-space-between">
                       <span class="card-title">Soins prodigués</span>
+                      <v-icon>mdi-arrow-right-thick</v-icon>
                    </v-card-title>
-
-                   <v-card-text>
-                        <div class="treatments">
-                            <div
-                                v-for="treatment in past_treatments"
-                                :key="treatment.id" 
-                                class="treatment"
-                            >
-                                <span class="treatment-name">{{treatment.cares}}</span>
-                                <span class="treatment-date">Prodigué le {{treatment.end_date}}</span>
-                            </div>
-                        </div>
-                   </v-card-text>
                </v-card>
 
-               <v-card class="card">
+               <v-card dark class="card">
                    <v-card-title>
                        <span class="card-title">Identification</span>
                    </v-card-title>
@@ -103,6 +91,33 @@
                </v-card>
             </v-card-text>
         </v-card>
+
+
+            <v-dialog
+                v-model="caresViewDialog"
+                :fullscreen="$vuetify.breakpoint.xsOnly"
+            >   
+                <v-card>
+                    <v-card-title class="d-flex justify-space-between">
+                        <h3>Soins prodigués</h3>
+                        <v-icon color="red" size="50px" @click="caresViewDialog = false">mdi-close</v-icon>
+                    </v-card-title>
+
+                    <v-container>
+                         <v-row>
+                            <v-col v-for='appointment in horse.appointments' :key="appointment.pivot.id">
+                                <div v-if="appointment.pivot.status == 'ended'" class="care d-flex flex-column">
+                                    <span><strong>Le : </strong>{{appointment.pivot.end_date}}</span>
+                                    <span><strong>Traitements : </strong>{{appointment.pivot.cares}}</span>
+                                    <span><strong>Note du professionnel : </strong>{{appointment.pivot.observations}}</span>
+                                </div>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                   
+                </v-card>
+            </v-dialog>
+
         </v-dialog>
     </v-col>
 </template>
@@ -123,7 +138,7 @@ export default class FacilityComponent extends Vue {
     @Prop() readonly horse!: HorseInterface
 
     private horseDetailsDialog = false;
-
+    private caresViewDialog = false;
     private past_treatments = [];
 
     private get sexIcon(): {icon: string, color: string} {
@@ -142,9 +157,6 @@ export default class FacilityComponent extends Vue {
         let date = new Date(_date)
         return date.toDateString();
     }
-
-
-
 }
 
 </script>
@@ -155,6 +167,12 @@ export default class FacilityComponent extends Vue {
         max-width: 80px;
 
         border-radius: 50px;
+    }
+
+    .care {
+        padding: 5px 10px 5px 10px;
+        border: solid black 1px;
+        border-radius: 10px;
     }
 
     .horse-name {
@@ -188,10 +206,6 @@ export default class FacilityComponent extends Vue {
 
     .card {
         margin: 30px 0 30px 0;
-    }
-
-    .card-title {
-        font-weight: bold;
     }
 
     ul {

@@ -166,7 +166,6 @@ export default class FacilityViewComponent extends Vue {
 
     private async mounted() {
         await this.getDispos();
-        console.log(this.facility)
     }
 
     private days: {id: number, name: string}[] = []

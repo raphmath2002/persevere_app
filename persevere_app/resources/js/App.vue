@@ -25,12 +25,7 @@
 
           <li @click="goToRoute('user-bookings')">
             <v-icon color="black" size="40px">mdi-calendar-plus</v-icon>
-            <span>Réserver</span>
-          </li>
-
-          <li @click="goToRoute('bookings')">
-            <v-icon color="black" size="40px">mdi-calendar-month</v-icon>
-            <span>Mon planning</span>
+            <span>Mes réservations</span>
           </li>
         </ul>
 
@@ -95,16 +90,16 @@
     <div v-if="logged" class="mobile-burger">
       <div class="mobile-burger-btns d-flex justify-space-between align-center"> 
           <div @click="switchMobileMenu"  class="mobile-burger-btn">
-            <v-icon  size="50px">mdi-menu</v-icon>
+            <v-icon color="black" size="50px">mdi-menu</v-icon>
           </div>
 
           <div v-if="user.auth_level == 'customer'" @click="goToRoute('notifications', false)" class="mobile-burger-btn notif">
-            <v-icon v-if="!haveNotif" size="40px">mdi-bell</v-icon>
-            <v-icon v-else size="40px">mdi-bell-badge</v-icon>
+            <v-icon color="black" v-if="!haveNotif" size="40px">mdi-bell</v-icon>
+            <v-icon color="black" v-else size="40px">mdi-bell-badge</v-icon>
           </div>
 
           <div @click="goToRoute('tickets', false)" class="mobile-burger-btn notif">
-            <v-icon size="40px">mdi-lifebuoy</v-icon>
+            <v-icon color="black" size="40px">mdi-lifebuoy</v-icon>
           </div>
       </div>
       
@@ -150,7 +145,6 @@ export default class App extends Vue {
     
   }
 
-  
 
   private logout(): void {
     this.switchMobileMenu()
@@ -168,8 +162,6 @@ export default class App extends Vue {
 
 <style>
     .mobile-burger {
-
-      border: solid red 1px;
       position: fixed;
 
       height: 70px;
@@ -178,7 +170,7 @@ export default class App extends Vue {
       bottom: 0;
 
       z-index: 10;
-      background-color: white;
+      background-color: rgb(194, 194, 194);
     }
 
     .mobile-burger-btns {
@@ -191,10 +183,9 @@ export default class App extends Vue {
     }
 
     .mobile-burger-btn {
-      border: solid blue 1px;
       padding: 5px;
       border-radius: 50px;
-      background-color: white;
+      background-color: rgb(230, 230, 230);
     }
 
     .mobile-menu {

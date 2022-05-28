@@ -1,9 +1,8 @@
 <template>
     <div>
-        <v-card dark dense @click="ticketDialog = true">
-            <v-card-title class="d-flex justify-space-between">
-                <h3>{{ticket.title}}</h3>
-            </v-card-title>
+        <v-card class="ticket d-flex justify-space-between" dark dense @click="ticketDialog = true">
+            <span>{{ticket.title}}</span>
+            <v-icon>mdi-arrow-right-thick</v-icon>
         </v-card>
 
 
@@ -145,12 +144,8 @@ export default class TicketViewComponent extends Vue {
 </script>
 
 <style>
-    .profession-container {
-        padding: 5px 5px 5px 20px;
-    }
-
-    .pro-avatar {
-        border-radius: 50px;
+    .ticket {
+        padding: 5px 5px 5px 10px;
     }
 
     .message {

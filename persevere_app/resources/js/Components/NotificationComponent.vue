@@ -1,9 +1,9 @@
 <template>
     <div>
-        <div class="d-flex justify-space-between align-center">
+        <v-card dark class="notif d-flex justify-space-between align-center">
             <span @click="show = true">{{info.title}}</span>
             <v-icon @click="deleteNotif" color="red">mdi-delete</v-icon>
-        </div>
+        </v-card>
 
         <v-dialog
             v-model="show"
@@ -60,3 +60,9 @@ export default class NotificationComponent extends Vue {
 }
 
 </script>
+
+<style>
+    .notif {
+        padding: 5px 5px 5px 10px;
+    }
+</style>

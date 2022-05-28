@@ -109,7 +109,7 @@
                                     :key="facility.id"
                                     cols="12"
                                 >
-                                    <FacilityViewComponent :facility="facility" />
+                                    <FacilityViewComponent :facility="facility" @done="$emit('done')"/>
                                 </v-col>
                             </v-row>
                         </div>

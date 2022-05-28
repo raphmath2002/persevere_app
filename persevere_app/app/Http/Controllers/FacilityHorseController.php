@@ -131,30 +131,4 @@ class FacilityHorseController extends Controller
 
         return response()->json(["success" => "Rendez-vous annulé avec succès !"]);
     }
-
-    /**
-     * Refuse the specified resource from storage.
-     *
-     * @param  \App\Models\FacilityHorse $facilityHorse
-     * @return \Illuminate\Http\Response
-     */
-    public function decline(Request $request, FacilityHorse $facilityHorse)
-    {
-        $validator = Validator::make($request->all(), [
-            'decline_reason' => 'required|string|max:2048',
-        ]);
-
-        if($validator->fails()){
-            return response()->json(["input_error" => $validator->errors()]);
-        }
-
-        // Update FacilityHorse
-        $inputs = $request->all();
-
-        $facilityHorse->status = "declined";
-        $facilityHorse->decline_reason = $inputs['decline_reason'];
-        $facilityHorse->update();
-
-        return response()->json(["success" => "Rendez-vous décliné avec succès !"]);
-    }
 }
