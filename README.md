@@ -1,3 +1,8 @@
+# INRODUCTION
+
+Ce projet à été réalisé en 1 semaine en collaboration avec un autre développeur.
+Cette application permet de gérer l'administration d'une écurie.
+
 # INITIALISATION DU PROJET
 
 ## Récupération des sources
